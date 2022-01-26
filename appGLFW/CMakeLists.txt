@@ -3,8 +3,6 @@ mainProg.cpp)
 
 SET(headers)
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
-
 #find_package(OpenGL REQUIRED)
 find_package(GLFW3 REQUIRED)
 

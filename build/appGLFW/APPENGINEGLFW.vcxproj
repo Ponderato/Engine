@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>engine;D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;D:\Fake Escritorio\GitHub\Engine\engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -129,7 +129,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>engine;D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -172,7 +172,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>engine;D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -215,7 +215,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>engine;D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine\appGLFW\ENGINE;D:\OpenGL\LearnOpenGL-master\includes\GLFW;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -326,6 +326,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{CF441CEB-3E48-3345-88B0-75607E2BD493}</Project>
       <Name>ENGINE</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragmentShader_1.fs" />
+    <None Include="vertexShader_1.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
