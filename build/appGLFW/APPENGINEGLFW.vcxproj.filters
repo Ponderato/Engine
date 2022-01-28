@@ -12,16 +12,5 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{6D1D1F92-0E68-34C3-8DCB-E8DAB94A8EA8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{931c9c55-7660-4643-9723-01640c8a6b2d}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="vertexShader_1.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="fragmentShader_1.fs">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>

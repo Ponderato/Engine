@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <stdio.h>
-//#include "../engine/oglContext.h"
 #include <vector>
 
 std::vector<std::string> lines;
@@ -13,16 +12,16 @@ size_t size;
 
 //Vertex data
 float vertices[] = {
-	-0.5f, -0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
+	 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+	 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
 };
 
 float verticesRect[] = {
-	 0.5f,  0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
-	-0.5f,  0.5f, 0.0f
+	 0.5f,  0.5f, 0.0f,    1.0f,  0.0f, 0.0f,
+	 0.5f, -0.5f, 0.0f,    0.0f,  1.0f, 0.0f,
+	-0.5f, -0.5f, 0.0f,    0.0f,  0.0f, 1.0f,
+	-0.5f,  0.5f, 0.0f,    1.0f,  1.0f, 0.0f
 };
 
 GLuint indices[] = {
@@ -36,10 +35,14 @@ GLuint shaderProgram;
 
 GLuint EBO;
 
+int width;
+int height;
+
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
 void initData();
 void initShaders();
+void render();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -47,7 +50,7 @@ void processInput(GLFWwindow* window);
 int main(){
 	GLFWwindow* window = initContext();
 	initData();
-	initShaders();
+	//initShaders();
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -56,11 +59,7 @@ int main(){
 		processInput(window);
 
 		//rendering commands
-		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(shaderProgram);
-		glBindVertexArray(VAOrect);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		render();
 
 		//check and call events and swap buffers
 		glfwSwapBuffers(window);
@@ -106,29 +105,35 @@ GLFWwindow* initContext() {
 }
 
 void initData() {
-	glGenVertexArrays(1, &VAO);
+	//glGenVertexArrays(1, &VAO);
+	//glGenBuffers(1, &VBO);
+	//
+	////Bind VAO
+	//glBindVertexArray(VAO);
+	////Copy our vertices array in a vertex buffer for OpenGL to use
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	////Set the vertex attributes pointers for position
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(0);
+	////color
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
+	//glEnableVertexAttribArray(1);
+
+	//Rectangle
 	glGenVertexArrays(1, &VAOrect);
-	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &VBOrect);
 	glGenBuffers(1, &EBO);
-	
-	//Bind VAO
-	glBindVertexArray(VAO);
-	//Copy our vertices array in a vertex buffer for OpenGL to use
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//Set the vertex attributes pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
 	glBindVertexArray(VAOrect);
 	glBindBuffer(GL_ARRAY_BUFFER, VBOrect);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesRect), verticesRect, GL_STATIC_DRAW);
 	//Copy our index array in an element buffer for OpenGL to use
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	//Unbind VAO
 	glBindVertexArray(0);
@@ -191,6 +196,18 @@ void initShaders() {
 
 	glLinkProgram(shaderProgram);
 	//can also check if linking a shader program failed.
+}
+
+void render() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	glUseProgram(shaderProgram);
+
+	//Uniforms here AFTER glUseProgram(); !!!!!!!!!!!!
+
+	glBindVertexArray(VAOrect);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
