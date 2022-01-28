@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 //glfw is like glut, used for context creation, window stuff, ...
+#include "stb_image.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -37,6 +38,8 @@ GLuint EBO;
 
 int width;
 int height;
+int nrChannels;
+unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
 
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
@@ -50,7 +53,7 @@ void processInput(GLFWwindow* window);
 int main(){
 	GLFWwindow* window = initContext();
 	initData();
-	//initShaders();
+	initShaders();
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -186,8 +189,8 @@ GLuint createShader(const char* fileName, GLenum shaderType) {
 }
 
 void initShaders() {
-	GLuint vs = createShader("vertexShader_1.vs", GL_VERTEX_SHADER);
-	GLuint fs = createShader("fragmentShader_1.fs", GL_FRAGMENT_SHADER);
+	GLuint vs = createShader("vertexShader.vs", GL_VERTEX_SHADER);
+	GLuint fs = createShader("fragmentShader.fs", GL_FRAGMENT_SHADER);
 
 	shaderProgram = glCreateProgram();
 

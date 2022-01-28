@@ -1,18 +1,17 @@
 SET(sources
-mainProg.cpp)
+mainProg.cpp
+stb_image.cpp)
 
-SET(headers)
+SET(headers
+stb_image.h)
+#stb_image.h and .cpp to use the library
 
-#find_package(OpenGL REQUIRED)
 find_package(GLFW3 REQUIRED)
 
 add_executable(APPENGINEGLFW ${sources} ${headers})
 
-
 target_include_directories(APPENGINEGLFW PUBLIC ENGINE
-${OPENGL_INCLUDE_DIR}
 ${GLFW3_INCLUDE_DIR})
 
 target_link_libraries(APPENGINEGLFW ENGINE
-${OPENGL_LIBRARIES}
 ${GLFW3_LIBRARY})

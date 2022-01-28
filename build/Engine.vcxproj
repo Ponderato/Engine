@@ -22,31 +22,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2DB2F575-9806-3D9A-939D-9853E89DA6F6}</ProjectGuid>
+    <ProjectGuid>{A7FD6FBB-64DB-3385-95B7-151F883C8066}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
-    <ProjectName>ALL_BUILD</ProjectName>
+    <ProjectName>Engine</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
@@ -59,50 +59,153 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Fake Escritorio\GitHub\Engine\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Engine.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Engine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Fake Escritorio\GitHub\Engine\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Engine.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Engine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Fake Escritorio\GitHub\Engine\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Engine.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Engine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Fake Escritorio\GitHub\Engine\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Engine.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Engine</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fake Escritorio\GitHub\Engine;D:\Fake Escritorio\GitHub\Engine\SET;D:\Fake Escritorio\GitHub\Engine\(;D:\Fake Escritorio\GitHub\Engine\Boost_USE_STATIC_LIBS;D:\Fake Escritorio\GitHub\Engine\ON;D:\Fake Escritorio\GitHub\Engine\);D:\Fake Escritorio\GitHub\Engine\find_package;D:\Fake Escritorio\GitHub\Engine\Boost;D:\Fake Escritorio\GitHub\Engine\REQUIRED;D:\Fake Escritorio\GitHub\Engine\COMPONENTS;D:\Fake Escritorio\GitHub\Engine\filesystem;D:\Fake Escritorio\GitHub\Engine\system;D:\Fake Escritorio\GitHub\Engine\thread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="D:\Fake Escritorio\GitHub\Engine\CMakeLists.txt">
@@ -162,6 +265,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\app\mainProgram.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\mainProg.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.cpp" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\build\CMakeFiles\3.21.4\CompilerIdCXX\CMakeCXXCompilerId.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.cpp" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\ZERO_CHECK.vcxproj">
@@ -169,18 +279,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </ProjectReference>
-    <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\app\APPENGINE.vcxproj">
-      <Project>{FD0ED1F1-02D1-318B-9336-B19BF3CD0417}</Project>
-      <Name>APPENGINE</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\appGLFW\APPENGINEGLFW.vcxproj">
-      <Project>{FB269082-86C7-3B25-B72D-EEEE5BDC51E4}</Project>
-      <Name>APPENGINEGLFW</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\engine\ENGINE.vcxproj">
-      <Project>{CF441CEB-3E48-3345-88B0-75607E2BD493}</Project>
-      <Name>ENGINE</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
