@@ -222,6 +222,9 @@ GLFW3_INCLUDE_DIR:PATH=D:/OpenGL/LearnOpenGL-master/includes/GLFW
 GLFW3_LIBRARY:FILEPATH=D:/OpenGL/LearnOpenGL-master/lib/glfw3.lib
 
 //Path to a file.
+GLM_INCLUDE_DIR:PATH=D:/OpenGL/glm-0.9.9.8/glm/glm
+
+//Path to a file.
 GLUT_INCLUDE_DIR:PATH=D:/OpenGL/freeglut-MSVC-3.0.0-2.mp/freeglut/include
 
 //Path to a library.
@@ -371,6 +374,8 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_GLEW:INTERNAL=[D:/OpenGL/glew-2.1.0-win32/glew-2.1.0/include][D:/OpenGL/glew-2.1.0-win32/glew-2.1.0/lib/Release/x64/glew32.lib][v2.1.0()]
 //Details about finding GLFW3
 FIND_PACKAGE_MESSAGE_DETAILS_GLFW3:INTERNAL=[D:/OpenGL/LearnOpenGL-master/lib/glfw3.lib][D:/OpenGL/LearnOpenGL-master/includes/GLFW][v()]
+//Details about finding GLM
+FIND_PACKAGE_MESSAGE_DETAILS_GLM:INTERNAL=[D:/OpenGL/glm-0.9.9.8/glm/glm][v()]
 //Details about finding GLUT
 FIND_PACKAGE_MESSAGE_DETAILS_GLUT:INTERNAL=[D:/OpenGL/freeglut-MSVC-3.0.0-2.mp/freeglut/lib/x64/freeglut.lib][D:/OpenGL/freeglut-MSVC-3.0.0-2.mp/freeglut/include][v()]
 //Details about finding OpenGL
