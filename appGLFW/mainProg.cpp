@@ -9,57 +9,75 @@
 #include <stdio.h>
 #include <vector>
 
+#include <engine/oglContext.h>
+
+
 std::vector<std::string> lines;
 const char** content;
 size_t size;
 
+float deltaTime = 0.0f;//Time between current frame and last frame
+float lastFrame = 0.0f;//Time of last frame
+
+float fov = 45.0f;
+
+bool firstMouse = true;
+const float sensitivity = 0.1f;
+float lastX = 400;
+float lastY = 300;
+float yaw = -90.0f;//Camera pointing towards negative z axis.
+float pitch = 0.0f;
+
 //Data
-//glm::mat4 model_M = glm::mat4(1.0f);
-glm::mat4 view_M = glm::mat4(1.0f);
+glm::mat4 view_M;
 glm::mat4 proj_M = glm::mat4(1.0f);
 
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+
+
 float vertices[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	-0.5f, -0.5f, -0.5f,    0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,    1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,    1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,    1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,    0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,    0.0f, 0.0f,
+						    
+	-0.5f, -0.5f,  0.5f,    0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,    1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,    1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,    1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,    0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,    0.0f, 0.0f,
+						    
+	-0.5f,  0.5f,  0.5f,    1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,    1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,    0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,    1.0f, 0.0f,
+						    
+	 0.5f,  0.5f,  0.5f,    1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,    1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,    0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,    1.0f, 0.0f,
+						    
+	-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,    1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,    1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,    1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,    0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,    0.0f, 1.0f,
+						    
+	-0.5f,  0.5f, -0.5f,    0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,    1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,    1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,    1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,    0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,    0.0f, 1.0f
 };
 
 GLuint VBO;
@@ -81,6 +99,8 @@ void initShaders();
 void render();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xPos, double yPos);
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 void processInput(GLFWwindow* window);
 
 int main(){
@@ -90,6 +110,10 @@ int main(){
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
+
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
 		//input
 		processInput(window);
@@ -122,22 +146,26 @@ GLFWwindow* initContext() {
 	}
 	glfwMakeContextCurrent(window);
 
-	//initGLEW();
+	//glfwSetWindowPos(window, 540, 240);
+
 	//We initialize glew. GLEW sets the pointer functions for your platform.
-	glewExperimental = GL_TRUE;
-	GLenum err = glewInit();
-	if (GLEW_OK != err) {
-		printf("Error: %s\n", glewGetErrorString(err));
-		exit(-1);
-	}
+	//OpenGL nedds to be initialized by this point. Here that is done in glfwMakeContextCurrent.
+	initGLEW();
 
 	//Viewport coordinates and callback function for resize.
 	glViewport(0, 0, 800, 600);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
+
 	//TODO -> move initOpenGL stuff to a new method void initOGL();
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+
 
 	return window;
 }
@@ -167,7 +195,7 @@ void initData() {
 	//Textures
 	stbi_set_flip_vertically_on_load(true);
 	//texture1
-	unsigned char* data1 = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
 	
 	glGenTextures(1, &texture1);
 	glBindTexture(GL_TEXTURE_2D, texture1);
@@ -177,19 +205,16 @@ void initData() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	if (data1){
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data1);
+	if (data){
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 
-	//Free the image memory -> Good practice
-	stbi_image_free(data1);
-
 	//texture2
-	unsigned char* data2 = stbi_load("face.png", &width, &height, &nrChannels, 0);
+	data = stbi_load("face.png", &width, &height, &nrChannels, 0);
 	glGenTextures(1, &texture2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
@@ -198,15 +223,15 @@ void initData() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	if (data2) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 
-	stbi_image_free(data2);
+	stbi_image_free(data);
 
 	//Bind textures to the corresponding texture unit
 	glActiveTexture(GL_TEXTURE0);
@@ -215,9 +240,10 @@ void initData() {
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	//Matrices
-	//model_M = glm::rotate(model_M, glm::radians(-55.0f), glm::vec3(1.0, 0.0, 0.0));
-	view_M = glm::translate(view_M, glm::vec3(0.0, 0.0, -3.0));
-	proj_M = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	//with cameraPos + cameraPos passed as the "target" parameter, we ensure no matter
+	//how we move, it'll always look at the target direction.
+	//view_M = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
+	//proj_M = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 
 void readFile(const char* filename) {
@@ -287,13 +313,46 @@ void initShaders() {
 
 	//location, how many matrices we want to pass, transpose, data as glm::value_ptr
 	
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
+	//glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
+	//glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
 }
 
 void render() {
+	view_M = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
+
+	proj_M = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
+
 	glm::mat4 model_M = glm::mat4(1.0f);
 	model_M = glm::rotate(model_M, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5, 1.0, 0.0));
+
+	glm::mat4 model_M_2 = glm::mat4(1.0f);
+	model_M_2 = glm::translate(model_M_2, glm::vec3(-3.0, 0.0, 0.0));
+	model_M_2 = glm::rotate(model_M_2, (float)glfwGetTime() * glm::radians(-45.0f) * 3, glm::vec3(0.0, 1.0, 0.0));
+	model_M_2 = glm::rotate(model_M_2, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
+	
+	static bool c = false;
+
+	static float t = 0.0F; //creamos t y hacemos que vaya cambiando.
+	t = (t < 1) ? t + 0.001f : 0.0f;
+
+	//primera curva.
+	if (c == false) {
+		model_M_2[3].x = 4.0f * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * 4.0f * t * (1.0f - t) * (1.0f - t) + 3.0f * (-4.0f) * t * t * (1.0f - t) + (-4.0f) * t * t * t;
+		//muevo a la derecha el cubo aquí directamente al poner model1[3].x = .....
+		model_M_2[3].z = 0.0f * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * (-6.0f) * t * (1.0f - t) * (1.0f - t) + 3.0f * (-6.0f) * t * t * (1.0f - t) + 0.0f * t * t * t;
+		if (t >= 1) {
+			t = 0.0f;
+			c = true;
+		}
+	}
+	//segunda curva.
+	if (c == true) {
+		model_M_2[3].x = (-4.0f) * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * (-4.0f) * t * (1.0f - t) * (1.0f - t) + 3.0f * 4.0f * t * t * (1.0f - t) + 4.0f * t * t * t;
+		model_M_2[3].z = 0.0f * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * 6.0f * t * (1.0f - t) * (1.0f - t) + 3.0f * 6.0f * t * t * (1.0f - t) + 0.0f * t * t * t;
+		if (t >= 1) {
+			c = false;
+		}
+	}
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgram);
@@ -302,17 +361,60 @@ void render() {
 	glUniform1f(glGetUniformLocation(shaderProgram, "faceV"), faceVisibility);
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "modelM"), 1, GL_FALSE, glm::value_ptr(model_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_2));
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
 	glViewport(0, 0, width, height);
 }
 
-//Checks if esc key have been pressed and if so, "closes" the window
+void mouse_callback(GLFWwindow* window, double xPos, double yPos){
+
+	if (firstMouse) {
+		lastX = xPos;
+		lastY = yPos;
+		firstMouse = false;
+	}
+
+	float xOffset = (xPos - lastX) * sensitivity;
+	//Reversed since y-coords range from bottom to top
+	float yOffset = (lastY - yPos) * sensitivity; 
+	
+	lastX = xPos;
+	lastY = yPos;
+
+	yaw += xOffset;
+	pitch += yOffset;
+
+	//Avoid screen flipping
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(direction);
+}
+
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
+	fov -= (float)yOffset;
+	if (fov < 1.0f)
+		fov = 1.0f;
+	if (fov > 45.0f)
+		fov = 45.0f;
+}
+
 void processInput(GLFWwindow* window){
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
@@ -333,4 +435,22 @@ void processInput(GLFWwindow* window){
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		faceVisibility -= 0.1;
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		cameraPos += 2.5f *  deltaTime * cameraFront;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		cameraPos -= 2.5f * deltaTime * cameraFront;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
+		cameraPos -= glm::normalize(glm::cross(cameraFront, glm::vec3(0.0, 1.0, 0.0))) * 2.5f * deltaTime;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		cameraPos += glm::normalize(glm::cross(cameraFront, glm::vec3(0.0, 1.0, 0.0))) * 2.5f * deltaTime;
+	}
+		
+
 }

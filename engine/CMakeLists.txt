@@ -11,8 +11,10 @@ add_library(ENGINE ${sources} ${headers})
 
 target_include_directories(ENGINE PUBLIC 
 ${OPENGL_INCLUDE_DIR}
-${GLEW_INCLUDE_DIRS})
+${GLEW_INCLUDE_DIRS}
+${PROJECT_SOURCE_DIR})
 
 target_link_libraries(ENGINE 
 ${OPENGL_LIBRARIES}
-${GLEW_LIBRARIES})
+${GLEW_LIBRARIES}
+)

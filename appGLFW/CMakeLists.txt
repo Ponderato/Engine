@@ -15,5 +15,5 @@ target_include_directories(APPENGINEGLFW PUBLIC ENGINE
 ${GLFW3_INCLUDE_DIR}
 ${GLM_INCLUDE_DIRS})
 
-target_link_libraries(APPENGINEGLFW ENGINE
+target_link_libraries(APPENGINEGLFW PUBLIC ENGINE
 ${GLFW3_LIBRARY})

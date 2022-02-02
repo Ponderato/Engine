@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "oglContext.h"
 
+
 void initGLEW() {
 	//We initialize glew. GLEW sets the pointer functions for your platform.
 	glewExperimental = GL_TRUE;
