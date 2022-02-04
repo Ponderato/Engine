@@ -1,8 +1,11 @@
 SET(sources
-oglContext.cpp)
+oglContext.cpp
+)
 
 SET(headers
-oglContext.h)
+oglContext.h
+)
+
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
