@@ -30,17 +30,18 @@ float pitch = 0.0f;
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-
 float faceVisibility = 0.2;
 
 float fov = 45.0f;
 
 //Data
-
 glm::mat4 view_M;
 glm::mat4 proj_M = glm::mat4(1.0f);
+
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+
+glm::mat4 normal_M;
 
 float cubeVertices[] = {
 	-0.5f, -0.5f, -0.5f, //0
@@ -104,6 +105,37 @@ float cubeTexCoords[] = {
 	1.0f, 0.0f,
 	0.0f, 0.0f
 };
+float cubeNormals[] = {
+	 0.0f,  0.0f, -1.0f,
+	 0.0f,  0.0f, -1.0f,
+	 0.0f,  0.0f, -1.0f,
+	 0.0f,  0.0f, -1.0f,
+
+	 0.0f,  0.0f,  1.0f,
+	 0.0f,  0.0f,  1.0f,
+	 0.0f,  0.0f,  1.0f,
+	 0.0f,  0.0f,  1.0f,
+
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+
+	 1.0f,  0.0f,  0.0f, 
+	 1.0f,  0.0f,  0.0f, 
+	 1.0f,  0.0f,  0.0f, 
+	 1.0f,  0.0f,  0.0f, 
+
+	 0.0f, -1.0f,  0.0f, 
+	 0.0f, -1.0f,  0.0f, 
+	 0.0f, -1.0f,  0.0f, 
+	 0.0f, -1.0f,  0.0f, 
+
+	 0.0f,  1.0f,  0.0f, 
+	 0.0f,  1.0f,  0.0f, 
+	 0.0f,  1.0f,  0.0f, 
+	 0.0f,  1.0f,  0.0f, 
+};
 const unsigned int cubeTriangleIndex[] = {
 	0, 1, 2,
 	0, 2, 3,
@@ -124,11 +156,12 @@ const unsigned int cubeTriangleIndex[] = {
 	20, 22, 23
 };
 
-const int SHADERS_COUNT = 2;
+const int SHADERS_COUNT = 3;
 
 GLuint VAO;
 GLuint lightVAO;
 GLuint vertexVBO;
+GLuint normalVBO;
 GLuint textureVBO;
 GLuint EBO;
 GLuint shaderProgram[SHADERS_COUNT];
@@ -136,6 +169,11 @@ GLuint shaderProgram[SHADERS_COUNT];
 GLuint texture1, texture2;
 
 int width, height, nrChannels;
+
+glm::vec3 objectColor = glm::vec3(1.0f, 0.0f, 0.0f);
+glm::vec3 lightColor = glm::vec3(1.0f);
+
+glm::vec3 lightPos = glm::vec3(2.0f, 2.0f, 0.0f);
 
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
@@ -152,6 +190,8 @@ int main(){
 	GLFWwindow* window = initContext();
 	initOGL();
 	initShaders("vertexShader.vs", "fragmentShader.fs", 0);
+	initShaders("vertexShader2.vs", "fragmentShader2.fs", 1);
+	initShaders("vertexShaderSun.vs", "fragmentShaderSun.fs", 2);
 	initData();
 
 	//render loop
@@ -200,12 +240,13 @@ GLFWwindow* initContext() {
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	return window;
 }
 
 void initData() {
+	//Basic cube & textures
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -225,11 +266,20 @@ void initData() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeTriangleIndex), cubeTriangleIndex, GL_STATIC_DRAW);
 
+	//Lighting
 	glGenVertexArrays(1, &lightVAO);
 	glBindVertexArray(lightVAO);
+
 	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &normalVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, normalVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeNormals), cubeNormals, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+
 
 	//Unbind VAO
 	glBindVertexArray(0);
@@ -281,12 +331,16 @@ void initData() {
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
-	//Uniforms -> AFTER glUseProgram(); !!!!!!!!!
-	//uniforms need the program to be linked to the context to 
+	//Uniforms
 	glUseProgram(shaderProgram[0]);
 	//the final number -> texture unit each uniform sampler correpsonds to
 	glUniform1i(glGetUniformLocation(shaderProgram[0], "texture1"), 0);
 	glUniform1i(glGetUniformLocation(shaderProgram[0], "texture2"), 1);
+
+	glUseProgram(shaderProgram[1]);
+	glUniform3fv(glGetUniformLocation(shaderProgram[1], "objectColor"), 1, &objectColor.x);
+	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor.x);
+	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightPos"), 1, &lightPos.x);
 }
 
 void readFile(const char* filename) {
@@ -366,20 +420,19 @@ void render() {
 
 	static bool c = false;
 
-	static float t = 0.0F; //creamos t y hacemos que vaya cambiando.
+	static float t = 0.0F; 
 	t = (t < 1) ? t + 0.001f : 0.0f;
 
-	//primera curva.
+	//First curve
 	if (c == false) {
 		model_M_2[3].x = 4.0f * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * 4.0f * t * (1.0f - t) * (1.0f - t) + 3.0f * (-4.0f) * t * t * (1.0f - t) + (-4.0f) * t * t * t;
-		//muevo a la derecha el cubo aquí directamente al poner model1[3].x = .....
 		model_M_2[3].z = 0.0f * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * (-6.0f) * t * (1.0f - t) * (1.0f - t) + 3.0f * (-6.0f) * t * t * (1.0f - t) + 0.0f * t * t * t;
 		if (t >= 1) {
 			t = 0.0f;
 			c = true;
 		}
 	}
-	//segunda curva.
+	//Second one
 	if (c == true) {
 		model_M_2[3].x = (-4.0f) * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * (-4.0f) * t * (1.0f - t) * (1.0f - t) + 3.0f * 4.0f * t * t * (1.0f - t) + 4.0f * t * t * t;
 		model_M_2[3].z = 0.0f * (1.0f - t) * (1.0f - t) * (1.0f - t) + 3.0f * 6.0f * t * (1.0f - t) * (1.0f - t) + 3.0f * 6.0f * t * t * (1.0f - t) + 0.0f * t * t * t;
@@ -388,26 +441,48 @@ void render() {
 		}
 	}
 
+	//Not necessary to do it in the render func. Only needs to be done once
+	glm::mat4 model_M_3 = glm::mat4(1.0f);
+	model_M_3 = glm::translate(model_M_3, lightPos);
+	model_M_3 = glm::scale(model_M_3, glm::vec3(0.25f));
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shaderProgram[0]);
+	glUseProgram(shaderProgram[1]);
 
-	glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
+	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
 
-	glBindVertexArray(VAO);
+	glUniform3fv(glGetUniformLocation(shaderProgram[1], "viewerPos"), 1, &cameraPos.x);
+
+	//glBindVertexArray(VAO);
+	glBindVertexArray(lightVAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glDrawArrays(GL_TRIANGLES, 0, 24);
+	
+	//Central cube
+	normal_M = glm::transpose(glm::inverse(model_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_2));
-	//glDrawArrays(GL_TRIANGLES, 0, 36);
+	//Orbital cube
+	normal_M = glm::transpose(glm::inverse(model_M_2));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_2));
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+
+	//Lightcube
+	glUseProgram(shaderProgram[2]);
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[2], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[2], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[2], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_3));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 }
-
-
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
 	glViewport(0, 0, width, height);
