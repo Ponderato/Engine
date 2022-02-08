@@ -16,7 +16,7 @@ void initGLEW() {
 
 void initOGL() {
 
-	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 
 	glEnable(GL_DEPTH_TEST);
 	glFrontFace(GL_CCW); //Counter Clock Wise. Specifies the orientation of the fron-facing polygons.

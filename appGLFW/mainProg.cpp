@@ -20,7 +20,7 @@ std::vector<std::string> lines;
 const char** content;
 size_t size;
 
-//bool firstMouse = true;
+bool firstMouse = true;
 const float sensitivity = 0.1f;
 float lastX = 400;
 float lastY = 300;
@@ -156,24 +156,30 @@ const unsigned int cubeTriangleIndex[] = {
 	20, 22, 23
 };
 
-const int SHADERS_COUNT = 3;
+const int SHADERS_COUNT = 2;
 
 GLuint VAO;
-GLuint lightVAO;
 GLuint vertexVBO;
 GLuint normalVBO;
 GLuint textureVBO;
 GLuint EBO;
 GLuint shaderProgram[SHADERS_COUNT];
 
-GLuint texture1, texture2;
+GLuint mapDiffuse;
+GLuint mapSpecular;
+GLuint mapEmissive;
 
 int width, height, nrChannels;
 
-glm::vec3 objectColor = glm::vec3(1.0f, 0.0f, 0.0f);
-glm::vec3 lightColor = glm::vec3(1.0f);
-
 glm::vec3 lightPos = glm::vec3(2.0f, 2.0f, 0.0f);
+
+glm::vec3 cubePositions[] = {
+	glm::vec3(-1.0f,  1.0f,  -1.5f),
+	glm::vec3(2.0f,  5.0f, -15.0f),
+	glm::vec3(-2.5f, -4.2f, -4.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -1.4f, -3.5f)
+};
 
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
@@ -189,9 +195,8 @@ void processInput(GLFWwindow* window);
 int main(){
 	GLFWwindow* window = initContext();
 	initOGL();
-	initShaders("vertexShader.vs", "fragmentShader.fs", 0);
-	initShaders("vertexShader2.vs", "fragmentShader2.fs", 1);
-	initShaders("vertexShaderSun.vs", "fragmentShaderSun.fs", 2);
+	initShaders("vertexShader2.vert", "fragmentShader2.frag", 0);
+	initShaders("vertexShaderSun.vert", "fragmentShaderSun.frag", 1);
 	initData();
 
 	//render loop
@@ -246,7 +251,7 @@ GLFWwindow* initContext() {
 }
 
 void initData() {
-	//Basic cube & textures
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -255,6 +260,12 @@ void initData() {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &normalVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, normalVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeNormals), cubeNormals, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
 
 	glGenBuffers(1, &textureVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, textureVBO);
@@ -266,34 +277,17 @@ void initData() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeTriangleIndex), cubeTriangleIndex, GL_STATIC_DRAW);
 
-	//Lighting
-	glGenVertexArrays(1, &lightVAO);
-	glBindVertexArray(lightVAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1, &normalVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, normalVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeNormals), cubeNormals, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-
-
 	//Unbind VAO
 	glBindVertexArray(0);
 
 	//Textures
-	stbi_set_flip_vertically_on_load(true);
+	//stbi_set_flip_vertically_on_load(true);
 	//texture1
-	unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
-
-	glGenTextures(1, &texture1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	unsigned char* data = stbi_load("container2.jpg", &width, &height, &nrChannels, 0);
+	glGenTextures(1, &mapDiffuse);
+	glBindTexture(GL_TEXTURE_2D, mapDiffuse);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -305,18 +299,32 @@ void initData() {
 		std::cout << "Failed to load texture" << std::endl;
 	}
 
-	//texture2
-	data = stbi_load("face.png", &width, &height, &nrChannels, 0);
-	glGenTextures(1, &texture2);
-	glBindTexture(GL_TEXTURE_2D, texture2);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_NEAREST);
+	data = stbi_load("container2_specular.jpg", &width, &height, &nrChannels, 0);
+	glGenTextures(1, &mapSpecular);
+	glBindTexture(GL_TEXTURE_2D, mapSpecular);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else {
+		std::cout << "Failed to load texture" << std::endl;
+	}
+
+	data = stbi_load("container2_emissive.jpg", &width, &height, &nrChannels, 0);
+	glGenTextures(1, &mapEmissive);
+	glBindTexture(GL_TEXTURE_2D, mapEmissive);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
@@ -327,20 +335,19 @@ void initData() {
 
 	//Bind textures to the corresponding texture unit
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture1);
+	glBindTexture(GL_TEXTURE_2D, mapDiffuse);
 	glActiveTexture(GL_TEXTURE0 + 1);
-	glBindTexture(GL_TEXTURE_2D, texture2);
+	glBindTexture(GL_TEXTURE_2D, mapSpecular);
+	glActiveTexture(GL_TEXTURE0 + 2);
+	glBindTexture(GL_TEXTURE_2D, mapEmissive);
 
 	//Uniforms
 	glUseProgram(shaderProgram[0]);
 	//the final number -> texture unit each uniform sampler correpsonds to
-	glUniform1i(glGetUniformLocation(shaderProgram[0], "texture1"), 0);
-	glUniform1i(glGetUniformLocation(shaderProgram[0], "texture2"), 1);
-
-	glUseProgram(shaderProgram[1]);
-	glUniform3fv(glGetUniformLocation(shaderProgram[1], "objectColor"), 1, &objectColor.x);
-	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor.x);
-	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightPos"), 1, &lightPos.x);
+	glUniform1i(glGetUniformLocation(shaderProgram[0], "matDiffuse"), 0);
+	glUniform1i(glGetUniformLocation(shaderProgram[0], "matSpecular"), 1);
+	glUniform1i(glGetUniformLocation(shaderProgram[0], "matEmissive"), 2);
+	glUniform3fv(glGetUniformLocation(shaderProgram[0], "lightPos"), 1, &lightPos.x);
 }
 
 void readFile(const char* filename) {
@@ -447,41 +454,54 @@ void render() {
 	model_M_3 = glm::scale(model_M_3, glm::vec3(0.25f));
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shaderProgram[1]);
+	glUseProgram(shaderProgram[0]);
 
 	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
 
-	glUniform3fv(glGetUniformLocation(shaderProgram[1], "viewerPos"), 1, &cameraPos.x);
+	glUniform3fv(glGetUniformLocation(shaderProgram[0], "viewerPos"), 1, &cameraPos.x);
 
-	//glBindVertexArray(VAO);
-	glBindVertexArray(lightVAO);
+	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	
 	//Central cube
 	normal_M = glm::transpose(glm::inverse(model_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 	//Orbital cube
 	normal_M = glm::transpose(glm::inverse(model_M_2));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_2));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_2));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+
+	//Extra cubes
+	for (int i = 0; i < 5; i++) {
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, cubePositions[i]);
+		float angle = 20.0f + i;
+		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		normal_M = glm::transpose(glm::inverse(model));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model));
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+	}
 
 	//Lightcube
-	glUseProgram(shaderProgram[2]);
+	glUseProgram(shaderProgram[1]);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[2], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[2], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[2], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_3));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_3));
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+
+
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
@@ -490,11 +510,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height){
 
 void mouse_callback(GLFWwindow* window, double xPos, double yPos){
 
-	//if (firstMouse) {
-	//	lastX = xPos;
-	//	lastY = yPos;
-	//	firstMouse = false;
-	//}
+	if (firstMouse) {
+		lastX = xPos;
+		lastY = yPos;
+		firstMouse = false;
+	}
 
 	float xOffset = (xPos - lastX) * sensitivity;
 	//Reversed since y-coords range from bottom to top
