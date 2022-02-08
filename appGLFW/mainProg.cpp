@@ -171,7 +171,17 @@ GLuint mapEmissive;
 
 int width, height, nrChannels;
 
-glm::vec3 lightPos = glm::vec3(2.0f, 2.0f, 0.0f);
+glm::vec3 lightPos[] = {
+	glm::vec3(2.0f, 2.0f, 0.0f),
+	glm::vec3(-2.0f, -3.0f, -4.0f),
+	glm::vec3(1.5f, 1.0f, -6.0f)
+};
+
+glm::vec3 lightColor[] = {
+	glm::vec3(1.0f, 1.0f, 1.0f),
+	glm::vec3(1.0f, 0.0f, 0.0f),
+	glm::vec3(0.0f, 1.0f, 0.0f)
+};
 
 glm::vec3 cubePositions[] = {
 	glm::vec3(-1.0f,  1.0f,  -1.5f),
@@ -347,7 +357,8 @@ void initData() {
 	glUniform1i(glGetUniformLocation(shaderProgram[0], "matDiffuse"), 0);
 	glUniform1i(glGetUniformLocation(shaderProgram[0], "matSpecular"), 1);
 	glUniform1i(glGetUniformLocation(shaderProgram[0], "matEmissive"), 2);
-	glUniform3fv(glGetUniformLocation(shaderProgram[0], "lightPos"), 1, &lightPos.x);
+	glUniform3fv(glGetUniformLocation(shaderProgram[0], "lightPosition"), 3, &lightPos[0].x);
+	glUniform3fv(glGetUniformLocation(shaderProgram[0], "lightColor"), 3, &lightColor[0].x);
 }
 
 void readFile(const char* filename) {
@@ -450,11 +461,23 @@ void render() {
 
 	//Not necessary to do it in the render func. Only needs to be done once
 	glm::mat4 model_M_3 = glm::mat4(1.0f);
-	model_M_3 = glm::translate(model_M_3, lightPos);
+	model_M_3 = glm::translate(model_M_3, lightPos[0]);
 	model_M_3 = glm::scale(model_M_3, glm::vec3(0.25f));
+
+	glm::mat4 model_M_4 = glm::mat4(1.0f);
+	model_M_4 = glm::translate(model_M_4, lightPos[1]);
+	model_M_4 = glm::scale(model_M_4, glm::vec3(0.25f));
+
+	glm::mat4 model_M_5 = glm::mat4(1.0f);
+	model_M_5 = glm::translate(model_M_5, lightPos[2]);
+	model_M_5 = glm::scale(model_M_5, glm::vec3(0.25f));
+	//--------------------------------------------------------------
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgram[0]);
+
+	glUniform3fv(glGetUniformLocation(shaderProgram[0], "spotlightDir"), 1, &cameraFront.x);
+	glUniform3fv(glGetUniformLocation(shaderProgram[0], "spotlightPos"), 1, &cameraPos.x);
 
 	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
@@ -492,13 +515,22 @@ void render() {
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 	}
 
-	//Lightcube
+	//Lightcubes
 	glUseProgram(shaderProgram[1]);
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_3));
+	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor[0].x);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_4));
+	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor[1].x);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_5));
+	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor[2].x);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 
