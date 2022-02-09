@@ -24,26 +24,26 @@
       <UniqueIdentifier>{6D1D1F92-0E68-34C3-8DCB-E8DAB94A8EA8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
-      <UniqueIdentifier>{eb65c700-48d5-4ae6-aae5-94973ae37f88}</UniqueIdentifier>
+      <UniqueIdentifier>{45769682-25cb-4a8f-8423-b614a70c6fed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertexShader.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="fragmentShader.frag">
+    <None Include="vertexShader2.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="vertexShader2.vert">
+    <None Include="vertexShaderSun.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="fragmentShader.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="fragmentShader2.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="fragmentShaderSun.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="vertexShaderSun.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
