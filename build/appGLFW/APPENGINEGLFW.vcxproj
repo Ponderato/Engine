@@ -315,7 +315,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\mainProg.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.cpp" />
+    <ClCompile Include="Program.cpp" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h" />
+    <ClInclude Include="Program.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\ZERO_CHECK.vcxproj">
