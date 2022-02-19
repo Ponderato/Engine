@@ -126,7 +126,7 @@ void main(){
     
     vec3 result = pointLShade(lightColor[0], lightPosition[0]);
     result += pointLShade(lightColor[1], lightPosition[1]);
-        result += pointLShade(lightColor[2], lightPosition[2]);
+    result += pointLShade(lightColor[2], lightPosition[2]);
 
     fColor = vec4(result, 1.0);
 }

@@ -8,13 +8,10 @@
 #include <stdio.h>
 #include <vector>
 
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
-
 #include <engine/oglContext.h>
 
 #include "stb_image.h"
+#include "Program.h"
 
 std::vector<std::string> lines;
 const char** content;
@@ -191,6 +188,9 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(2.4f, -1.4f, -3.5f)
 };
 
+Program program1;
+Program programSun;
+
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
 void initData();
@@ -205,8 +205,8 @@ void processInput(GLFWwindow* window);
 int main(){
 	GLFWwindow* window = initContext();
 	initOGL();
-	initShaders("vertexShader2.vert", "fragmentShader2.frag", 0);
-	initShaders("vertexShaderSun.vert", "fragmentShaderSun.frag", 1);
+	program1 = Program("vertexShader2.vert", "fragmentShader2.frag");
+	programSun = Program("vertexShaderSun.vert", "fragmentShaderSun.frag");
 	initData();
 
 	//render loop
@@ -255,7 +255,7 @@ GLFWwindow* initContext() {
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 	return window;
 }
@@ -352,72 +352,12 @@ void initData() {
 	glBindTexture(GL_TEXTURE_2D, mapEmissive);
 
 	//Uniforms
-	glUseProgram(shaderProgram[0]);
-	//the final number -> texture unit each uniform sampler correpsonds to
-	glUniform1i(glGetUniformLocation(shaderProgram[0], "matDiffuse"), 0);
-	glUniform1i(glGetUniformLocation(shaderProgram[0], "matSpecular"), 1);
-	glUniform1i(glGetUniformLocation(shaderProgram[0], "matEmissive"), 2);
-	glUniform3fv(glGetUniformLocation(shaderProgram[0], "lightPosition"), 3, &lightPos[0].x);
-	glUniform3fv(glGetUniformLocation(shaderProgram[0], "lightColor"), 3, &lightColor[0].x);
-}
-
-void readFile(const char* filename) {
-	FILE* f;
-	fopen_s(&f, filename, "rt");
-	if (!f) {
-		printf("ERROR: Can't open filename: %s\n", filename);
-	}
-	char line[256];
-	while (fgets(line, 256, f)) lines.push_back(line);
-	fclose(f);
-	size = (int)lines.size();
-	content = new const char* [size];
-	for (int i = 0; i < size; i++) {
-		content[i] = lines[i].c_str();
-	}
-}
-
-void checkCompilling(GLuint shader) {
-	GLint isCompiled = 0;
-	GLint length;
-	GLchar* log;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
-	if (!isCompiled)
-	{
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-		log = new GLchar[length];
-		glGetShaderInfoLog(shader, length, &length, log);
-		printf("ERROR: Compile error: %s\n", log);
-		delete log;
-	}
-}
-
-GLuint createShader(const char* fileName, GLenum shaderType) {
-	GLuint shader = glCreateShader(shaderType);
-	readFile(fileName);
-
-	glShaderSource(shader, size, content, NULL);
-	glCompileShader(shader);
-
-	delete[] content;
-	lines.clear();
-
-	checkCompilling(shader);
-
-	return shader;
-}
-
-void initShaders(const char* vertexShader, const char* fragmentShader, int i) {
-	GLuint vs = createShader(vertexShader, GL_VERTEX_SHADER);
-	GLuint fs = createShader(fragmentShader, GL_FRAGMENT_SHADER);
-
-	shaderProgram[i] = glCreateProgram();
-
-	glAttachShader(shaderProgram[i], vs);
-	glAttachShader(shaderProgram[i], fs);
-
-	glLinkProgram(shaderProgram[i]);
-	//can also check if linking a shader program failed.
+	program1.use();
+	program1.setInt("matDiffuse", 0);
+	program1.setInt("matSpecular", 1);
+	program1.setInt("matEmissive", 2);
+	program1.setMultipleVec3("lightPosition", 3, lightPos);
+	program1.setMultipleVec3("lightColor", 3, lightColor);
 }
 
 void render() {
@@ -474,33 +414,34 @@ void render() {
 	//--------------------------------------------------------------
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shaderProgram[0]);
+	program1.use();
 
-	glUniform3fv(glGetUniformLocation(shaderProgram[0], "spotlightDir"), 1, &cameraFront.x);
-	glUniform3fv(glGetUniformLocation(shaderProgram[0], "spotlightPos"), 1, &cameraPos.x);
+	program1.setVec3("spotlightDir", cameraFront);
+	program1.setVec3("spotlightPos", cameraPos);
 
 	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
+	program1.setMat4("viewM", view_M);
+	program1.setMat4("projM", proj_M);
 
-	glUniform3fv(glGetUniformLocation(shaderProgram[0], "viewerPos"), 1, &cameraPos.x);
+	program1.setVec3("viewerPos", cameraPos);
+	
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	
 	//Central cube
 	normal_M = glm::transpose(glm::inverse(model_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
+	program1.setMat4("normalM", normal_M);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M));
+	program1.setMat4("modelM", model_M);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 	//Orbital cube
 	normal_M = glm::transpose(glm::inverse(model_M_2));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
+	program1.setMat4("normalM", normal_M);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_2));
+	program1.setMat4("modelM", model_M_2);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 	//Extra cubes
@@ -510,27 +451,27 @@ void render() {
 		float angle = 20.0f + i;
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 		normal_M = glm::transpose(glm::inverse(model));
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "normalM"), 1, GL_FALSE, glm::value_ptr(normal_M));
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram[0], "modelM"), 1, GL_FALSE, glm::value_ptr(model));
+		program1.setMat4("normalM", normal_M);
+		program1.setMat4("modelM", model);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 	}
 
 	//Lightcubes
-	glUseProgram(shaderProgram[1]);
+	programSun.use();
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "viewM"), 1, GL_FALSE, glm::value_ptr(view_M));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "projM"), 1, GL_FALSE, glm::value_ptr(proj_M));
+	programSun.setMat4("viewM", view_M);
+	programSun.setMat4("projM", proj_M);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_3));
-	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor[0].x);
+	programSun.setMat4("modelM", model_M_3);
+	programSun.setVec3("lightColor", lightColor[0]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_4));
-	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor[1].x);
+	programSun.setMat4("modelM", model_M_4);
+	programSun.setVec3("lightColor", lightColor[1]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram[1], "modelM"), 1, GL_FALSE, glm::value_ptr(model_M_5));
-	glUniform3fv(glGetUniformLocation(shaderProgram[1], "lightColor"), 1, &lightColor[2].x);
+	programSun.setMat4("modelM", model_M_5);
+	programSun.setVec3("lightColor", lightColor[2]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 

@@ -7,7 +7,7 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Program.cpp">
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -15,7 +15,7 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Program.h">
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,28 +29,5 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{6D1D1F92-0E68-34C3-8DCB-E8DAB94A8EA8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{45769682-25cb-4a8f-8423-b614a70c6fed}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="vertexShader.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="vertexShader2.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="vertexShaderSun.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="fragmentShader.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="fragmentShader2.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="fragmentShaderSun.frag">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>
