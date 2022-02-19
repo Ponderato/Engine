@@ -13,10 +13,6 @@
 #include "stb_image.h"
 #include "Program.h"
 
-std::vector<std::string> lines;
-const char** content;
-size_t size;
-
 bool firstMouse = true;
 const float sensitivity = 0.1f;
 float lastX = 400;
@@ -153,14 +149,11 @@ const unsigned int cubeTriangleIndex[] = {
 	20, 22, 23
 };
 
-const int SHADERS_COUNT = 2;
-
 GLuint VAO;
 GLuint vertexVBO;
 GLuint normalVBO;
 GLuint textureVBO;
 GLuint EBO;
-GLuint shaderProgram[SHADERS_COUNT];
 
 GLuint mapDiffuse;
 GLuint mapSpecular;
@@ -173,7 +166,6 @@ glm::vec3 lightPos[] = {
 	glm::vec3(-2.0f, -3.0f, -4.0f),
 	glm::vec3(1.5f, 1.0f, -6.0f)
 };
-
 glm::vec3 lightColor[] = {
 	glm::vec3(1.0f, 1.0f, 1.0f),
 	glm::vec3(1.0f, 0.0f, 0.0f),
@@ -188,8 +180,8 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(2.4f, -1.4f, -3.5f)
 };
 
-Program program1;
-Program programSun;
+const int SHADERS_COUNT = 2; 
+Program programs[SHADERS_COUNT];
 
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
@@ -205,8 +197,8 @@ void processInput(GLFWwindow* window);
 int main(){
 	GLFWwindow* window = initContext();
 	initOGL();
-	program1 = Program("vertexShader2.vert", "fragmentShader2.frag");
-	programSun = Program("vertexShaderSun.vert", "fragmentShaderSun.frag");
+	programs[0] = Program("vertexShader2.vert", "fragmentShader2.frag");
+	programs[1] = Program("vertexShaderSun.vert", "fragmentShaderSun.frag");
 	initData();
 
 	//render loop
@@ -352,12 +344,12 @@ void initData() {
 	glBindTexture(GL_TEXTURE_2D, mapEmissive);
 
 	//Uniforms
-	program1.use();
-	program1.setInt("matDiffuse", 0);
-	program1.setInt("matSpecular", 1);
-	program1.setInt("matEmissive", 2);
-	program1.setMultipleVec3("lightPosition", 3, lightPos);
-	program1.setMultipleVec3("lightColor", 3, lightColor);
+	programs[0].use();
+	programs[0].setInt("matDiffuse", 0);
+	programs[0].setInt("matSpecular", 1);
+	programs[0].setInt("matEmissive", 2);
+	programs[0].setMultipleVec3("lightPosition", 3, lightPos);
+	programs[0].setMultipleVec3("lightColor", 3, lightColor);
 }
 
 void render() {
@@ -414,17 +406,17 @@ void render() {
 	//--------------------------------------------------------------
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	program1.use();
+	programs[0].use();
 
-	program1.setVec3("spotlightDir", cameraFront);
-	program1.setVec3("spotlightPos", cameraPos);
+	programs[0].setVec3("spotlightDir", cameraFront);
+	programs[0].setVec3("spotlightPos", cameraPos);
 
 	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
-	program1.setMat4("viewM", view_M);
-	program1.setMat4("projM", proj_M);
+	programs[0].setMat4("viewM", view_M);
+	programs[0].setMat4("projM", proj_M);
 
-	program1.setVec3("viewerPos", cameraPos);
+	programs[0].setVec3("viewerPos", cameraPos);
 	
 
 	glBindVertexArray(VAO);
@@ -432,16 +424,16 @@ void render() {
 	
 	//Central cube
 	normal_M = glm::transpose(glm::inverse(model_M));
-	program1.setMat4("normalM", normal_M);
+	programs[0].setMat4("normalM", normal_M);
 
-	program1.setMat4("modelM", model_M);
+	programs[0].setMat4("modelM", model_M);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 	//Orbital cube
 	normal_M = glm::transpose(glm::inverse(model_M_2));
-	program1.setMat4("normalM", normal_M);
+	programs[0].setMat4("normalM", normal_M);
 
-	program1.setMat4("modelM", model_M_2);
+	programs[0].setMat4("modelM", model_M_2);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 	//Extra cubes
@@ -451,27 +443,27 @@ void render() {
 		float angle = 20.0f + i;
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 		normal_M = glm::transpose(glm::inverse(model));
-		program1.setMat4("normalM", normal_M);
-		program1.setMat4("modelM", model);
+		programs[0].setMat4("normalM", normal_M);
+		programs[0].setMat4("modelM", model);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 	}
 
 	//Lightcubes
-	programSun.use();
+	programs[1].use();
 
-	programSun.setMat4("viewM", view_M);
-	programSun.setMat4("projM", proj_M);
+	programs[1].setMat4("viewM", view_M);
+	programs[1].setMat4("projM", proj_M);
 
-	programSun.setMat4("modelM", model_M_3);
-	programSun.setVec3("lightColor", lightColor[0]);
+	programs[1].setMat4("modelM", model_M_3);
+	programs[1].setVec3("lightColor", lightColor[0]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
-	programSun.setMat4("modelM", model_M_4);
-	programSun.setVec3("lightColor", lightColor[1]);
+	programs[1].setMat4("modelM", model_M_4);
+	programs[1].setVec3("lightColor", lightColor[1]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
-	programSun.setMat4("modelM", model_M_5);
-	programSun.setVec3("lightColor", lightColor[2]);
+	programs[1].setMat4("modelM", model_M_5);
+	programs[1].setVec3("lightColor", lightColor[2]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 
