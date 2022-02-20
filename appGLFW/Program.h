@@ -1,7 +1,10 @@
 #pragma once
-#include <vector>
+
 #ifndef PROGRAM_H
 #define PROGRAM_H
+
+#include <vector>
+#include <GL/glew.h>
 
 class Program 
 {

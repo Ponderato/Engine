@@ -316,8 +316,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\mainProg.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.cpp" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.h" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\ZERO_CHECK.vcxproj">
@@ -330,6 +332,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{CF441CEB-3E48-3345-88B0-75607E2BD493}</Project>
       <Name>ENGINE</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragmentShader2.frag" />
+    <None Include="fragmentShaderSun.frag" />
+    <None Include="vertexShader2.vert" />
+    <None Include="vertexShaderSun.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

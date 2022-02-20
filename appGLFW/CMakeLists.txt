@@ -1,11 +1,13 @@
 SET(sources
 mainProg.cpp
 stb_image.cpp
-Program.cpp)
+Program.cpp
+Mesh.cpp)
 
 SET(headers
 stb_image.h
-Program.h)
+Program.h
+Mesh.h)
 #stb_image.h and .cpp to use the library
 
 find_package(GLFW3 REQUIRED)

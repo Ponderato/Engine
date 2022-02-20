@@ -13,6 +13,7 @@
 #include "stb_image.h"
 #include "Program.h"
 
+
 bool firstMouse = true;
 const float sensitivity = 0.1f;
 float lastX = 400;
@@ -345,9 +346,9 @@ void initData() {
 
 	//Uniforms
 	programs[0].use();
-	programs[0].setInt("matDiffuse", 0);
-	programs[0].setInt("matSpecular", 1);
-	programs[0].setInt("matEmissive", 2);
+	programs[0].setInt("matDiffuse1", 0);
+	programs[0].setInt("matSpecular1", 1);
+	programs[0].setInt("matEmissive1", 2);
 	programs[0].setMultipleVec3("lightPosition", 3, lightPos);
 	programs[0].setMultipleVec3("lightColor", 3, lightColor);
 }

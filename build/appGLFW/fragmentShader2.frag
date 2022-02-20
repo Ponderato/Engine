@@ -9,9 +9,9 @@ uniform vec3 viewerPos;
 out vec4 fColor;
 
 //Material properties
-uniform sampler2D matDiffuse;
-uniform sampler2D matSpecular;
-uniform sampler2D matEmissive;
+uniform sampler2D matDiffuse1;
+uniform sampler2D matSpecular1;
+uniform sampler2D matEmissive11;
 float matShininess = 64.0f;
 
 //Light properties
@@ -37,19 +37,19 @@ float outerCutoff = cos(radians(17.5f)); //Spot Light
 //operations.
 vec3 directionalLShade(vec3 color){
     //Ambient lighting.
-    vec3 ambient = lightAmbient * texture(matDiffuse, texCoords).rgb;
+    vec3 ambient = lightAmbient * texture(matDiffuse1, texCoords).rgb;
 
     //Diffuse lighting.
     vec3 norm = normalize(normal);
     vec3 lightDir = normalize(-lightDirection);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = lightDiffuse * diff * texture(matDiffuse, texCoords).rgb;
+    vec3 diffuse = lightDiffuse * diff * texture(matDiffuse1, texCoords).rgb;
 
     //Specular lighting
     vec3 viewerDir = normalize(viewerPos - fragPos);
     vec3 reflectDir = reflect(-lightDir, norm);//-lightDir because it expects a vector that points from the light to the frag pos.
     float spec = pow(max(dot(viewerDir, reflectDir), 0.0), matShininess);//last value refers to the shininess
-    vec3 specular = lightSpecular * spec * texture(matSpecular, texCoords).rgb;
+    vec3 specular = lightSpecular * spec * texture(matSpecular1, texCoords).rgb;
 
     //Emissive lighting
     //vec3 emissive = texture(matEmissive, texCoords).rgb;
@@ -63,14 +63,14 @@ vec3 pointLShade(vec3 color, vec3 lightPos){
     float attenuation = 1.0 / (kConst + kLinear*dist + kQuad*dist*dist);
 
     //Ambient lighting.
-    vec3 ambient = lightAmbient * texture(matDiffuse, texCoords).rgb;
+    vec3 ambient = lightAmbient * texture(matDiffuse1, texCoords).rgb;
     ambient *= attenuation;
 
     //Diffuse lighting.
     vec3 norm = normalize(normal);
     vec3 lightDir = normalize(lightPos - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = lightDiffuse * diff * texture(matDiffuse, texCoords).rgb;
+    vec3 diffuse = lightDiffuse * diff * texture(matDiffuse1, texCoords).rgb;
     diffuse *= attenuation;
 
     //Specular lighting
@@ -78,7 +78,7 @@ vec3 pointLShade(vec3 color, vec3 lightPos){
     vec3 reflectDir = reflect(-lightDir, norm);//-lightDir because it expects a vector that points from the light to the frag pos and the way we calculate the 
     //substraction, it is going the oposite direction
     float spec = pow(max(dot(viewerDir, reflectDir), 0.0), matShininess);//last value refers to the shininess
-    vec3 specular = lightSpecular * spec * texture(matSpecular, texCoords).rgb;
+    vec3 specular = lightSpecular * spec * texture(matSpecular1, texCoords).rgb;
     specular *= attenuation;
 
     //Emissive lighting
@@ -98,13 +98,13 @@ vec3 spotLShade(vec3 color){
     float attenuation = 1.0 / (kConst + kLinear*dist + kQuad*dist*dist);
 
     //Ambient lighting.
-    vec3 ambient = lightAmbient * texture(matDiffuse, texCoords).rgb;
+    vec3 ambient = lightAmbient * texture(matDiffuse1, texCoords).rgb;
     ambient *= attenuation;
 
     //Diffuse lighting.
     vec3 norm = normalize(normal);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = lightDiffuse * diff * texture(matDiffuse, texCoords).rgb;
+    vec3 diffuse = lightDiffuse * diff * texture(matDiffuse1, texCoords).rgb;
     diffuse *= intensity;
     diffuse *= attenuation;
 
@@ -112,7 +112,7 @@ vec3 spotLShade(vec3 color){
     vec3 viewerDir = normalize(viewerPos - fragPos);
     vec3 reflectDir = reflect(-lightDir, norm);//-lightDir because it expects a vector that points from the light to the frag pos.
     float spec = pow(max(dot(viewerDir, reflectDir), 0.0), matShininess);//last value refers to the shininess
-    vec3 specular = lightSpecular * spec * texture(matSpecular, texCoords).rgb;
+    vec3 specular = lightSpecular * spec * texture(matSpecular1, texCoords).rgb;
     specular *= intensity;
     specular *= attenuation;
 
