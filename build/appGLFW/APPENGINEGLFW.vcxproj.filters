@@ -35,22 +35,5 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{6D1D1F92-0E68-34C3-8DCB-E8DAB94A8EA8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{2dea0921-1469-430b-85af-3d8ab75e7013}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fragmentShader2.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="fragmentShaderSun.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="vertexShaderSun.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="vertexShader2.vert">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>

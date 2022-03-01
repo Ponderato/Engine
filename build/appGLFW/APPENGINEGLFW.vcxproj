@@ -333,12 +333,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Name>ENGINE</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="fragmentShader2.frag" />
-    <None Include="fragmentShaderSun.frag" />
-    <None Include="vertexShader2.vert" />
-    <None Include="vertexShaderSun.vert" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

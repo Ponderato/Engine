@@ -13,7 +13,6 @@
 #include "stb_image.h"
 #include "Program.h"
 
-
 bool firstMouse = true;
 const float sensitivity = 0.1f;
 float lastX = 400;
