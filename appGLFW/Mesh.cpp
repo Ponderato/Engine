@@ -33,7 +33,7 @@ void Mesh::setUpMesh() {
 	glBindVertexArray(0);
 }
 
-void Mesh::Draw(Program &program) {
+void Mesh::draw(Program &program) {
 
 	unsigned int diffuseNumber = 1;
 	unsigned int specularNumber = 1;

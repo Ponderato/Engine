@@ -10,7 +10,7 @@
 struct Vertex {
 	glm::vec3 pos;
 	glm::vec3 normal;
-	glm::vec3 texCoords;
+	glm::vec2 texCoords;
 };
 
 struct Texture {
@@ -30,7 +30,7 @@ public:
 
 	Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vector<unsigned int> indices);
 
-	void Draw(Program &program);
+	void draw(Program &program);
 private:
 	unsigned int VBO;
 	unsigned int EBO;

@@ -11,7 +11,7 @@ out vec4 fColor;
 //Material properties
 uniform sampler2D matDiffuse1;
 uniform sampler2D matSpecular1;
-uniform sampler2D matEmissive11;
+uniform sampler2D matEmissive1;
 float matShininess = 64.0f;
 
 //Light properties

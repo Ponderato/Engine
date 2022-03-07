@@ -114,7 +114,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\engine\Debug\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\Assimp\lib\x64\assimp.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\engine\Debug\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\assimp-4.1.0-Win-x64\build\code\Debug\assimp-vc140-mt.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -157,7 +157,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\engine\Release\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\Assimp\lib\x64\assimp.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\engine\Release\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\assimp-4.1.0-Win-x64\build\code\Debug\assimp-vc140-mt.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -200,7 +200,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\engine\MinSizeRel\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\Assimp\lib\x64\assimp.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\engine\MinSizeRel\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\assimp-4.1.0-Win-x64\build\code\Debug\assimp-vc140-mt.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -242,7 +242,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\engine\RelWithDebInfo\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\Assimp\lib\x64\assimp.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\engine\RelWithDebInfo\ENGINE.lib;D:\OpenGL\LearnOpenGL-master\lib\glfw3.lib;D:\OpenGL\assimp-4.1.0-Win-x64\build\code\Debug\assimp-vc140-mt.lib;opengl32.lib;glu32.lib;D:\OpenGL\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64\glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -317,9 +317,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Model.cpp" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.h" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\ZERO_CHECK.vcxproj">

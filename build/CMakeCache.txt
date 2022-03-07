@@ -18,7 +18,7 @@
 ASSIMP_INCLUDE_DIR:PATH=D:/OpenGL/Assimp/include/assimp
 
 //Path to a library.
-ASSIMP_LIBRARY:FILEPATH=D:/OpenGL/Assimp/lib/x64/assimp.lib
+ASSIMP_LIBRARY:FILEPATH=D:/OpenGL/assimp-4.1.0-Win-x64/build/code/Debug/assimp-vc140-mt.lib
 
 //Path to a program.
 CMAKE_AR:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29910/bin/Hostx64/x64/lib.exe
@@ -381,7 +381,7 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Assimp
-FIND_PACKAGE_MESSAGE_DETAILS_Assimp:INTERNAL=[D:/OpenGL/Assimp/include/assimp][D:/OpenGL/Assimp/lib/x64/assimp.lib][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_Assimp:INTERNAL=[D:/OpenGL/Assimp/include/assimp][D:/OpenGL/assimp-4.1.0-Win-x64/build/code/Debug/assimp-vc140-mt.lib][v()]
 //Details about finding GLEW
 FIND_PACKAGE_MESSAGE_DETAILS_GLEW:INTERNAL=[D:/OpenGL/glew-2.1.0-win32/glew-2.1.0/include][D:/OpenGL/glew-2.1.0-win32/glew-2.1.0/lib/Release/x64/glew32.lib][v2.1.0()]
 //Details about finding GLFW3
