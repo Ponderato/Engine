@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef MESH_H
 #define MESH_H
 
@@ -15,7 +17,7 @@ struct Vertex {
 
 struct Texture {
 	unsigned int id;
-	std::string type; //diffuse, specular, emissive
+	std::string type; //matDiffuse, matSpecular, matEmissive
 	std::string path;
 };
 
@@ -26,16 +28,16 @@ public:
 	std::vector<Texture> textures;
 	std::vector<unsigned int> indices;
 
-	unsigned int VAO;
-
 	Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vector<unsigned int> indices);
 
-	void draw(Program &program);
+	void Draw(Program &program);
 private:
+	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
 
-	void setUpMesh();
+	void SetUpMeshData();
+	void SetUpMeshTextures();
 };
 
 #endif 

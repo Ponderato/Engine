@@ -35,6 +35,7 @@ float outerCutoff = cos(radians(17.5f)); //Spot Light
 
 //There is plenty of room for optimization in these methods. Lots of duplicated
 //operations.
+
 vec3 directionalLShade(vec3 color){
     //Ambient lighting.
     vec3 ambient = lightAmbient * texture(matDiffuse1, texCoords).rgb;

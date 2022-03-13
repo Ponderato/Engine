@@ -10,8 +10,8 @@
 
 Program::Program(const char* vertexShaderPath, const char* fragmentShaderPath) {
 
-	GLuint vertexShader = createShader(vertexShaderPath, GL_VERTEX_SHADER);
-	GLuint fragmentShader = createShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
+	GLuint vertexShader = CreateShader(vertexShaderPath, GL_VERTEX_SHADER);
+	GLuint fragmentShader = CreateShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
 
 	ID = glCreateProgram();
 
@@ -19,19 +19,19 @@ Program::Program(const char* vertexShaderPath, const char* fragmentShaderPath) {
 	glAttachShader(ID, fragmentShader);
 
 	glLinkProgram(ID);
-	checkCompilling(ID, "PROGRAM");
+	CheckCompilling(ID, "PROGRAM");
 
 	//Delete the shaders as they're now linked into the program and no longer necessary
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 }
 
-GLuint Program::createShader(const char* fileName, GLenum shaderType) {
+GLuint Program::CreateShader(const char* fileName, GLenum shaderType) {
 	
 	GLuint shader = glCreateShader(shaderType);
 
     //const char* shaderCode = readFile(fileName);
-	readFile(fileName);
+	ReadFile(fileName);
 
 	glShaderSource(shader, size, content, NULL);
 	glCompileShader(shader);
@@ -39,12 +39,12 @@ GLuint Program::createShader(const char* fileName, GLenum shaderType) {
 	delete[] content;
 	lines.clear();
 
-	checkCompilling(shader, "SHADER");
+	CheckCompilling(shader, "SHADER");
 
 	return shader;
 }
 
-void Program::readFile(const char* fileName) {
+void Program::ReadFile(const char* fileName) {
 
 	FILE* f;
 	fopen_s(&f, fileName, "rt");
@@ -62,7 +62,7 @@ void Program::readFile(const char* fileName) {
 }
 
 //Checks shader compilation/linking errors
-void Program::checkCompilling(unsigned int identifier, std::string type) {
+void Program::CheckCompilling(unsigned int identifier, std::string type) {
 
 	int success;
 	char info[1024];
@@ -83,19 +83,19 @@ void Program::checkCompilling(unsigned int identifier, std::string type) {
 }
 
 //The const at the end makes not possible to the function to change the data of the class
-void Program::setInt(const std::string& name, int value) const {
+void Program::SetInt(const std::string& name, int value) const {
 	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Program::setVec3(const std::string& name, const glm::vec3 vector) const {
+void Program::SetVec3(const std::string& name, const glm::vec3 vector) const {
 	glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &vector.x);
 }
 
-void Program::setMultipleVec3(const std::string& name, int count, const glm::vec3 vector[]) const {
+void Program::SetMultipleVec3(const std::string& name, int count, const glm::vec3 vector[]) const {
 	glUniform3fv(glGetUniformLocation(ID, name.c_str()), count, &vector[0].x);
 }
 
-void Program::setMat4(const std::string& name, const glm::mat4 matrix) const {
+void Program::SetMat4(const std::string& name, const glm::mat4 matrix) const {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &matrix[0][0]);
 }
 

@@ -149,7 +149,7 @@ std::vector<Texture> Model::loadTextures(aiMaterial* material, aiTextureType typ
 unsigned int Model::loadTexFromFile(const char* path, const std::string& directory)
 {
 	std::string filename = std::string(path);
-	filename = directory + '/' + filename;
+	//filename = directory + '/' + filename;
 
 	unsigned int textureID;
 	glGenTextures(1, &textureID);

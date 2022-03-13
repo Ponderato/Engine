@@ -13,6 +13,10 @@
 #include "stb_image.h"
 #include "Program.h"
 
+#include "Cube.h"
+
+
+
 bool firstMouse = true;
 const float sensitivity = 0.1f;
 float lastX = 400;
@@ -148,6 +152,10 @@ const unsigned int cubeTriangleIndex[] = {
 	20, 21, 22,
 	20, 22, 23
 };
+
+//---------Mesh test--------
+Cube cube(cubeVertices, cubeTexCoords, cubeNormals, cubeTriangleIndex, "container2.jpg", "container2_specular.jpg", "container2_emissive.jpg");
+//-------------------------
 
 GLuint VAO;
 GLuint vertexVBO;
@@ -344,15 +352,18 @@ void initData() {
 	glBindTexture(GL_TEXTURE_2D, mapEmissive);
 
 	//Uniforms
-	programs[0].use();
-	programs[0].setInt("matDiffuse1", 0);
-	programs[0].setInt("matSpecular1", 1);
-	programs[0].setInt("matEmissive1", 2);
-	programs[0].setMultipleVec3("lightPosition", 3, lightPos);
-	programs[0].setMultipleVec3("lightColor", 3, lightColor);
+	programs[0].Use();
+	programs[0].SetInt("matDiffuse1", 0);
+	programs[0].SetInt("matSpecular1", 1);
+	programs[0].SetInt("matEmissive1", 2);
+	programs[0].SetMultipleVec3("lightPosition", 3, lightPos);
+	programs[0].SetMultipleVec3("lightColor", 3, lightColor);
 }
 
 void render() {
+
+	cube.Draw(programs[0]);
+
 	static float angle = 0.0f;
 	angle = (angle > 360) ? 0 : angle + 0.01f;
 
@@ -406,17 +417,17 @@ void render() {
 	//--------------------------------------------------------------
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	programs[0].use();
+	programs[0].Use();
 
-	programs[0].setVec3("spotlightDir", cameraFront);
-	programs[0].setVec3("spotlightPos", cameraPos);
+	programs[0].SetVec3("spotlightDir", cameraFront);
+	programs[0].SetVec3("spotlightPos", cameraPos);
 
 	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
-	programs[0].setMat4("viewM", view_M);
-	programs[0].setMat4("projM", proj_M);
+	programs[0].SetMat4("viewM", view_M);
+	programs[0].SetMat4("projM", proj_M);
 
-	programs[0].setVec3("viewerPos", cameraPos);
+	programs[0].SetVec3("viewerPos", cameraPos);
 	
 
 	glBindVertexArray(VAO);
@@ -424,16 +435,16 @@ void render() {
 	
 	//Central cube
 	normal_M = glm::transpose(glm::inverse(model_M));
-	programs[0].setMat4("normalM", normal_M);
+	programs[0].SetMat4("normalM", normal_M);
 
-	programs[0].setMat4("modelM", model_M);
+	programs[0].SetMat4("modelM", model_M);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 	//Orbital cube
 	normal_M = glm::transpose(glm::inverse(model_M_2));
-	programs[0].setMat4("normalM", normal_M);
+	programs[0].SetMat4("normalM", normal_M);
 
-	programs[0].setMat4("modelM", model_M_2);
+	programs[0].SetMat4("modelM", model_M_2);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
 	//Extra cubes
@@ -443,30 +454,28 @@ void render() {
 		float angle = 20.0f + i;
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 		normal_M = glm::transpose(glm::inverse(model));
-		programs[0].setMat4("normalM", normal_M);
-		programs[0].setMat4("modelM", model);
+		programs[0].SetMat4("normalM", normal_M);
+		programs[0].SetMat4("modelM", model);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 	}
 
 	//Lightcubes
-	programs[1].use();
+	programs[1].Use();
 
-	programs[1].setMat4("viewM", view_M);
-	programs[1].setMat4("projM", proj_M);
+	programs[1].SetMat4("viewM", view_M);
+	programs[1].SetMat4("projM", proj_M);
 
-	programs[1].setMat4("modelM", model_M_3);
-	programs[1].setVec3("lightColor", lightColor[0]);
+	programs[1].SetMat4("modelM", model_M_3);
+	programs[1].SetVec3("lightColor", lightColor[0]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
-	programs[1].setMat4("modelM", model_M_4);
-	programs[1].setVec3("lightColor", lightColor[1]);
+	programs[1].SetMat4("modelM", model_M_4);
+	programs[1].SetVec3("lightColor", lightColor[1]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
-	programs[1].setMat4("modelM", model_M_5);
-	programs[1].setVec3("lightColor", lightColor[2]);
+	programs[1].SetMat4("modelM", model_M_5);
+	programs[1].SetVec3("lightColor", lightColor[2]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
-
-
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){

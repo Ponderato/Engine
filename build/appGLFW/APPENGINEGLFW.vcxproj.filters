@@ -13,7 +13,7 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Model.cpp">
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,7 +27,7 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Model.h">
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

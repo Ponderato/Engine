@@ -1,5 +1,7 @@
 #include "Mesh.h"
 #include <GL/glew.h>
+#include "stb_image.h"
+#include <iostream>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vector<unsigned int> indices) {
 	
@@ -7,14 +9,16 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vec
 	this->textures = textures;
 	this->indices = indices;
 
-	setUpMesh();
+	SetUpMeshData();
+	SetUpMeshTextures();
 }
 
-void Mesh::setUpMesh() {
+void Mesh::SetUpMeshData() {
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
+	//Vertices
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
@@ -25,6 +29,7 @@ void Mesh::setUpMesh() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 	glEnableVertexAttribArray(2);
 
+	//Indices
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
@@ -33,7 +38,43 @@ void Mesh::setUpMesh() {
 	glBindVertexArray(0);
 }
 
-void Mesh::draw(Program &program) {
+void Mesh::SetUpMeshTextures() {
+
+	int width, height, nrChannels;
+
+	for (int i = 0; i < textures.size(); i++) {
+		//c_str() to transform a std::string into a const char*
+		unsigned char* data = stbi_load(textures[i].path.c_str(), &width, &height, &nrChannels, 0);
+
+		glGenTextures(1, &textures[i].id);
+		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		if (data) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else {
+			std::cout << "Failed to load texture" << std::endl;
+		}
+
+		stbi_image_free(data);
+
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+
+		//Set to default
+		glActiveTexture(GL_TEXTURE0);
+	}
+}
+
+void Mesh::Draw(Program &program) {
+
+	//We do this here instead of in SetUpMeshTextures because of that here, 
+	//we have the program. 
 
 	unsigned int diffuseNumber = 1;
 	unsigned int specularNumber = 1;
@@ -41,7 +82,7 @@ void Mesh::draw(Program &program) {
 
 	for (int i = 0; i < textures.size(); i++) {
 		
-		glActiveTexture(GL_TEXTURE0 + i);
+		//glActiveTexture(GL_TEXTURE0 + i);
 
 		std::string number;
 		std::string name = textures[i].type;
@@ -58,14 +99,15 @@ void Mesh::draw(Program &program) {
 		}
 
 		//set sampler to the correct texture unit
-		glUniform1i(glGetUniformLocation(program.ID, (name + number).c_str()), i);
+		program.SetInt((name + number).c_str(), i);
 
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		//glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
+
 	//Draw mesh
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 	//Set everything back to default
-	glActiveTexture(GL_TEXTURE0);
+	//glActiveTexture(GL_TEXTURE0);
 }
