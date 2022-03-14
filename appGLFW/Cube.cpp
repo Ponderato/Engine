@@ -12,7 +12,7 @@ Cube::Cube(float verts[], float texCoords[], float normals[], const unsigned int
 	int atTexCoord = 0;
 
 	//Vertices
-	//sizeof(verts)/sizeof(verts[0] to get the number of elements in the array
+	//We can write this 24 and the 36 in indices since we pre-know the number of vertices and indices our cube has.
 	for (int i = 0; i < 24; i++) {
 		vertices.push_back({ glm::vec3(verts[atVertex], verts[atVertex + 1], verts[atVertex + 2]),
 							 glm::vec3(normals[atNormal], normals[atNormal + 1], normals[atNormal + 2]),
@@ -24,7 +24,7 @@ Cube::Cube(float verts[], float texCoords[], float normals[], const unsigned int
 	}
 
 	//Indices
-	for (int i = 0; i < 24; i++) {
+	for (int i = 0; i < 36; i++) {
 		indices.push_back(inds[i]);
 	}
 

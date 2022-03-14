@@ -73,7 +73,7 @@ void Mesh::SetUpMeshTextures() {
 
 void Mesh::Draw(Program &program) {
 
-	//We do this here instead of in SetUpMeshTextures because of that here, 
+	//We do this here instead of in SetUpMeshTextures because here
 	//we have the program. 
 
 	unsigned int diffuseNumber = 1;
@@ -106,7 +106,9 @@ void Mesh::Draw(Program &program) {
 
 	//Draw mesh
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);
 
 	//Set everything back to default
 	//glActiveTexture(GL_TEXTURE0);

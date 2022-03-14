@@ -154,7 +154,7 @@ const unsigned int cubeTriangleIndex[] = {
 };
 
 //---------Mesh test--------
-Cube cube(cubeVertices, cubeTexCoords, cubeNormals, cubeTriangleIndex, "container2.jpg", "container2_specular.jpg", "container2_emissive.jpg");
+Cube* cube;
 //-------------------------
 
 GLuint VAO;
@@ -256,12 +256,15 @@ GLFWwindow* initContext() {
 	glfwSetScrollCallback(window, scroll_callback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	return window;
 }
 
 void initData() {
 
+	cube = new Cube(cubeVertices, cubeTexCoords, cubeNormals, cubeTriangleIndex, "container2.jpg", "container2_specular.jpg", "container2_emissive.jpg");
+	
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -361,9 +364,7 @@ void initData() {
 }
 
 void render() {
-
-	cube.Draw(programs[0]);
-
+	
 	static float angle = 0.0f;
 	angle = (angle > 360) ? 0 : angle + 0.01f;
 
@@ -417,6 +418,7 @@ void render() {
 	//--------------------------------------------------------------
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	programs[0].Use();
 
 	programs[0].SetVec3("spotlightDir", cameraFront);
@@ -428,8 +430,14 @@ void render() {
 	programs[0].SetMat4("projM", proj_M);
 
 	programs[0].SetVec3("viewerPos", cameraPos);
-	
 
+
+	normal_M = glm::transpose(glm::inverse(model_M));
+	programs[0].SetMat4("normalM", normal_M);
+	programs[0].SetMat4("modelM", model_M);
+	cube->Draw(programs[0]);
+
+	/*
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	
@@ -455,9 +463,9 @@ void render() {
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 		normal_M = glm::transpose(glm::inverse(model));
 		programs[0].SetMat4("normalM", normal_M);
-		programs[0].SetMat4("modelM", model);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 	}
+	*/
 
 	//Lightcubes
 	programs[1].Use();
@@ -476,6 +484,7 @@ void render() {
 	programs[1].SetMat4("modelM", model_M_5);
 	programs[1].SetVec3("lightColor", lightColor[2]);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
