@@ -1,7 +1,7 @@
 #include "Cube.h"
 #include <glm.hpp>
 
-Cube::Cube(float verts[], float texCoords[], float normals[], const unsigned int inds[], std::string diffuse, std::string specular, std::string emissive) {
+Cube::Cube(std::string diffuse, std::string specular, std::string emissive) {
 	
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -12,11 +12,11 @@ Cube::Cube(float verts[], float texCoords[], float normals[], const unsigned int
 	int atTexCoord = 0;
 
 	//Vertices
-	//We can write this 24 and the 36 in indices since we pre-know the number of vertices and indices our cube has.
+	//We can write this 24 and the 36 in indices since we pre-know the number of vertices and indices our cube has and will be the same for all cubes.
 	for (int i = 0; i < 24; i++) {
-		vertices.push_back({ glm::vec3(verts[atVertex], verts[atVertex + 1], verts[atVertex + 2]),
-							 glm::vec3(normals[atNormal], normals[atNormal + 1], normals[atNormal + 2]),
-							 glm::vec2(texCoords[atTexCoord], texCoords[atTexCoord + 1]) });
+		vertices.push_back({ glm::vec3(cubeVertices[atVertex], cubeVertices[atVertex + 1], cubeVertices[atVertex + 2]),
+							 glm::vec3(cubeNormals[atNormal], cubeNormals[atNormal + 1], cubeNormals[atNormal + 2]),
+							 glm::vec2(cubeTexCoords[atTexCoord], cubeTexCoords[atTexCoord + 1]) });
 
 		atVertex += 3;
 		atNormal += 3;
@@ -25,7 +25,7 @@ Cube::Cube(float verts[], float texCoords[], float normals[], const unsigned int
 
 	//Indices
 	for (int i = 0; i < 36; i++) {
-		indices.push_back(inds[i]);
+		indices.push_back(cubeTriangleIndex[i]);
 	}
 
 	//Textures

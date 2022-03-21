@@ -3,13 +3,15 @@ mainProg.cpp
 stb_image.cpp
 Program.cpp
 Mesh.cpp
-Cube.cpp)
+Cube.cpp
+Camera.cpp)
 
 SET(headers
 stb_image.h
 Program.h
 Mesh.h
-Cube.h)
+Cube.h
+Camera.h)
 #stb_image.h and .cpp to use the library
 
 find_package(GLFW3 REQUIRED)

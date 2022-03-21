@@ -16,6 +16,9 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h">
@@ -28,6 +31,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

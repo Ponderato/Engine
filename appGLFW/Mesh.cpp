@@ -34,8 +34,12 @@ void Mesh::SetUpMeshData() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-	//Unbind VAO
-	glBindVertexArray(0);
+	//Unbind VAO, VBO and EBO
+	//glBindVertexArray(0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	//No need to unbind since they need to be binded before use.
 }
 
 void Mesh::SetUpMeshTextures() {
@@ -43,7 +47,7 @@ void Mesh::SetUpMeshTextures() {
 	int width, height, nrChannels;
 
 	for (int i = 0; i < textures.size(); i++) {
-		//c_str() to transform a std::string into a const char*
+		//c_str() to transform a std::string to a const char*
 		unsigned char* data = stbi_load(textures[i].path.c_str(), &width, &height, &nrChannels, 0);
 
 		glGenTextures(1, &textures[i].id);

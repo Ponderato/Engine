@@ -14,62 +14,38 @@
 #include "Program.h"
 
 #include "Cube.h"
-
-
-
-bool firstMouse = true;
-const float sensitivity = 0.1f;
-float lastX = 400;
-float lastY = 300;
-float yaw = -90.0f;//Camera pointing towards negative z axis.
-float pitch = 0.0f;
-
-float deltaTime = 0.0f;//Time between current frame and last frame
-float lastFrame = 0.0f;//Time of last frame
-
-float faceVisibility = 0.2;
-
-float fov = 45.0f;
-
-//Data
-glm::mat4 view_M;
-glm::mat4 proj_M = glm::mat4(1.0f);
-
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-
-glm::mat4 normal_M;
+#include "Camera.h"
 
 float cubeVertices[] = {
-	-0.5f, -0.5f, -0.5f, //0
-	 0.5f, -0.5f, -0.5f, //1
-	 0.5f,  0.5f, -0.5f, //2
-	-0.5f,  0.5f, -0.5f, //3
+-0.5f, -0.5f, -0.5f, //0
+ 0.5f, -0.5f, -0.5f, //1
+ 0.5f,  0.5f, -0.5f, //2
+-0.5f,  0.5f, -0.5f, //3
 
-	-0.5f, -0.5f,  0.5f, //4
-	 0.5f, -0.5f,  0.5f, //5
-	 0.5f,  0.5f,  0.5f, //6
-	-0.5f,  0.5f,  0.5f, //7
+-0.5f, -0.5f,  0.5f, //4
+ 0.5f, -0.5f,  0.5f, //5
+ 0.5f,  0.5f,  0.5f, //6
+-0.5f,  0.5f,  0.5f, //7
 
-	-0.5f,  0.5f,  0.5f, //8
-	-0.5f,  0.5f, -0.5f, //9
-	-0.5f, -0.5f, -0.5f, //10
-	-0.5f, -0.5f,  0.5f, //11
+-0.5f,  0.5f,  0.5f, //8
+-0.5f,  0.5f, -0.5f, //9
+-0.5f, -0.5f, -0.5f, //10
+-0.5f, -0.5f,  0.5f, //11
 
-	 0.5f,  0.5f,  0.5f, //12
-	 0.5f,  0.5f, -0.5f, //13
-	 0.5f, -0.5f, -0.5f, //14
-	 0.5f, -0.5f,  0.5f, //15
+ 0.5f,  0.5f,  0.5f, //12
+ 0.5f,  0.5f, -0.5f, //13
+ 0.5f, -0.5f, -0.5f, //14
+ 0.5f, -0.5f,  0.5f, //15
 
-	-0.5f, -0.5f, -0.5f, //16
-	 0.5f, -0.5f, -0.5f, //17
-	 0.5f, -0.5f,  0.5f, //18
-	-0.5f, -0.5f,  0.5f, //19
+-0.5f, -0.5f, -0.5f, //16
+ 0.5f, -0.5f, -0.5f, //17
+ 0.5f, -0.5f,  0.5f, //18
+-0.5f, -0.5f,  0.5f, //19
 
-	-0.5f,  0.5f, -0.5f, //20
-	 0.5f,  0.5f, -0.5f, //21
-	 0.5f,  0.5f,  0.5f, //22
-	-0.5f,  0.5f,  0.5f, //23
+-0.5f,  0.5f, -0.5f, //20
+ 0.5f,  0.5f, -0.5f, //21
+ 0.5f,  0.5f,  0.5f, //22
+-0.5f,  0.5f,  0.5f, //23
 };
 float cubeTexCoords[] = {
 	0.0f, 0.0f,
@@ -118,20 +94,20 @@ float cubeNormals[] = {
 	-1.0f,  0.0f,  0.0f,
 	-1.0f,  0.0f,  0.0f,
 
-	 1.0f,  0.0f,  0.0f, 
-	 1.0f,  0.0f,  0.0f, 
-	 1.0f,  0.0f,  0.0f, 
-	 1.0f,  0.0f,  0.0f, 
+	 1.0f,  0.0f,  0.0f,
+	 1.0f,  0.0f,  0.0f,
+	 1.0f,  0.0f,  0.0f,
+	 1.0f,  0.0f,  0.0f,
 
-	 0.0f, -1.0f,  0.0f, 
-	 0.0f, -1.0f,  0.0f, 
-	 0.0f, -1.0f,  0.0f, 
-	 0.0f, -1.0f,  0.0f, 
+	 0.0f, -1.0f,  0.0f,
+	 0.0f, -1.0f,  0.0f,
+	 0.0f, -1.0f,  0.0f,
+	 0.0f, -1.0f,  0.0f,
 
-	 0.0f,  1.0f,  0.0f, 
-	 0.0f,  1.0f,  0.0f, 
-	 0.0f,  1.0f,  0.0f, 
-	 0.0f,  1.0f,  0.0f, 
+	 0.0f,  1.0f,  0.0f,
+	 0.0f,  1.0f,  0.0f,
+	 0.0f,  1.0f,  0.0f,
+	 0.0f,  1.0f,  0.0f,
 };
 const unsigned int cubeTriangleIndex[] = {
 	0, 1, 2,
@@ -153,9 +129,32 @@ const unsigned int cubeTriangleIndex[] = {
 	20, 22, 23
 };
 
-//---------Mesh test--------
+
+bool firstMouse = true;
+const float sensitivity = 0.1f;
+float lastX = 400;
+float lastY = 300;
+float yaw = -90.0f;//Camera pointing towards negative z axis.
+float pitch = 0.0f;
+
+float deltaTime = 0.0f;//Time between current frame and last frame
+float lastFrame = 0.0f;//Time of last frame
+
+float faceVisibility = 0.2;
+
+float fov = 45.0f;
+
+//Data
+glm::mat4 view_M;
+glm::mat4 proj_M = glm::mat4(1.0f);
+
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+
+glm::mat4 normal_M;
+
 Cube* cube;
-//-------------------------
+Camera* camera;
 
 GLuint VAO;
 GLuint vertexVBO;
@@ -198,7 +197,7 @@ void initShaders(const char* vertexShader, const char* fragmentShader, int i);
 void render();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xPos, double yPos);
+void mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn);
 void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 void processInput(GLFWwindow* window);
 
@@ -263,8 +262,9 @@ GLFWwindow* initContext() {
 
 void initData() {
 
-	cube = new Cube(cubeVertices, cubeTexCoords, cubeNormals, cubeTriangleIndex, "container2.jpg", "container2_specular.jpg", "container2_emissive.jpg");
-	
+	cube = new Cube("container2.jpg", "container2_specular.jpg", "container2_emissive.jpg");
+	camera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f),  glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -368,9 +368,10 @@ void render() {
 	static float angle = 0.0f;
 	angle = (angle > 360) ? 0 : angle + 0.01f;
 
-	view_M = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
+	//view_M = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
+	view_M = camera->GetLookAtMatrix();
 
-	proj_M = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
+	proj_M = glm::perspective(glm::radians(camera->fov), 800.0f / 600.0f, 0.1f, 100.0f);
 
 	glm::mat4 model_M = glm::mat4(1.0f);
 	model_M = glm::rotate(model_M, (float)angle * glm::radians(50.0f), glm::vec3(0.5, 1.0, 0.0));
@@ -421,15 +422,15 @@ void render() {
 
 	programs[0].Use();
 
-	programs[0].SetVec3("spotlightDir", cameraFront);
-	programs[0].SetVec3("spotlightPos", cameraPos);
+	programs[0].SetVec3("spotlightDir", camera->front);
+	programs[0].SetVec3("spotlightPos", camera->position);
 
 	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
 	programs[0].SetMat4("viewM", view_M);
 	programs[0].SetMat4("projM", proj_M);
 
-	programs[0].SetVec3("viewerPos", cameraPos);
+	programs[0].SetVec3("viewerPos", camera->position);
 
 
 	normal_M = glm::transpose(glm::inverse(model_M));
@@ -491,7 +492,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height){
 	glViewport(0, 0, width, height);
 }
 
-void mouse_callback(GLFWwindow* window, double xPos, double yPos){
+void mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
+
+	float xPos = static_cast<float>(xPosIn);
+	float yPos = static_cast<float>(yPosIn);
 
 	if (firstMouse) {
 		lastX = xPos;
@@ -499,35 +503,38 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos){
 		firstMouse = false;
 	}
 
-	float xOffset = (xPos - lastX) * sensitivity;
-	//Reversed since y-coords range from bottom to top
-	float yOffset = (lastY - yPos) * sensitivity; 
+	float xOffset = (xPos - lastX);
+	float yOffset = (lastY - yPos); //Reversed since y-coords range from bottom to top
 	
 	lastX = xPos;
 	lastY = yPos;
 
-	yaw += xOffset;
-	pitch += yOffset;
+	//yaw += xOffset * sensitivity;
+	//pitch += yOffset * sensitivity;
+	//
+	////Avoid screen flipping
+	//if (pitch > 89.0f)
+	//	pitch = 89.0f;
+	//if (pitch < -89.0f)
+	//	pitch = -89.0f;
+	//
+	//glm::vec3 direction;
+	//direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	//direction.y = sin(glm::radians(pitch));
+	//direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	//cameraFront = glm::normalize(direction);
 
-	//Avoid screen flipping
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	glm::vec3 direction;
-	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	direction.y = sin(glm::radians(pitch));
-	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	cameraFront = glm::normalize(direction);
+	camera->ProcessMouseMovement(xOffset, yOffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
-	fov -= (float)yOffset;
-	if (fov < 1.0f)
-		fov = 1.0f;
-	if (fov > 45.0f)
-		fov = 45.0f;
+	//fov -= (float)yOffset;
+	//if (fov < 1.0f)
+	//	fov = 1.0f;
+	//if (fov > 45.0f)
+	//	fov = 45.0f;
+
+	camera->ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
 void processInput(GLFWwindow* window){
@@ -552,19 +559,19 @@ void processInput(GLFWwindow* window){
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		cameraPos += 2.5f *  deltaTime * cameraFront;
+		camera->ProcessKeyboard(FORWARD, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		cameraPos -= 2.5f * deltaTime * cameraFront;
+		camera->ProcessKeyboard(BACKWARD, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-		cameraPos -= glm::normalize(glm::cross(cameraFront, glm::vec3(0.0, 1.0, 0.0))) * 2.5f * deltaTime;
+		camera->ProcessKeyboard(LEFT, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		cameraPos += glm::normalize(glm::cross(cameraFront, glm::vec3(0.0, 1.0, 0.0))) * 2.5f * deltaTime;
+		camera->ProcessKeyboard(RIGHT, deltaTime);
 	}
 		
 

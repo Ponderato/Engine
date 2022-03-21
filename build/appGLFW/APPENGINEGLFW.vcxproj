@@ -318,10 +318,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Camera.cpp" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.h" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\ZERO_CHECK.vcxproj">
