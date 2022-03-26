@@ -189,7 +189,7 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 CMAKE_VERBOSE_MAKEFILE:BOOL=OFF
 
 //Dependencies for the target
-ENGINE_LIB_DEPENDS:STATIC=general;opengl32;general;glu32;general;D:/OpenGL/glew-2.1.0-win32/glew-2.1.0/lib/Release/x64/glew32.lib;
+ENGINE_LIB_DEPENDS:STATIC=general;opengl32;general;glu32;general;D:/OpenGL/glew-2.1.0-win32/glew-2.1.0/lib/Release/x64/glew32.lib;general;D:/OpenGL/assimp-4.1.0-Win-x64/build/code/Debug/assimp-vc140-mt.lib;
 
 //Value Computed by CMake
 Engine_BINARY_DIR:STATIC=D:/Fake Escritorio/GitHub/Engine/build

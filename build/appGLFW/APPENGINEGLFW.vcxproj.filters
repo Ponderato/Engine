@@ -4,46 +4,11 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\mainProg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Program.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{DBEF50AE-983A-3630-A3FC-8D128DD38DFA}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{6D1D1F92-0E68-34C3-8DCB-E8DAB94A8EA8}</UniqueIdentifier>
     </Filter>

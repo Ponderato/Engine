@@ -10,15 +10,16 @@ class Cube
 {
 public:
 
+	Cube() {}; //Default constructor.
+
 	//Constructors with & without emmisive texture map
 	Cube(std::string diffuse, std::string specular, std::string emissive);
 	Cube(std::string diffuse, std::string specular);
 
 	void Draw(Program &program);
-
 private:
 
-	const float cubeVertices[72] = {
+	float cubeVertices[72] = {
 	-0.5f, -0.5f, -0.5f, //0
 	 0.5f, -0.5f, -0.5f, //1
 	 0.5f,  0.5f, -0.5f, //2
@@ -49,7 +50,7 @@ private:
 	 0.5f,  0.5f,  0.5f, //22
 	-0.5f,  0.5f,  0.5f, //23
 	};
-	const float cubeTexCoords[48] = {
+	float cubeTexCoords[48] = {
 		0.0f, 0.0f,
 		1.0f, 0.0f,
 		1.0f, 1.0f,
@@ -80,7 +81,7 @@ private:
 		1.0f, 0.0f,
 		0.0f, 0.0f
 	};
-	const float cubeNormals[72] = {
+	float cubeNormals[72] = {
 		 0.0f,  0.0f, -1.0f,
 		 0.0f,  0.0f, -1.0f,
 		 0.0f,  0.0f, -1.0f,
@@ -111,7 +112,7 @@ private:
 		 0.0f,  1.0f,  0.0f,
 		 0.0f,  1.0f,  0.0f,
 	};
-	const unsigned int cubeTriangleIndex[36] = {
+	unsigned int cubeTriangleIndex[36] = {
 		0, 1, 2,
 		0, 2, 3,
 

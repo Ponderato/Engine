@@ -4,9 +4,39 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

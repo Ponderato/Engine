@@ -4,4 +4,6 @@ C:/Program Files/CMake/share/cmake-3.21/Modules/FindOpenGL.cmake
 C:/Program Files/CMake/share/cmake-3.21/Modules/FindPackageHandleStandardArgs.cmake
 C:/Program Files/CMake/share/cmake-3.21/Modules/FindPackageMessage.cmake
 C:/Program Files/CMake/share/cmake-3.21/Modules/SelectLibraryConfigurations.cmake
+D:/Fake Escritorio/GitHub/Engine/cmake_modules/FindASSIMP.cmake
+D:/Fake Escritorio/GitHub/Engine/cmake_modules/FindGLM.cmake
 D:/Fake Escritorio/GitHub/Engine/engine/CMakeLists.txt
