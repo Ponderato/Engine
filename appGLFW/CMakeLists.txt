@@ -4,7 +4,8 @@ mainProg.cpp
 
 SET(headers
 )
-#stb_image.h and .cpp to use the library
+
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(GLFW3 REQUIRED)
 

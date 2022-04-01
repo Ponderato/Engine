@@ -13,12 +13,11 @@
 #include "Cube.h"
 #include "Camera.h"
 
+//----------------NO GLOBAL VARIABLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const int CUBES_COUNT = 7;
-const int SHADERS_COUNT = 2;
 
-Program programs[CUBES_COUNT];
-Cube cubes[SHADERS_COUNT];
-Camera* camera;
+static Cube cubes[CUBES_COUNT];
+static Camera camera;
 
 //Methods
 

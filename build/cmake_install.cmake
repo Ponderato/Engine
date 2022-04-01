@@ -35,7 +35,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("D:/Fake Escritorio/GitHub/Engine/build/engine/cmake_install.cmake")
-  include("D:/Fake Escritorio/GitHub/Engine/build/app/cmake_install.cmake")
   include("D:/Fake Escritorio/GitHub/Engine/build/appGLFW/cmake_install.cmake")
 
 endif()

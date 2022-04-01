@@ -23,6 +23,9 @@ glm::mat4 view_M;
 glm::mat4 proj_M = glm::mat4(1.0f);
 glm::mat4 normal_M;
 
+const int SHADERS_COUNT = 2;
+Program programs[SHADERS_COUNT];
+
 //Initialize GLEW library.
 void initGLEW() {
 
@@ -57,7 +60,7 @@ void initData() {
 		cubes[i] = Cube("container2.jpg", "container2_specular.jpg");
 	}
 
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
+	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
 
 	//Uniforms
 	programs[0].Use();
@@ -73,13 +76,15 @@ void initShaders(int shaderNum, const char* vertexShaderPath, const char* fragme
 //Render stuff
 void render() {
 
+	//angle, c and t need to be static in order to work. When render() is called from main, these variables are generated and held in memory when render has finished.
+	//If the were not static, they would not be held and the cubes would not move.
 	static float angle = 0.0f;
 	angle = (angle > 360) ? 0 : angle + 0.01f;
 
 	//view_M = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
-	view_M = camera->GetLookAtMatrix();
+	view_M = camera.GetLookAtMatrix();
 
-	proj_M = glm::perspective(glm::radians(camera->fov), 800.0f / 600.0f, 0.1f, 100.0f);
+	proj_M = glm::perspective(glm::radians(camera.fov), 800.0f / 600.0f, 0.1f, 100.0f);
 
 	glm::mat4 model_M = glm::mat4(1.0f);
 	model_M = glm::rotate(model_M, (float)angle * glm::radians(50.0f), glm::vec3(0.5, 1.0, 0.0));
@@ -131,15 +136,15 @@ void render() {
 
 	programs[0].Use();
 
-	programs[0].SetVec3("spotlightDir", camera->front);
-	programs[0].SetVec3("spotlightPos", camera->position);
+	programs[0].SetVec3("spotlightDir", camera.front);
+	programs[0].SetVec3("spotlightPos", camera.position);
 
 	//glUniform1f(glGetUniformLocation(shaderProgram[0], "faceV"), faceVisibility);
 
 	programs[0].SetMat4("viewM", view_M);
 	programs[0].SetMat4("projM", proj_M);
 
-	programs[0].SetVec3("viewerPos", camera->position);
+	programs[0].SetVec3("viewerPos", camera.position);
 
 	//Central Cube
 	normal_M = glm::transpose(glm::inverse(model_M));
@@ -165,6 +170,7 @@ void render() {
 		cubes[i + 2].Draw(programs[0]);
 	}
 
+	//CHANGE THE LIGHTCUBES INTO OBJECTS OF THE CUBE CLASS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//Lightcubes
 	programs[1].Use();
 

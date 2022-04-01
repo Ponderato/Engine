@@ -170,10 +170,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\app\APPENGINE.vcxproj">
-      <Project>{FD0ED1F1-02D1-318B-9336-B19BF3CD0417}</Project>
-      <Name>APPENGINE</Name>
-    </ProjectReference>
     <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\appGLFW\APPENGINEGLFW.vcxproj">
       <Project>{FB269082-86C7-3B25-B72D-EEEE5BDC51E4}</Project>
       <Name>APPENGINEGLFW</Name>

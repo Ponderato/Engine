@@ -14,18 +14,20 @@ Mesh.h
 Cube.h
 Camera.h)
 
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
 find_package(Assimp REQUIRED)
 
-add_library(ENGINE ${sources} ${headers})
+add_library(ENGINE STATIC ${sources} ${headers})
 
 target_include_directories(ENGINE PUBLIC 
+${CMAKE_CURRENT_SOURCE_DIR}
 ${OPENGL_INCLUDE_DIR}
 ${GLEW_INCLUDE_DIRS}
 ${GLM_INCLUDE_DIRS}
-${PROJECT_SOURCE_DIR}
 ${ASSIMP_INCLUDE_DIRS})
 
 target_link_libraries(ENGINE 

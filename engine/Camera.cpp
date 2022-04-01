@@ -49,8 +49,8 @@ void Camera::ProcessKeyboard(MovementDir direction, float deltaTime) {
 
 void Camera::ProcessMouseMovement(float xOffset, float yOffset) {
 	
-	xOffset *= sensitivity;
-	yOffset *= sensitivity;
+	xOffset = xOffset * sensitivity;
+	yOffset = yOffset * sensitivity;
 
 	yaw += xOffset;
 	pitch += yOffset;

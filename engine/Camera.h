@@ -14,6 +14,7 @@ enum MovementDir {
 	RIGHT
 };
 
+//class __declspec(dllexport) Camera
 class Camera 
 {
 public:
@@ -30,6 +31,7 @@ public:
 	float sensitivity;
 	float fov;
 
+	Camera() {}
 	Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensitivity, float fov, float yaw, float pitch);
 
 	inline glm::mat4 GetLookAtMatrix() { return glm::lookAt(position, position + front, up); }

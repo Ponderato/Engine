@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 
-#include <engine/oglContext.h>
+#include <oglContext.h>
 
 //Data
 bool firstMouse = true;
@@ -33,20 +33,20 @@ int main(){
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
-
+	
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-
+	
 		//input
 		processInput(window);
-
+	
 		//rendering commands
 		render();
-
+	
 		//check and call events and swap buffers
-		glfwSwapBuffers(window);
 		glfwPollEvents();
+		glfwSwapBuffers(window);
 	}
 
 	//Terminate and clean all GLFW's resources allocated when we exit the render loop.
@@ -104,11 +104,11 @@ void mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
 	lastX = xPos;
 	lastY = yPos;
 
-	camera->ProcessMouseMovement(xOffset, yOffset);
+	camera.ProcessMouseMovement(xOffset, yOffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
-	camera->ProcessMouseScroll(static_cast<float>(yOffset));
+	camera.ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
 void processInput(GLFWwindow* window){
@@ -125,19 +125,19 @@ void processInput(GLFWwindow* window){
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		camera->ProcessKeyboard(FORWARD, deltaTime);
+		camera.ProcessKeyboard(FORWARD, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		camera->ProcessKeyboard(BACKWARD, deltaTime);
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-		camera->ProcessKeyboard(LEFT, deltaTime);
+		camera.ProcessKeyboard(LEFT, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		camera->ProcessKeyboard(RIGHT, deltaTime);
+		camera.ProcessKeyboard(RIGHT, deltaTime);
 	}
 		
 
