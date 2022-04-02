@@ -13,22 +13,27 @@
 #include "Cube.h"
 #include "Camera.h"
 
-//----------------NO GLOBAL VARIABLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-const int CUBES_COUNT = 7;
+class Context{
+public:
+	//----------------NO GLOBAL VARIABLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	Camera camera;
 
-static Cube cubes[CUBES_COUNT];
-static Camera camera;
+	//Methods
 
-//Methods
+	void initGLEW();
 
-void initGLEW();
+	void initOGL();
 
-void initOGL();
+	void initData();
 
-void initData();
+	void initShaders(int shaderNum, const char* vertexShaderPath, const char* fragmentShaderPath);
 
-void initShaders(int shaderNum, const char* vertexShaderPath, const char* fragmentShaderPath);
+	void render();
 
-void render();
+private:
+
+
+};
+
 
 #endif

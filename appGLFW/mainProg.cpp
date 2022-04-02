@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 
-#include <oglContext.h>
+#include <Context.h>
 
 //Data
 bool firstMouse = true;
@@ -14,6 +14,8 @@ float lastY = 300;
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
 
+Context context(2, 7);
+
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
 
@@ -23,13 +25,13 @@ void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 void processInput(GLFWwindow* window);
 
 int main(){
+
 	GLFWwindow* window = initContext();
-	initOGL();
-	//programs[0] = Program("vertexShader2.vert", "fragmentShader2.frag");
-	//programs[1] = Program("vertexShaderSun.vert", "fragmentShaderSun.frag");
-	initShaders(0, "vertexShader2.vert", "fragmentShader2.frag");
-	initShaders(1, "vertexShaderSun.vert", "fragmentShaderSun.frag");
-	initData();
+	context.initOGL();
+	context.initShaders("vertexShader2.vert", "fragmentShader2.frag");
+	context.initShaders("vertexShaderSun.vert", "fragmentShaderSun.frag");
+	context.initData();
+	
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -42,7 +44,7 @@ int main(){
 		processInput(window);
 	
 		//rendering commands
-		render();
+		context.render();
 	
 		//check and call events and swap buffers
 		glfwPollEvents();
@@ -71,7 +73,7 @@ GLFWwindow* initContext() {
 
 	//We initialize glew. GLEW sets the pointer functions for your platform.
 	//OpenGL nedds to be initialized by this point. Here that is done in glfwMakeContextCurrent.
-	initGLEW();
+	context.initGLEW();
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
@@ -104,11 +106,11 @@ void mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
 	lastX = xPos;
 	lastY = yPos;
 
-	camera.ProcessMouseMovement(xOffset, yOffset);
+	context.camera.ProcessMouseMovement(xOffset, yOffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
-	camera.ProcessMouseScroll(static_cast<float>(yOffset));
+	context.camera.ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
 void processInput(GLFWwindow* window){
@@ -125,19 +127,19 @@ void processInput(GLFWwindow* window){
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		camera.ProcessKeyboard(FORWARD, deltaTime);
+		context.camera.ProcessKeyboard(FORWARD, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
+		context.camera.ProcessKeyboard(BACKWARD, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-		camera.ProcessKeyboard(LEFT, deltaTime);
+		context.camera.ProcessKeyboard(LEFT, deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		camera.ProcessKeyboard(RIGHT, deltaTime);
+		context.camera.ProcessKeyboard(RIGHT, deltaTime);
 	}
 		
 

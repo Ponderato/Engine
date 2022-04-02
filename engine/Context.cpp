@@ -1,33 +1,13 @@
-#include "oglContext.h"
+#include "Context.h"
 
-glm::vec3 lightPos[] = {
-	glm::vec3(2.0f, 2.0f, 0.0f),
-	glm::vec3(-2.0f, -3.0f, -4.0f),
-	glm::vec3(1.5f, 1.0f, -6.0f)
-};
-glm::vec3 lightColor[] = {
-	glm::vec3(1.0f, 1.0f, 1.0f),
-	glm::vec3(1.0f, 0.0f, 0.0f),
-	glm::vec3(0.0f, 1.0f, 0.0f)
-};
-
-glm::vec3 cubePositions[] = {
-	glm::vec3(-1.0f,  1.0f,  -1.5f),
-	glm::vec3(2.0f,  5.0f, -15.0f),
-	glm::vec3(-2.5f, -4.2f, -4.5f),
-	glm::vec3(-3.8f, -2.0f, -12.3f),
-	glm::vec3(2.4f, -1.4f, -3.5f)
-};
-
-glm::mat4 view_M;
-glm::mat4 proj_M = glm::mat4(1.0f);
-glm::mat4 normal_M;
-
-const int SHADERS_COUNT = 2;
-Program programs[SHADERS_COUNT];
+//Empty constructor
+Context::Context(int shadersNum, int cubesNum) {
+	SHADERS_COUNT = shadersNum;
+	CUBES_COUNT = cubesNum;
+}
 
 //Initialize GLEW library.
-void initGLEW() {
+void Context::initGLEW() {
 
 	//We initialize glew. GLEW sets the pointer functions for your platform.
 	glewExperimental = GL_TRUE;
@@ -39,7 +19,7 @@ void initGLEW() {
 }
 
 //Initialize OpenGL.
-void initOGL() {
+void Context::initOGL() {
 
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 
@@ -50,14 +30,14 @@ void initOGL() {
 }
 
 //Initialize data
-void initData() {
+void Context::initData() {
 
 	//Objects
-	cubes[0] = Cube("container2.jpg", "container2_specular.jpg", "container2_emissive.jpg");
-	cubes[1] = Cube("container2.jpg", "container2_specular.jpg");
+	cubes.push_back(Cube("container2.jpg", "container2_specular.jpg", "container2_emissive.jpg"));
+	cubes.push_back(Cube("container2.jpg", "container2_specular.jpg"));
 
 	for (int i = 2; i < CUBES_COUNT; i++) {
-		cubes[i] = Cube("container2.jpg", "container2_specular.jpg");
+		cubes.push_back(Cube("container2.jpg", "container2_specular.jpg"));
 	}
 
 	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
@@ -69,12 +49,12 @@ void initData() {
 }
 
 //Initialize the shaders
-void initShaders(int shaderNum, const char* vertexShaderPath, const char* fragmentShaderPath) {
-	programs[shaderNum] = Program(vertexShaderPath, fragmentShaderPath);
+void Context::initShaders(const char* vertexShaderPath, const char* fragmentShaderPath) {
+	programs.push_back(Program(vertexShaderPath, fragmentShaderPath));
 }
 
 //Render stuff
-void render() {
+void Context::render() {
 
 	//angle, c and t need to be static in order to work. When render() is called from main, these variables are generated and held in memory when render has finished.
 	//If the were not static, they would not be held and the cubes would not move.

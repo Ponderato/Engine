@@ -10,8 +10,6 @@ class Cube
 {
 public:
 
-	Cube() {}; //Default constructor.
-
 	//Constructors with & without emmisive texture map
 	Cube(std::string diffuse, std::string specular, std::string emissive);
 	Cube(std::string diffuse, std::string specular);

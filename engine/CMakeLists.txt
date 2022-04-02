@@ -1,5 +1,5 @@
 SET(sources
-oglContext.cpp
+Context.cpp
 stb_image.cpp
 Program.cpp
 Mesh.cpp
@@ -7,7 +7,7 @@ Cube.cpp
 Camera.cpp)
 
 SET(headers
-oglContext.h
+Context.h
 stb_image.h
 Program.h
 Mesh.h

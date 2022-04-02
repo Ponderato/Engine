@@ -265,13 +265,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.cpp" />
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.h" />

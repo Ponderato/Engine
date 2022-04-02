@@ -11,7 +11,6 @@ class Program
 public:
 	unsigned int ID;
 
-	Program() {} //Need it in order to create the array before passing the shaders
 	Program(const char* vertexShaderPath, const char* fragmentShaderPath);
 
 	inline void Use() { glUseProgram(ID); }
