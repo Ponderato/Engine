@@ -29,6 +29,7 @@ void Context::initOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
+//Maybe separate this method into initCubeData() in order to make possible to render different cubes with different textures?
 //Initialize data
 void Context::initData() {
 

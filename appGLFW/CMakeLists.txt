@@ -7,6 +7,9 @@ SET(headers
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+file(COPY ${CMAKE_SOURCE_DIR}/engine/Shaders/
+	DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 find_package(GLFW3 REQUIRED)
 
 add_executable(APPENGINEGLFW ${sources} ${headers})

@@ -14,7 +14,7 @@ float lastY = 300;
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
 
-Context context(2, 7);
+Context context(2, 7);//Number of programs(shaders) & number of cubes.
 
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* initContext();
@@ -32,7 +32,6 @@ int main(){
 	context.initShaders("vertexShaderSun.vert", "fragmentShaderSun.frag");
 	context.initData();
 	
-
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
 	
