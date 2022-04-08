@@ -7,9 +7,6 @@ SET(headers
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-file(COPY ${CMAKE_SOURCE_DIR}/engine/Shaders/
-	DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
 find_package(GLFW3 REQUIRED)
 
 add_executable(APPENGINEGLFW ${sources} ${headers})
@@ -19,3 +16,13 @@ ${GLFW3_INCLUDE_DIR})
 
 target_link_libraries(APPENGINEGLFW ENGINE
 ${GLFW3_LIBRARY})
+
+#Add the shaders to binary each time the app is built. That way 
+#we can make changes in the sahders and there is no need to recomile them
+add_custom_target(copy_resources ALL
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_SOURCE_DIR}/engine/Shaders/
+	${CMAKE_CURRENT_BINARY_DIR}
+	COMMENT "Copying resources into binary directory")
+
+add_dependencies(APPENGINEGLFW copy_resources)

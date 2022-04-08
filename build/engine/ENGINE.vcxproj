@@ -277,6 +277,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.h" />
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShader2.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShaderSun.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShader2.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShaderSun.glsl">
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Fake Escritorio\GitHub\Engine\build\ZERO_CHECK.vcxproj">

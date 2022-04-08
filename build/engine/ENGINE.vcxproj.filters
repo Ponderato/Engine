@@ -44,8 +44,25 @@
     <CustomBuild Include="D:\Fake Escritorio\GitHub\Engine\engine\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShader2.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShaderSun.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShader2.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShaderSun.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{DBEF50AE-983A-3630-A3FC-8D128DD38DFA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{1A2D1E65-E4BB-3DA1-B7D7-30CFD65F15DD}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{6D1D1F92-0E68-34C3-8DCB-E8DAB94A8EA8}</UniqueIdentifier>

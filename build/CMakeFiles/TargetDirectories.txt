@@ -2,3 +2,4 @@ D:/Fake Escritorio/GitHub/Engine/build/CMakeFiles/ALL_BUILD.dir
 D:/Fake Escritorio/GitHub/Engine/build/CMakeFiles/ZERO_CHECK.dir
 D:/Fake Escritorio/GitHub/Engine/build/engine/CMakeFiles/ENGINE.dir
 D:/Fake Escritorio/GitHub/Engine/build/appGLFW/CMakeFiles/APPENGINEGLFW.dir
+D:/Fake Escritorio/GitHub/Engine/build/appGLFW/CMakeFiles/copy_resources.dir

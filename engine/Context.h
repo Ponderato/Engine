@@ -16,12 +16,9 @@
 class Context
 {
 public:
-	int SHADERS_COUNT;
-	int CUBES_COUNT;
-
 	Camera camera;
 
-	Context(int shadersNum, int cubesNum);
+	Context();
 
 	void initGLEW();
 

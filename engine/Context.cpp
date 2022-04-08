@@ -1,9 +1,8 @@
 #include "Context.h"
 
 //Empty constructor
-Context::Context(int shadersNum, int cubesNum) {
-	SHADERS_COUNT = shadersNum;
-	CUBES_COUNT = cubesNum;
+Context::Context() {
+
 }
 
 //Initialize GLEW library.
@@ -29,7 +28,7 @@ void Context::initOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
-//Maybe separate this method into initCubeData() in order to make possible to render different cubes with different textures?
+//Separate this method into initCubeData() in order to make possible to render different cubes with different textures
 //Initialize data
 void Context::initData() {
 
@@ -37,7 +36,7 @@ void Context::initData() {
 	cubes.push_back(Cube("container2.jpg", "container2_specular.jpg", "container2_emissive.jpg"));
 	cubes.push_back(Cube("container2.jpg", "container2_specular.jpg"));
 
-	for (int i = 2; i < CUBES_COUNT; i++) {
+	for (int i = 2; i < 7; i++) {
 		cubes.push_back(Cube("container2.jpg", "container2_specular.jpg"));
 	}
 

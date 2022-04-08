@@ -12,7 +12,17 @@ stb_image.h
 Program.h
 Mesh.h
 Cube.h
-Camera.h)
+Camera.h
+)
+
+#Shaders filter on solution explorer
+SET(Shaders_SRC
+	${CMAKE_SOURCE_DIR}/engine/Shaders/)
+
+FILE(GLOB_RECURSE Shaders
+	${Shaders_SRC}/*.glsl*
+)
+#---------------------------------------------
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -21,7 +31,9 @@ find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
 find_package(Assimp REQUIRED)
 
-add_library(ENGINE STATIC ${sources} ${headers})
+#To make the Shaders filter appear in the solution explorer, it has
+#to be added here
+add_library(ENGINE STATIC ${sources} ${headers} ${Shaders})
 
 target_include_directories(ENGINE PUBLIC 
 ${CMAKE_CURRENT_SOURCE_DIR}
@@ -34,3 +46,6 @@ target_link_libraries(ENGINE
 ${OPENGL_LIBRARIES}
 ${GLEW_LIBRARIES}
 ${ASSIMP_LIBRARIES})
+
+#Shaders filter on solution explorer
+source_group("Shaders" FILES  ${Shaders})
