@@ -1,18 +1,15 @@
-SET(sources
-Context.cpp
-stb_image.cpp
-Program.cpp
-Mesh.cpp
-Cube.cpp
-Camera.cpp)
+SET(Headers_SRC
+	${CMAKE_SOURCE_DIR}/engine/)
 
-SET(headers
-Context.h
-stb_image.h
-Program.h
-Mesh.h
-Cube.h
-Camera.h
+FILE(GLOB_RECURSE Headers
+	${Headers_SRC}/*.h*
+)
+
+SET(Sources_SRC
+	${CMAKE_SOURCE_DIR}/engine/)
+
+FILE(GLOB_RECURSE SourceFiles
+	${Sources_SRC}/*.cpp*
 )
 
 #Shaders filter on solution explorer
@@ -33,7 +30,7 @@ find_package(Assimp REQUIRED)
 
 #To make the Shaders filter appear in the solution explorer, it has
 #to be added here
-add_library(ENGINE STATIC ${sources} ${headers} ${Shaders})
+add_library(ENGINE STATIC ${SourceFiles} ${Headers} ${Shaders})
 
 target_include_directories(ENGINE PUBLIC 
 ${CMAKE_CURRENT_SOURCE_DIR}
@@ -49,3 +46,7 @@ ${ASSIMP_LIBRARIES})
 
 #Shaders filter on solution explorer
 source_group("Shaders" FILES  ${Shaders})
+
+source_group("Headers" FILES  ${Headers})
+
+source_group("Sources" FILES  ${SourceFiles})

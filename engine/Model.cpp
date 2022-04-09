@@ -9,7 +9,7 @@ Model::Model(const std::string &path) {
 void Model::draw(Program& program) {
 
 	for (unsigned int i = 0; i < meshes.size(); i++) {
-		meshes[i].draw(program);
+		meshes[i].Draw(program);
 	}
 }
 

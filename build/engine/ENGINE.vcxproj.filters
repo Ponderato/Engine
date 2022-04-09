@@ -1,43 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Model.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.h">
-      <Filter>Header Files</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.h">
-      <Filter>Header Files</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Model.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -58,14 +67,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{DBEF50AE-983A-3630-A3FC-8D128DD38DFA}</UniqueIdentifier>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{5F6488E4-BB28-348B-BFE6-E46C02DD5179}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{1A2D1E65-E4BB-3DA1-B7D7-30CFD65F15DD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{6D1D1F92-0E68-34C3-8DCB-E8DAB94A8EA8}</UniqueIdentifier>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{B9315A5C-9DB7-3947-AC80-7841534B3517}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
