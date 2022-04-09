@@ -33,11 +33,12 @@ void Context::initOGL() {
 void Context::initData() {
 
 	//Objects
-	cubes.push_back(Cube("container2.jpg", "container2_specular.jpg", "container2_emissive.jpg"));
-	cubes.push_back(Cube("container2.jpg", "container2_specular.jpg"));
+	//../ refers to the parent folder, so we need two of them to get to the textures folder
+	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg"));
+	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg"));
 
 	for (int i = 2; i < 7; i++) {
-		cubes.push_back(Cube("container2.jpg", "container2_specular.jpg"));
+		cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg"));
 	}
 
 	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
