@@ -41,7 +41,13 @@ void Context::initData() {
 		cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg"));
 	}
 
+	for (int i = 0; i < 3; i++) {
+		lightCubes.push_back(Cube());
+	}
+
 	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
+
+	models.push_back(Model("../../models/shiba/shiba.obj"));
 
 	//Uniforms
 	programs[0].Use();
@@ -127,6 +133,7 @@ void Context::render() {
 
 	programs[0].SetVec3("viewerPos", camera.position);
 
+
 	//Central Cube
 	normal_M = glm::transpose(glm::inverse(model_M));
 	programs[0].SetMat4("normalM", normal_M);
@@ -151,7 +158,15 @@ void Context::render() {
 		cubes[i + 2].Draw(programs[0]);
 	}
 
-	//CHANGE THE LIGHTCUBES INTO OBJECTS OF THE CUBE CLASS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//Model
+	glm::mat4 model_M_6 = glm::mat4(1.0f);
+	model_M_6 = glm::translate(model_M_6, glm::vec3(2.0f, -2.0f, 0.0f));
+	model_M_6 = glm::scale(model_M_6, glm::vec3(100.0f));
+	normal_M = glm::transpose(glm::inverse(model_M_6));
+	programs[0].SetMat4("normalM", normal_M);
+	programs[0].SetMat4("modelM", model_M_6);
+	models[0].Draw(programs[0]);
+
 	//Lightcubes
 	programs[1].Use();
 
@@ -160,15 +175,15 @@ void Context::render() {
 
 	programs[1].SetMat4("modelM", model_M_3);
 	programs[1].SetVec3("lightColor", lightColor[0]);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+	lightCubes[0].Draw(programs[1]);
 
 	programs[1].SetMat4("modelM", model_M_4);
 	programs[1].SetVec3("lightColor", lightColor[1]);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+	lightCubes[1].Draw(programs[1]);
 
 	programs[1].SetMat4("modelM", model_M_5);
 	programs[1].SetVec3("lightColor", lightColor[2]);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+	lightCubes[2].Draw(programs[1]);
 
 }
 

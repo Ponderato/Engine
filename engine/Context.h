@@ -12,6 +12,7 @@
 #include "Program.h"
 #include "Cube.h"
 #include "Camera.h"
+#include "Model.h"
 
 class Context
 {
@@ -34,6 +35,8 @@ private:
 	
 	std::vector<Program> programs;
 	std::vector<Cube> cubes;
+	std::vector<Model> models;
+	std::vector<Cube> lightCubes;
 
 	const glm::vec3 lightPos[3] = {
 	glm::vec3(2.0f, 2.0f, 0.0f),

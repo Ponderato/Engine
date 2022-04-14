@@ -29,6 +29,7 @@ public:
 	std::vector<unsigned int> indices;
 
 	Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vector<unsigned int> indices);
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices); //Constructor with no textures
 
 	void Draw(Program &program);
 private:

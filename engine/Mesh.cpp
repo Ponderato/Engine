@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include <GL/glew.h>
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <iostream>
 
@@ -11,6 +12,14 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vec
 
 	SetUpMeshData();
 	SetUpMeshTextures();
+}
+
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) {
+
+	this->vertices = vertices;
+	this->indices = indices;
+
+	SetUpMeshData();
 }
 
 void Mesh::SetUpMeshData() {
@@ -50,6 +59,14 @@ void Mesh::SetUpMeshTextures() {
 		//c_str() to transform a std::string to a const char*
 		unsigned char* data = stbi_load(textures[i].path.c_str(), &width, &height, &nrChannels, 0);
 
+		GLenum format = GL_RGB;
+		if (nrChannels == 1)
+			format = GL_RED;
+		else if (nrChannels == 3)
+			format = GL_RGB;
+		else if (nrChannels == 4)
+			format = GL_RGBA;
+
 		glGenTextures(1, &textures[i].id);
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -58,20 +75,25 @@ void Mesh::SetUpMeshTextures() {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		if (data) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else {
 			std::cout << "Failed to load texture" << std::endl;
+			//std::cout << textures[i].path << std::endl;
 		}
 
-		stbi_image_free(data);
+		delete[] data;
 
 		//glActiveTexture(GL_TEXTURE0 + i);
 		//glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		//
 		////Set to default
 		//glActiveTexture(GL_TEXTURE0);
+
+		//std::cout << textures[i].id << std::endl;
+		//std::cout << textures[i].type << std::endl;
+		//std::cout << textures[i].path << std::endl;
 	}
 }
 
@@ -107,6 +129,8 @@ void Mesh::Draw(Program &program) {
 
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
+	//Set it back to default
+	glActiveTexture(GL_TEXTURE0);
 
 	//Draw mesh
 	glBindVertexArray(VAO);
@@ -114,6 +138,5 @@ void Mesh::Draw(Program &program) {
 
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);
 
-	//Set everything back to default
-	//glActiveTexture(GL_TEXTURE0);
+
 }

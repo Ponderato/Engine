@@ -14,6 +14,9 @@ public:
 	Cube(std::string diffuse, std::string specular, std::string emissive);
 	Cube(std::string diffuse, std::string specular);
 
+	//Constructor with no textures
+	Cube();
+
 	void Draw(Program &program);
 private:
 

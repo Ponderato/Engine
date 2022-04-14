@@ -1,3 +1,5 @@
+#Get the files we want to appear in the folders we are gonna create in the 
+#solution explorer
 SET(Headers_SRC
 	${CMAKE_SOURCE_DIR}/engine/)
 
@@ -12,7 +14,6 @@ FILE(GLOB_RECURSE SourceFiles
 	${Sources_SRC}/*.cpp*
 )
 
-#Shaders filter on solution explorer
 SET(Shaders_SRC
 	${CMAKE_SOURCE_DIR}/engine/Shaders/)
 
@@ -28,8 +29,7 @@ find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
 find_package(Assimp REQUIRED)
 
-#To make the Shaders filter appear in the solution explorer, it has
-#to be added here
+#Add the files 
 add_library(ENGINE STATIC ${SourceFiles} ${Headers} ${Shaders})
 
 target_include_directories(ENGINE PUBLIC 
@@ -44,7 +44,7 @@ ${OPENGL_LIBRARIES}
 ${GLEW_LIBRARIES}
 ${ASSIMP_LIBRARIES})
 
-#Shaders filter on solution explorer
+#Name the folders and tell which files they are containing
 source_group("Shaders" FILES  ${Shaders})
 
 source_group("Headers" FILES  ${Headers})
