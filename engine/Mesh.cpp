@@ -1,8 +1,5 @@
 #include "Mesh.h"
-#include <GL/glew.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-#include <iostream>
+
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vector<unsigned int> indices) {
 	
@@ -42,18 +39,13 @@ void Mesh::SetUpMeshData() {
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-
-	//Unbind VAO, VBO and EBO
-	//glBindVertexArray(0);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	//No need to unbind since they need to be binded before use.
 }
 
 void Mesh::SetUpMeshTextures() {
 
 	int width, height, nrChannels;
+
+	//stbi_set_flip_vertically_on_load(true);
 
 	for (int i = 0; i < textures.size(); i++) {
 		//c_str() to transform a std::string to a const char*
@@ -129,8 +121,6 @@ void Mesh::Draw(Program &program) {
 
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
-	//Set it back to default
-	glActiveTexture(GL_TEXTURE0);
 
 	//Draw mesh
 	glBindVertexArray(VAO);
@@ -138,5 +128,9 @@ void Mesh::Draw(Program &program) {
 
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);
 
+	//Unbind
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glActiveTexture(GL_TEXTURE0);
 }

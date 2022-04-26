@@ -38,6 +38,10 @@ private:
 	std::vector<Model> models;
 	std::vector<Cube> lightCubes;
 
+	glm::mat4 view_M;
+	glm::mat4 proj_M = glm::mat4(1.0f);
+	//glm::mat4 normal_M;
+
 	const glm::vec3 lightPos[3] = {
 	glm::vec3(2.0f, 2.0f, 0.0f),
 	glm::vec3(-2.0f, -3.0f, -4.0f),
@@ -48,7 +52,9 @@ private:
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	};
-	const glm::vec3 cubePositions[5] = {
+	const glm::vec3 cubePositions[7] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(1.5f,  1.0f,  0.0f),
 		glm::vec3(-1.0f,  1.0f,  -1.5f),
 		glm::vec3(2.0f,  5.0f, -15.0f),
 		glm::vec3(-2.5f, -4.2f, -4.5f),
@@ -56,9 +62,17 @@ private:
 		glm::vec3(2.4f, -1.4f, -3.5f)
 	};
 
-	glm::mat4 view_M;
-	glm::mat4 proj_M = glm::mat4(1.0f);
-	glm::mat4 normal_M;
+	const unsigned int WIDTH = 800;
+	const unsigned int HEIGHT = 600;
+
+	unsigned int gBuffer;
+	unsigned int gPos, gNorm, gColorSpec;
+
+	unsigned int quadVAO = 0;
+	unsigned int quadVBO;
+
+	void configureG_Buffer();
+	void renderQuad();
 };
 
 #endif

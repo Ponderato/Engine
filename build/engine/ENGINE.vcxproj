@@ -280,13 +280,21 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h" />
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShader2.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_fs.glsl">
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShaderSun.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_vs.glsl">
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShader2.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\geometryPass_fs.glsl">
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShaderSun.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\geometryPass_vs.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightBox_fs.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightBox_vs.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightingPass_fs.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightingPass_vs.glsl">
     </None>
   </ItemGroup>
   <ItemGroup>

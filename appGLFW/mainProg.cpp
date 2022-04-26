@@ -28,8 +28,10 @@ int main(){
 
 	GLFWwindow* window = initContext();
 	context.initOGL();
-	context.initShaders("vertexShader2.glsl", "fragmentShader2.glsl");
-	context.initShaders("vertexShaderSun.glsl", "fragmentShaderSun.glsl");
+	context.initShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
+	context.initShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
+	context.initShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
+	context.initShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
 	context.initData();
 	
 	//render loop
@@ -46,8 +48,8 @@ int main(){
 		context.render();
 	
 		//check and call events and swap buffers
-		glfwPollEvents();
 		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
 	//Terminate and clean all GLFW's resources allocated when we exit the render loop.
@@ -78,8 +80,8 @@ GLFWwindow* initContext() {
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	return window;
 }

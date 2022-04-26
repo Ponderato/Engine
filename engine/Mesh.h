@@ -6,7 +6,9 @@
 #include <glm.hpp>
 #include <string>
 #include <vector>
+#include <iostream>
 
+#include "stb_image.h"
 #include "Program.h"
 
 struct Vertex {

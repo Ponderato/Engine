@@ -1,6 +1,5 @@
 #include "Model.h"
 #include <iostream>
-#include "stb_image.h"
 
 Model::Model(const std::string &path) {
 	LoadModel(path);
@@ -12,6 +11,7 @@ void Model::Draw(Program& program) {
 		meshes[i].Draw(program);
 	}
 }
+
 
 void Model::LoadModel(std::string path) {
 

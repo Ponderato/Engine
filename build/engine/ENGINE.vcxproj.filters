@@ -53,16 +53,28 @@
     <CustomBuild Include="D:\Fake Escritorio\GitHub\Engine\engine\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShader2.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_fs.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\fragmentShaderSun.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_vs.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShader2.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\geometryPass_fs.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\vertexShaderSun.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\geometryPass_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightBox_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightBox_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightingPass_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\lightingPass_vs.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -103,3 +103,4 @@ Cube::Cube() {
 void Cube::Draw(Program& program){
 	mesh->Draw(program);
 }
+
