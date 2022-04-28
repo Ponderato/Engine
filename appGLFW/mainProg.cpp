@@ -27,12 +27,12 @@ void processInput(GLFWwindow* window);
 int main(){
 
 	GLFWwindow* window = initContext();
-	context.initOGL();
-	context.initShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
-	context.initShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
-	context.initShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
-	context.initShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
-	context.initData();
+	context.InitOGL();
+	context.InitShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
+	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
+	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
+	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
+	context.InitData();
 	
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -45,7 +45,7 @@ int main(){
 		processInput(window);
 	
 		//rendering commands
-		context.render();
+		context.Render();
 	
 		//check and call events and swap buffers
 		glfwSwapBuffers(window);
@@ -74,7 +74,7 @@ GLFWwindow* initContext() {
 
 	//We initialize glew. GLEW sets the pointer functions for your platform.
 	//OpenGL nedds to be initialized by this point. Here that is done in glfwMakeContextCurrent.
-	context.initGLEW();
+	context.InitGLEW();
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);

@@ -14,6 +14,12 @@
 #include "Camera.h"
 #include "Model.h"
 
+#include "Step.h"
+#include "GeometryStep.h"
+#include "LightingStep.h"
+#include "CopyStep.h"
+#include "ForwardStep.h"
+
 class Context
 {
 public:
@@ -21,38 +27,37 @@ public:
 
 	Context();
 
-	void initGLEW();
+	void InitGLEW();
 
-	void initOGL();
+	void InitOGL();
 
-	void initData();
+	void InitData();
 
-	void initShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
+	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
 
-	void render();
+	void Render();
 
 private:
-	
-	std::vector<Program> programs;
-	std::vector<Cube> cubes;
-	std::vector<Model> models;
-	std::vector<Cube> lightCubes;
 
+	const unsigned int WIDTH = 800;
+	const unsigned int HEIGHT = 600;
+
+	//Matrices
 	glm::mat4 view_M;
 	glm::mat4 proj_M = glm::mat4(1.0f);
-	//glm::mat4 normal_M;
 
-	const glm::vec3 lightPos[3] = {
+	//Light & cube data
+	glm::vec3 lightPos[3] = {
 	glm::vec3(2.0f, 2.0f, 0.0f),
 	glm::vec3(-2.0f, -3.0f, -4.0f),
 	glm::vec3(1.5f, 1.0f, -6.0f)
 	};
-	const glm::vec3 lightColor[3] = {
+	glm::vec3 lightColor[3] = {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	};
-	const glm::vec3 cubePositions[7] = {
+	glm::vec3 cubePositions[7] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
 		glm::vec3(1.5f,  1.0f,  0.0f),
 		glm::vec3(-1.0f,  1.0f,  -1.5f),
@@ -62,17 +67,37 @@ private:
 		glm::vec3(2.4f, -1.4f, -3.5f)
 	};
 
-	const unsigned int WIDTH = 800;
-	const unsigned int HEIGHT = 600;
-
+	//Gbuffer data
 	unsigned int gBuffer;
 	unsigned int gPos, gNorm, gColorSpec;
 
+	//QUAD data
 	unsigned int quadVAO = 0;
 	unsigned int quadVBO;
+	//Vertex + texCoords
+	const float quadVertices[20] = {
+		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+		 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+		 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+	}; 
 
-	void configureG_Buffer();
-	void renderQuad();
+	//Vectors
+	std::vector<Program> programs;
+	std::vector<Cube> cubes;
+	std::vector<Model> models;
+	std::vector<Cube> lightCubes;
+
+	//Steps
+	Step fatherStep;
+	GeometryStep gStep;
+	LightingStep lStep;
+	CopyStep cStep;
+	ForwardStep fStep;
+
+	//Methods
+	void ConfigureG_Buffer();
+	void RenderQuad();
 };
 
 #endif

@@ -7,7 +7,19 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\CopyStep.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\LightingStep.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.cpp">
@@ -17,6 +29,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.cpp">
@@ -30,7 +45,19 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\CopyStep.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\LightingStep.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Mesh.h">
@@ -40,6 +67,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h">

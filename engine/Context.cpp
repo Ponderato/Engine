@@ -6,7 +6,7 @@ Context::Context() {
 }
 
 //Initialize GLEW library.
-void Context::initGLEW() {
+void Context::InitGLEW() {
 
 	//We initialize glew. GLEW sets the pointer functions for your platform.
 	glewExperimental = GL_TRUE;
@@ -18,7 +18,7 @@ void Context::initGLEW() {
 }
 
 //Initialize OpenGL.
-void Context::initOGL() {
+void Context::InitOGL() {
 
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 
@@ -34,9 +34,9 @@ void Context::initOGL() {
 //!!!!!!!!!!!!!!!!!!!!SEPARATE THIS METHOD into initCubeData() in order to make 
 //!!!!!!!!!!!!!!!! possible to render different cubes with different textures
 //Initialize data
-void Context::initData() {
+void Context::InitData() {
 
-	configureG_Buffer();
+	ConfigureG_Buffer();
 
 	//Objects
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
@@ -71,14 +71,98 @@ void Context::initData() {
 }
 
 //Initialize the shaders
-void Context::initShaders(const char* vertexShaderPath, const char* fragmentShaderPath) {
+void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath) {
 	programs.push_back(Program(vertexShaderPath, fragmentShaderPath));
 }
 
-//Render stuff
-void Context::render() {
+//Configure g_buffer framebuffer for deferred shading
+void Context::ConfigureG_Buffer() {
+
+	glGenFramebuffers(1, &gBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+
+	//Position color buffer
+	glGenTextures(1, &gPos);
+	glBindTexture(GL_TEXTURE_2D, gPos);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPos, 0);
+
+	//Normal color buffer
+	glGenTextures(1, &gNorm);
+	glBindTexture(GL_TEXTURE_2D, gNorm);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNorm, 0);
+
+	//Color + Specular color buffer
+	glGenTextures(1, &gColorSpec);
+	glBindTexture(GL_TEXTURE_2D, gColorSpec);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gColorSpec, 0);
+
+	//Tell OpenGL which color attachments we are rendering into.
+	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(3, attachments);
+
+	//Depth buffer
+	unsigned int depthBuffer;
+	glGenRenderbuffers(1, &depthBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, WIDTH, HEIGHT);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+	//Check if framebuffer is complete
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "Framebuffer not complete!!!!!" << std::endl;
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+//Render the deferred shading QUAD
+void Context::RenderQuad() {
+	if (quadVAO == 0)
+	{
+		//Setup the plane VAO
+		//The location numbers have to match with the lightingPass_vs layout ins
+		//locations, since that is the shader that will be active when rendering
+
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	}
+	glBindVertexArray(quadVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
+}
+
+
+//Render
+void Context::Render() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	//-----------STEPS-------------------
+	//MAKE IT MOREEEEEEE GENERIC. IT HAS TO WORK WITH ANYTHING. THE PARAMETERS BELOW  NOT VERY EFFECTIVE
+
+	gStep.RenderStep(camera, programs[2], &gBuffer, &cubes, cubePositions, &models);
+	lStep.RenderStep(camera, programs[3], &gPos, &gNorm, &gColorSpec);
+	cStep.RenderStep(&gBuffer, 0, GL_DEPTH_BUFFER_BIT, WIDTH, HEIGHT);
+	fStep.RenderStep(camera, programs[1], &lightCubes, lightPos, lightColor);
+
+
+	/*
 
 	view_M = camera.GetLookAtMatrix();
 	proj_M = glm::perspective(glm::radians(camera.fov), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -191,7 +275,7 @@ void Context::render() {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gColorSpec);
 
-	renderQuad();
+	RenderQuad();
 	//--------------------------------------------------------------------
 
 	//Copy data from geometry's depth buffer to default framebuffer's one.
@@ -200,7 +284,7 @@ void Context::render() {
 	glBlitFramebuffer(0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	//Render the lights using the depth buffer data.
+	//Render the lights with FORWARD RENDERING
 	programs[1].Use();
 	programs[1].SetMat4("projM", proj_M);
 	programs[1].SetMat4("viewM", view_M);
@@ -277,82 +361,8 @@ void Context::render() {
 	//programs[1].SetVec3("lightColor", lightColor[2]);
 	//lightCubes[2].Draw(programs[1]);
 
-}
-
-//Configure g_buffer framebuffer for deferred shading
-void Context::configureG_Buffer() {
-
-	glGenFramebuffers(1, &gBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
-
-	//Position color buffer
-	glGenTextures(1, &gPos);
-	glBindTexture(GL_TEXTURE_2D, gPos);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPos, 0);
-
-	//Normal color buffer
-	glGenTextures(1, &gNorm);
-	glBindTexture(GL_TEXTURE_2D, gNorm);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNorm, 0);
-
-	//Color + Specular color buffer
-	glGenTextures(1, &gColorSpec);
-	glBindTexture(GL_TEXTURE_2D, gColorSpec);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gColorSpec, 0);
-
-	//Tell OpenGL which color attachments we are rendering into.
-	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-	glDrawBuffers(3, attachments);
-
-	//Depth buffer
-	unsigned int depthBuffer;
-	glGenRenderbuffers(1, &depthBuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, WIDTH, HEIGHT);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 	
-	//Check if framebuffer is complete
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		std::cout << "Framebuffer not complete!!!!!" << std::endl;
-	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	*/
 }
 
-void Context::renderQuad() {
-	if (quadVAO == 0)
-	{
-		//vertex + texCoords
-		float quadVertices[] = {
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		};
 
-		//Setup the plane VAO
-		//The location numbers have to match with the lightingPass_vs layout ins
-		//locations, since that is the shader that will be active when rendering
-
-		glGenVertexArrays(1, &quadVAO);
-		glGenBuffers(1, &quadVBO);
-		glBindVertexArray(quadVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	}
-	glBindVertexArray(quadVAO);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-}

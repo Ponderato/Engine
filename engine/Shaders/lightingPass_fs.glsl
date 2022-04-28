@@ -34,13 +34,13 @@ vec3 pointLShade(vec3 color, vec3 lightPos){
     float attenuation = 1.0 / (kConst + kLinear*dist + kQuad*dist*dist);
 
     //Ambient lighting.
-    vec3 ambientL = color * diffuse * 0.1f; //We take here the diffuse vec3 since
+    vec3 ambientL = color * diffuse * 0.0f; //We take here the diffuse vec3 since
     //it is obtained from the rgb components of colorSpec, which is the Albedo.
     //ambient *= attenuation;
 
     //Diffuse lighting.
     vec3 lightDir = normalize(lightPos - fragPos);
-    float diff = max(dot(normal, lightDir), 0.0); //Ligth impact on the fragment
+    float diff = max(dot(normal, lightDir), 0.1); //Ligth impact on the fragment
     vec3 diffuseL = color * diffuse * diff;
     diffuseL *= attenuation;
 
@@ -73,6 +73,11 @@ void main()
         result += pointLShade(lightColor[i], lightPosition[i]);
     }
 
-    fColor = vec4(result, 1.0f);
+    if((normal.r == 0) && (normal.g == 0) && (normal.b == 0)){
+        fColor = vec4(1.0f, 0.0f, 1.0f, 1.0f);
+    }else{
+        fColor = vec4(result, 1.0f);
+    }
+    
     //fColor = vec4(1.0f, 0.0f, 1.0f, 0.0f);
 }

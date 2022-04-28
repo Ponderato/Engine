@@ -1,5 +1,5 @@
 #include "Model.h"
-#include <iostream>
+
 
 Model::Model(const std::string &path) {
 	LoadModel(path);
