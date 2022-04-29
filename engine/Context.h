@@ -11,6 +11,7 @@
 
 #include "Program.h"
 #include "Cube.h"
+#include "LightCube.h"
 #include "Camera.h"
 #include "Model.h"
 
@@ -42,10 +43,6 @@ private:
 	const unsigned int WIDTH = 800;
 	const unsigned int HEIGHT = 600;
 
-	//Matrices
-	glm::mat4 view_M;
-	glm::mat4 proj_M = glm::mat4(1.0f);
-
 	//Light & cube data
 	glm::vec3 lightPos[3] = {
 	glm::vec3(2.0f, 2.0f, 0.0f),
@@ -71,25 +68,13 @@ private:
 	unsigned int gBuffer;
 	unsigned int gPos, gNorm, gColorSpec;
 
-	//QUAD data
-	unsigned int quadVAO = 0;
-	unsigned int quadVBO;
-	//Vertex + texCoords
-	const float quadVertices[20] = {
-		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-		 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-	}; 
-
 	//Vectors
 	std::vector<Program> programs;
 	std::vector<Cube> cubes;
 	std::vector<Model> models;
-	std::vector<Cube> lightCubes;
+	std::vector<LightCube> lightCubes;
 
 	//Steps
-	Step fatherStep;
 	GeometryStep gStep;
 	LightingStep lStep;
 	CopyStep cStep;
@@ -97,7 +82,6 @@ private:
 
 	//Methods
 	void ConfigureG_Buffer();
-	void RenderQuad();
 };
 
 #endif

@@ -9,7 +9,7 @@ class ForwardStep : public Step
 {
 public:
 
-	void RenderStep(Camera& camera, Program& program, std::vector<Cube>* lightCubes, const glm::vec3 positions[], const glm::vec3 colors[]) override;
+	void RenderStep(Camera& camera, Program& program, std::vector<LightCube>* lightCubes) override;
 };
 
 #endif

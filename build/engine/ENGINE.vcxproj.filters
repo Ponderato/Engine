@@ -19,6 +19,9 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\LightCube.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\LightingStep.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -29,6 +32,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneData.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.cpp">
@@ -57,6 +63,9 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\LightCube.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\LightingStep.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -67,6 +76,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneData.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.h">

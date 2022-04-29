@@ -10,12 +10,17 @@ class Cube
 {
 public:
 
-	//Constructors with & without emmisive texture map
-	Cube(std::string diffuse, std::string specular, std::string emissive);
-	Cube(std::string diffuse, std::string specular);
+	glm::vec3 position = glm::vec3(0);
 
-	//Constructor with no textures
-	Cube();
+	//Default constructor
+	Cube() {};
+
+	//Constructors with & without emmisive texture map
+	Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position);
+	Cube(std::string diffuse, std::string specular, glm::vec3 position);
+
+	//No textures
+	Cube(glm::vec3 position);
 
 	void Draw(Program &program);
 private:

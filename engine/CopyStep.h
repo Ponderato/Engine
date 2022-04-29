@@ -12,6 +12,7 @@ public:
 	CopyStep() {};
 
 	void RenderStep(unsigned int* readBuffer, unsigned int* drawBuffer, GLbitfield mask, unsigned int width, unsigned int height) override;
+	void RenderStep(unsigned int* readBuffer, GLbitfield mask, unsigned int width, unsigned int height) override;
 };
 
 #endif

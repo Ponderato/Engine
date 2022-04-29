@@ -6,4 +6,6 @@ void Step::RenderStep(Camera& camera, Program& program, unsigned int* gPos, unsi
 
 void Step::RenderStep(unsigned int* readBuffer, unsigned int* drawBuffer, GLbitfield mask, unsigned int width, unsigned int height) {}
 
-void Step::RenderStep(Camera& camera, Program& program, std::vector<Cube>* lightCubes, const glm::vec3 positions[], const glm::vec3 colors[]) {}
+void Step::RenderStep(unsigned int* readBuffer, GLbitfield mask, unsigned int width, unsigned int height) {}
+
+void Step::RenderStep(Camera& camera, Program& program, std::vector<LightCube>* lightCubes) {}

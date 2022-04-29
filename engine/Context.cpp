@@ -40,15 +40,15 @@ void Context::InitData() {
 
 	//Objects
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
-	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg"));
-	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg"));
+	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0]));
+	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1]));
 
 	for (int i = 2; i < 7; i++) {
-		cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg"));
+		cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i]));
 	}
 
 	for (int i = 0; i < 3; i++) {
-		lightCubes.push_back(Cube());
+		lightCubes.push_back(LightCube(lightPos[i], lightColor[i]));
 	}
 
 	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
@@ -123,30 +123,6 @@ void Context::ConfigureG_Buffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-//Render the deferred shading QUAD
-void Context::RenderQuad() {
-	if (quadVAO == 0)
-	{
-		//Setup the plane VAO
-		//The location numbers have to match with the lightingPass_vs layout ins
-		//locations, since that is the shader that will be active when rendering
-
-		glGenVertexArrays(1, &quadVAO);
-		glGenBuffers(1, &quadVBO);
-		glBindVertexArray(quadVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	}
-	glBindVertexArray(quadVAO);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
-}
-
-
 //Render
 void Context::Render() {
 
@@ -158,9 +134,8 @@ void Context::Render() {
 
 	gStep.RenderStep(camera, programs[2], &gBuffer, &cubes, cubePositions, &models);
 	lStep.RenderStep(camera, programs[3], &gPos, &gNorm, &gColorSpec);
-	cStep.RenderStep(&gBuffer, 0, GL_DEPTH_BUFFER_BIT, WIDTH, HEIGHT);
-	fStep.RenderStep(camera, programs[1], &lightCubes, lightPos, lightColor);
-
+	cStep.RenderStep(&gBuffer, GL_DEPTH_BUFFER_BIT, WIDTH, HEIGHT);
+	fStep.RenderStep(camera, programs[1], &lightCubes);
 
 	/*
 

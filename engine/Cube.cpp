@@ -1,7 +1,7 @@
 #include "Cube.h"
 #include <glm.hpp>
 
-Cube::Cube(std::string diffuse, std::string specular, std::string emissive) {
+Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position) {
 	
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -32,12 +32,14 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive) {
 	textures.push_back({ NULL, "matDiffuse", diffuse });
 	textures.push_back({ NULL, "matSpecular", specular });
 	textures.push_back({ NULL, "matEmissive", emissive });
+
+	this->position = position;
 	
 	mesh = new Mesh(vertices, textures, indices);
 }
 
 
-Cube::Cube(std::string diffuse, std::string specular) {
+Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position) {
 
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -68,10 +70,12 @@ Cube::Cube(std::string diffuse, std::string specular) {
 	textures.push_back({ NULL, "matDiffuse", diffuse });
 	textures.push_back({ NULL, "matSpecular", specular });
 
+	this->position = position;
+
 	mesh = new Mesh(vertices, textures, indices);
 }
 
-Cube::Cube() {
+Cube::Cube(glm::vec3 position) {
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -96,6 +100,8 @@ Cube::Cube() {
 	for (int i = 0; i < 36; i++) {
 		indices.push_back(cubeTriangleIndex[i]);
 	}
+
+	this->position = position;
 
 	mesh = new Mesh(vertices, indices);
 }

@@ -12,9 +12,6 @@ void GeometryStep::RenderStep(Camera& camera, Program& program, unsigned int* gB
 	program.SetMat4("projM", proj_M);
 	program.SetMat4("viewM", view_M);
 
-	glm::mat4 model = glm::mat4(1.0f);
-	glm::mat4 normal = glm::mat4(1.0f);
-
 	for (int i = 0; i < cubes->size(); i++) {
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, cubePositions[i]);
