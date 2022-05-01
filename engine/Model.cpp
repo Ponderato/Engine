@@ -1,8 +1,12 @@
 #include "Model.h"
 
 
-Model::Model(const std::string &path) {
+Model::Model(const std::string &path, glm::vec3 position, glm::vec3 scale) {
+
 	LoadModel(path);
+
+	this->position = position;
+	this->scale = scale;
 };
 
 void Model::Draw(Program& program) {

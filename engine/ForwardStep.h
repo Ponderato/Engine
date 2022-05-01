@@ -9,7 +9,16 @@ class ForwardStep : public Step
 {
 public:
 
-	void RenderStep(Camera& camera, Program& program, std::vector<LightCube>* lightCubes) override;
+	ForwardStep(Camera& camera, Program& program, std::vector<LightCube>& cubes);
+
+	void RenderStep(unsigned int& inBuffer, unsigned int& outBuffer) override;
+private:
+
+	Camera& camera;
+	Program& program;
+
+	std::vector<LightCube>& cubes;
+
 };
 
 #endif

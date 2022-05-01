@@ -9,10 +9,15 @@ class CopyStep : public Step
 {
 public:
 
-	CopyStep() {};
+	CopyStep(GLbitfield mask, unsigned int width, unsigned int height);
 
-	void RenderStep(unsigned int* readBuffer, unsigned int* drawBuffer, GLbitfield mask, unsigned int width, unsigned int height) override;
-	void RenderStep(unsigned int* readBuffer, GLbitfield mask, unsigned int width, unsigned int height) override;
+	void RenderStep(unsigned int& readBuffer, unsigned int& drawBuffer) override;
+private:
+
+	GLbitfield mask;
+
+	const unsigned int width;
+	const unsigned int height;
 };
 
 #endif

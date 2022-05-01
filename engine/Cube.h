@@ -10,17 +10,18 @@ class Cube
 {
 public:
 
-	glm::vec3 position = glm::vec3(0);
+	glm::vec3 position = glm::vec3(0.0f);
+	glm::vec3 scale = glm::vec3(1.0f);
 
 	//Default constructor
 	Cube() {};
 
 	//Constructors with & without emmisive texture map
-	Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position);
-	Cube(std::string diffuse, std::string specular, glm::vec3 position);
+	Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale);
+	Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale);
 
 	//No textures
-	Cube(glm::vec3 position);
+	Cube(glm::vec3 position, glm::vec3 scale);
 
 	void Draw(Program &program);
 private:

@@ -9,13 +9,20 @@ class LightingStep : public Step
 {
 public:
 
-	LightingStep() {};
+	LightingStep(Camera& camera, Program& program, unsigned int& gPos, unsigned int& gNorm, unsigned int& gColorSpec);
 
-	void RenderStep(Camera& camera, Program& program, unsigned int* gPos, unsigned int* gNorm, unsigned int* gColorSpec) override;
+	void RenderStep(unsigned int& inBuffer, unsigned int& outBuffer) override;
 private:
 
+	Camera& camera;
+	Program& program;
+
+	unsigned int& gPos;
+	unsigned int& gNorm;
+	unsigned int& gColorSpec;
+
 	//QUAD data
-	unsigned int quadVAO = 0;
+	unsigned int quadVAO;
 	unsigned int quadVBO;
 	//Vertex + texCoords
 	const float quadVertices[20] = {

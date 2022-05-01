@@ -9,9 +9,17 @@ class GeometryStep : public Step
 {
 public:
 
-	GeometryStep() {};
+	GeometryStep(Camera& camera, Program& program, std::vector<Cube>& cubes, std::vector<Model>& models);
 
-	void RenderStep(Camera& camera, Program& program, unsigned int* gBuffer, std::vector<Cube>* cubes, glm::vec3 cubePositions[], std::vector<Model>* models) override;
+	void RenderStep(unsigned int& inBuffer, unsigned int& outBuffer) override;
+
+private:
+
+	Camera& camera;
+	Program& program;
+
+	std::vector<Cube>& cubes;
+	std::vector<Model>& models;
 };
 
 

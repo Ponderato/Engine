@@ -1,7 +1,7 @@
 #include "Cube.h"
 #include <glm.hpp>
 
-Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position) {
+Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale) {
 	
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -34,12 +34,13 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 	textures.push_back({ NULL, "matEmissive", emissive });
 
 	this->position = position;
+	this->scale = scale;
 	
 	mesh = new Mesh(vertices, textures, indices);
 }
 
 
-Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position) {
+Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale) {
 
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -71,11 +72,12 @@ Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position) {
 	textures.push_back({ NULL, "matSpecular", specular });
 
 	this->position = position;
+	this->scale = scale;
 
 	mesh = new Mesh(vertices, textures, indices);
 }
 
-Cube::Cube(glm::vec3 position) {
+Cube::Cube(glm::vec3 position, glm::vec3 scale) {
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -102,6 +104,7 @@ Cube::Cube(glm::vec3 position) {
 	}
 
 	this->position = position;
+	this->scale = scale;
 
 	mesh = new Mesh(vertices, indices);
 }

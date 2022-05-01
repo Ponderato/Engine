@@ -1,8 +1,13 @@
 #include "GeometryStep.h"
 
-void GeometryStep::RenderStep(Camera& camera, Program& program, unsigned int* gBuffer, std::vector<Cube>* cubes, glm::vec3 cubePositions[], std::vector<Model>* models) {
+GeometryStep::GeometryStep(Camera& camera, Program& program, std::vector<Cube>& cubes, std::vector<Model>& models)
+	: camera(camera), program(program), cubes(cubes), models(models) {
 
-	glBindFramebuffer(GL_FRAMEBUFFER, *gBuffer);
+}
+
+void GeometryStep::RenderStep(unsigned int& inBuffer, unsigned int& outBuffer) {
+
+	glBindFramebuffer(GL_FRAMEBUFFER, inBuffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	view_M = camera.GetLookAtMatrix();
@@ -12,24 +17,22 @@ void GeometryStep::RenderStep(Camera& camera, Program& program, unsigned int* gB
 	program.SetMat4("projM", proj_M);
 	program.SetMat4("viewM", view_M);
 
-	for (int i = 0; i < cubes->size(); i++) {
+	for (int i = 0; i < cubes.size(); i++) {
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, cubePositions[i]);
+		model = glm::translate(model, cubes.at(i).position);
 		normal = glm::transpose(inverse(model));
 		program.SetMat4("modelM", model);
 		program.SetMat4("normalM", normal);
-		cubes->at(i).Draw(program);
+		cubes.at(i).Draw(program);
 	}
 
-	for (int i = 0; i < models->size(); i++) {
+	for (int i = 0; i < models.size(); i++) {
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(2.0f, -2.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(100.0f));
+		model = glm::translate(model, models.at(i).position);
+		model = glm::scale(model, models.at(i).scale);
 		normal = glm::transpose(glm::inverse(model));
 		program.SetMat4("modelM", model);
 		program.SetMat4("normalM", normal);
-		models->at(i).Draw(program);
+		models.at(i).Draw(program);
 	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

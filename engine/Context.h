@@ -64,8 +64,11 @@ private:
 		glm::vec3(2.4f, -1.4f, -3.5f)
 	};
 
-	//Gbuffer data
+	//Framebuffers
+	unsigned int defaultFBuffer = 0;
 	unsigned int gBuffer;
+
+	//Gbuffer data
 	unsigned int gPos, gNorm, gColorSpec;
 
 	//Vectors
@@ -75,10 +78,10 @@ private:
 	std::vector<LightCube> lightCubes;
 
 	//Steps
-	GeometryStep gStep;
-	LightingStep lStep;
-	CopyStep cStep;
-	ForwardStep fStep;
+	GeometryStep* gStep;
+	LightingStep* lStep;
+	CopyStep* cStep;
+	ForwardStep* fStep;
 
 	//Methods
 	void ConfigureG_Buffer();
