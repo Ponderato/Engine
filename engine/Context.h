@@ -13,7 +13,7 @@
 #include "Cube.h"
 #include "LightCube.h"
 #include "Camera.h"
-#include "Model.h"
+#include "AssimpModel.h"
 
 #include "Step.h"
 #include "GeometryStep.h"
@@ -74,7 +74,7 @@ private:
 	//Vectors
 	std::vector<Program> programs;
 	std::vector<Cube> cubes;
-	std::vector<Model> models;
+	std::vector<AssimpModel> models;
 	std::vector<LightCube> lightCubes;
 
 	//Steps

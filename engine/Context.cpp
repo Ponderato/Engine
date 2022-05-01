@@ -20,7 +20,7 @@ void Context::InitGLEW() {
 //Initialize OpenGL.
 void Context::InitOGL() {
 
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	//glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -53,7 +53,7 @@ void Context::InitData() {
 
 	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
 
-	models.push_back(Model("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100)));
+	models.push_back(AssimpModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100)));
 
 	//------------------UNIFORMS (lighting info)-----------------
 	//programs[0].Use();
@@ -133,7 +133,6 @@ void Context::ConfigureG_Buffer() {
 //Render
 void Context::Render() {
 
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//-----------STEPS-------------------

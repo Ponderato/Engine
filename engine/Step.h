@@ -4,14 +4,11 @@
 #define STEP_H
 
 #include <GL/glew.h>
-#include <glm.hpp>
-#include <ext/matrix_transform.hpp>
-#include <ext/matrix_clip_space.hpp>
 
 #include "Camera.h"
 #include "Cube.h"
 #include "LightCube.h"
-#include "Model.h"
+#include "AssimpModel.h"
 
 class Step 
 {

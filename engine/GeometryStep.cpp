@@ -1,6 +1,6 @@
 #include "GeometryStep.h"
 
-GeometryStep::GeometryStep(Camera& camera, Program& program, std::vector<Cube>& cubes, std::vector<Model>& models)
+GeometryStep::GeometryStep(Camera& camera, Program& program, std::vector<Cube>& cubes, std::vector<AssimpModel>& models)
 	: camera(camera), program(program), cubes(cubes), models(models) {
 
 }

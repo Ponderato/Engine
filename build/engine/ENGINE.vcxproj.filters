@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\AssimpModel.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -37,6 +40,9 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneData.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneGeometryData.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -45,6 +51,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\AssimpModel.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.h">
       <Filter>Headers</Filter>
     </ClInclude>

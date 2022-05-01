@@ -3,15 +3,11 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "Mesh.h"
-#include "Program.h"
+#include "Model.h"
 
-class Cube 
+class Cube : public Model
 {
 public:
-
-	glm::vec3 position = glm::vec3(0.0f);
-	glm::vec3 scale = glm::vec3(1.0f);
 
 	//Default constructor
 	Cube() {};
@@ -23,7 +19,7 @@ public:
 	//No textures
 	Cube(glm::vec3 position, glm::vec3 scale);
 
-	void Draw(Program &program);
+	void Draw(Program &program) override;
 private:
 
 	float cubeVertices[72] = {

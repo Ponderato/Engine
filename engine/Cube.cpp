@@ -1,5 +1,4 @@
 #include "Cube.h"
-#include <glm.hpp>
 
 Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale) {
 	

@@ -265,6 +265,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\AssimpModel.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\CopyStep.cpp" />
@@ -277,8 +278,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Model.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneData.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneGeometryData.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.cpp" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\AssimpModel.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Camera.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Context.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\CopyStep.h" />
