@@ -1,13 +1,13 @@
 #include "ForwardStep.h"
 
-ForwardStep::ForwardStep(Camera& camera, Program& program, std::vector<LightCube>& cubes) 
-	: camera(camera), program(program), cubes(cubes){
+ForwardStep::ForwardStep(Camera& camera, Program& program, std::vector<Model*> models) 
+	: camera(camera), program(program), models(models){
 
 }
 
-void ForwardStep::RenderStep(unsigned int& inBuffer, unsigned int& outBuffer) {
+void ForwardStep::RenderStep() {
 
-	glBindFramebuffer(GL_FRAMEBUFFER, inBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	view_M = camera.GetLookAtMatrix();
@@ -17,12 +17,21 @@ void ForwardStep::RenderStep(unsigned int& inBuffer, unsigned int& outBuffer) {
 	program.SetMat4("projM", proj_M);
 	program.SetMat4("viewM", view_M); 
 
-	for (int i = 0; i < cubes.size(); i++) {
+	for (int i = 0; i < models.size(); i++) {
+
+		LightCube* aux = dynamic_cast<LightCube*>(models.at(i));
+
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, cubes.at(i).position);
-		model = glm::scale(model, cubes.at(i).scale);
+		model = glm::translate(model, models.at(i)->transform.position);
+		model = glm::scale(model, models.at(i)->transform.scale);
 		program.SetMat4("modelM", model);
-		program.SetVec3("lightColor", cubes.at(i).color);
-		cubes.at(i).Draw(program);
+
+		if (aux != nullptr) {
+			program.SetVec3("lightColor", aux->color);
+		}else {
+			program.SetMat4("normalM", glm::transpose(glm::inverse(model)));
+		}
+
+		models.at(i)->Draw(program);
 	}
 }

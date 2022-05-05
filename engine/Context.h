@@ -15,11 +15,12 @@
 #include "Camera.h"
 #include "AssimpModel.h"
 
-#include "Step.h"
+
 #include "GeometryStep.h"
 #include "LightingStep.h"
 #include "CopyStep.h"
 #include "ForwardStep.h"
+#include "Pipeline.h"
 
 class Context
 {
@@ -68,23 +69,18 @@ private:
 	unsigned int defaultFBuffer = 0;
 	unsigned int gBuffer;
 
-	//Gbuffer data
+	//Gbuffer data (Texture Id's)
 	unsigned int gPos, gNorm, gColorSpec;
 
 	//Vectors
 	std::vector<Program> programs;
-	std::vector<Cube> cubes;
-	std::vector<AssimpModel> models;
-	std::vector<LightCube> lightCubes;
+	std::vector<Model*> cubes;
+	std::vector<Model*> models;
+	std::vector<Model*> lightCubes;
 
-	//Steps
-	GeometryStep* gStep;
-	LightingStep* lStep;
-	CopyStep* cStep;
-	ForwardStep* fStep;
+	//Pipeline
+	Pipeline* pipeline;
 
-	//Methods
-	void ConfigureG_Buffer();
 };
 
 #endif

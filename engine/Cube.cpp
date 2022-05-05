@@ -32,8 +32,8 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 	textures.push_back({ NULL, "matSpecular", specular });
 	textures.push_back({ NULL, "matEmissive", emissive });
 
-	this->position = position;
-	this->scale = scale;
+	this->transform.position = position;
+	this->transform.scale = scale;
 	
 	mesh = new Mesh(vertices, textures, indices);
 }
@@ -70,8 +70,8 @@ Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::v
 	textures.push_back({ NULL, "matDiffuse", diffuse });
 	textures.push_back({ NULL, "matSpecular", specular });
 
-	this->position = position;
-	this->scale = scale;
+	this->transform.position = position;
+	this->transform.scale = scale;
 
 	mesh = new Mesh(vertices, textures, indices);
 }
@@ -102,8 +102,8 @@ Cube::Cube(glm::vec3 position, glm::vec3 scale) {
 		indices.push_back(cubeTriangleIndex[i]);
 	}
 
-	this->position = position;
-	this->scale = scale;
+	this->transform.position = position;
+	this->transform.scale = scale;
 
 	mesh = new Mesh(vertices, indices);
 }

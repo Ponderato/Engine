@@ -61,23 +61,21 @@ vec3 pointLShade(vec3 color, vec3 lightPos){
 
 void main()
 {
-	//First get the data from the gBuffer
+    //First get the data from the gBuffer
 	fragPos = texture(gPos, texCoords).rgb;
 	normal = texture(gNorm, texCoords).rgb;
 	diffuse = texture(gColorSpec, texCoords).rgb;
 	specular = texture(gColorSpec, texCoords).a;
 
-	//Now light calculations as usual
-    vec3 result;
-    for (int i = 0; i < 3; i++){
-        result += pointLShade(lightColor[i], lightPosition[i]);
-    }
-
-    if((normal.r == 0) && (normal.g == 0) && (normal.b == 0)){
-        fColor = vec4(1.0f, 0.0f, 1.0f, 1.0f);
+    if((normal.r == 0) && (normal.g == 0) && (normal.b == 0)){  
+        fColor = vec4(0.2f, 0.2f, 0.2f, 1.0f);
     }else{
+	    //Now light calculations as usual
+        vec3 result;
+        for (int i = 0; i < 3; i++){
+            result += pointLShade(lightColor[i], lightPosition[i]);
+        }
+
         fColor = vec4(result, 1.0f);
     }
-    
-    //fColor = vec4(1.0f, 0.0f, 1.0f, 0.0f);
 }

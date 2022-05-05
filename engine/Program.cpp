@@ -1,10 +1,4 @@
-#include <gl/glew.h>
-#include <glm.hpp>
 
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 
 #include "Program.h"
 

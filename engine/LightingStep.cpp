@@ -1,7 +1,7 @@
 #include "LightingStep.h"
 
-LightingStep::LightingStep(Camera& camera, Program& program, unsigned int& gPos, unsigned int& gNorm, unsigned int& gColorSpec) 
-	: camera(camera), program(program), gPos(gPos), gNorm(gNorm), gColorSpec(gColorSpec) {
+LightingStep::LightingStep(Camera& camera, Program& program) 
+	: camera(camera), program(program) {
 
 	//Setup the plane VAO
 	//The location numbers have to match with the lightingPass_vs layout ins
@@ -18,20 +18,25 @@ LightingStep::LightingStep(Camera& camera, Program& program, unsigned int& gPos,
 
 }
 
-void LightingStep::RenderStep(unsigned int& inBuffer, unsigned int& outBuffer){
+void LightingStep::RenderStep(){
 
-	glBindFramebuffer(GL_FRAMEBUFFER, inBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	program.Use();
 	program.SetVec3("viewerPos", camera.position);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, gPos);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gNorm);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gColorSpec);
+	for (unsigned int i = 0; i < dataTextures.size(); i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, *dataTextures.at(i));
+	}
+
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, gPos);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, gNorm);
+	//glActiveTexture(GL_TEXTURE2);
+	//glBindTexture(GL_TEXTURE_2D, gColorSpec);
 
 	RenderQuad();
 }

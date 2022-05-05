@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
 
+
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures, std::vector<unsigned int> indices) {
 	
 	this->vertices = vertices;

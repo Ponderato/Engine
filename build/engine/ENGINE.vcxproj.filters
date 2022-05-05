@@ -34,16 +34,19 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Model.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Node.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Pipeline.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneData.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneGeometryData.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Texture.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.cpp">
@@ -84,13 +87,19 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Model.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Node.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Pipeline.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\SceneData.h">
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.h">
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Texture.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h">

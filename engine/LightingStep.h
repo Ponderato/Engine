@@ -9,17 +9,13 @@ class LightingStep : public Step
 {
 public:
 
-	LightingStep(Camera& camera, Program& program, unsigned int& gPos, unsigned int& gNorm, unsigned int& gColorSpec);
+	LightingStep(Camera& camera, Program& program);
 
-	void RenderStep(unsigned int& inBuffer, unsigned int& outBuffer) override;
+	void RenderStep() override;
 private:
 
 	Camera& camera;
 	Program& program;
-
-	unsigned int& gPos;
-	unsigned int& gNorm;
-	unsigned int& gColorSpec;
 
 	//QUAD data
 	unsigned int quadVAO;

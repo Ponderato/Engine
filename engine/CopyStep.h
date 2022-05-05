@@ -11,7 +11,7 @@ public:
 
 	CopyStep(GLbitfield mask, unsigned int width, unsigned int height);
 
-	void RenderStep(unsigned int& readBuffer, unsigned int& drawBuffer) override;
+	void RenderStep() override;
 private:
 
 	GLbitfield mask;

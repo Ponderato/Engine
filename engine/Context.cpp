@@ -36,24 +36,22 @@ void Context::InitOGL() {
 //Initialize data
 void Context::InitData() {
 
-	ConfigureG_Buffer();
-
 	//Objects
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
-	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], glm::vec3(1.0f)));
-	cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], glm::vec3(1.0f)));
+	cubes.push_back(new Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], glm::vec3(1.0f)));
+	cubes.push_back(new Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], glm::vec3(1.0f)));
 
 	for (int i = 2; i < 7; i++) {
-		cubes.push_back(Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f)));
+		cubes.push_back(new Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f)));
 	}
 
 	for (int i = 0; i < 3; i++) {
-		lightCubes.push_back(LightCube(lightPos[i], lightColor[i], glm::vec3(0.25f)));
+		lightCubes.push_back(new LightCube(lightPos[i], glm::vec3(0.25f), lightColor[i]));
 	}
 
 	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
 
-	models.push_back(AssimpModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100)));
+	models.push_back(new AssimpModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100)));
 
 	//------------------UNIFORMS (lighting info)-----------------
 	//programs[0].Use();
@@ -69,12 +67,33 @@ void Context::InitData() {
 	programs[3].SetMultipleVec3("lightPosition", 3, lightPos);
 	programs[3].SetMultipleVec3("lightColor", 3, lightColor);
 
-	//Steps intialization
-	gStep = new GeometryStep(camera, programs[2], cubes, models);
-	lStep = new LightingStep(camera, programs[3], gPos, gNorm, gColorSpec);
-	cStep = new CopyStep(GL_DEPTH_BUFFER_BIT, WIDTH, HEIGHT);
-	fStep = new ForwardStep(camera, programs[1], lightCubes);
+	//Pipeline configuration
+	pipeline = new Pipeline();
+	pipeline->SetStep(new GeometryStep(camera, programs[2], cubes, models));
+	pipeline->SetStep(new LightingStep(camera, programs[3]));
+	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, WIDTH, HEIGHT));
+	pipeline->SetStep(new ForwardStep(camera, programs[1], lightCubes));
 
+	pipeline->gStep->SetFBO(&gBuffer);
+	pipeline->gStep->SetInputTexture(0, &gPos);
+	pipeline->gStep->SetInputTexture(1, &gNorm);
+	pipeline->gStep->SetInputTexture(2, &gColorSpec);
+	pipeline->gStep->SetUp_gBuffer(WIDTH, HEIGHT);
+
+	pipeline->lStep->SetFBO(&defaultFBuffer);
+	pipeline->lStep->SetInputTexture(0, pipeline->gStep->GetOutputTexture(0));
+	pipeline->lStep->SetInputTexture(1, pipeline->gStep->GetOutputTexture(1));
+	pipeline->lStep->SetInputTexture(2, pipeline->gStep->GetOutputTexture(2));
+
+	pipeline->cStep->SetFBO(&gBuffer);
+
+	pipeline->fStep->SetFBO(&defaultFBuffer);
+
+	//Get number of color attachments
+	//int maxColorAttachments;
+	//glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColorAttachments);
+	//
+	//std::cout << maxColorAttachments << std::endl;
 }
 
 //Initialize the shaders
@@ -82,64 +101,14 @@ void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShad
 	programs.push_back(Program(vertexShaderPath, fragmentShaderPath));
 }
 
-//Configure g_buffer framebuffer for deferred shading
-void Context::ConfigureG_Buffer() {
-
-	glGenFramebuffers(1, &gBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
-
-	//Position color buffer
-	glGenTextures(1, &gPos);
-	glBindTexture(GL_TEXTURE_2D, gPos);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPos, 0);
-
-	//Normal color buffer
-	glGenTextures(1, &gNorm);
-	glBindTexture(GL_TEXTURE_2D, gNorm);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNorm, 0);
-
-	//Color + Specular color buffer
-	glGenTextures(1, &gColorSpec);
-	glBindTexture(GL_TEXTURE_2D, gColorSpec);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gColorSpec, 0);
-
-	//Tell OpenGL which color attachments we are rendering into.
-	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-	glDrawBuffers(3, attachments);
-
-	//Depth buffer
-	unsigned int depthBuffer;
-	glGenRenderbuffers(1, &depthBuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, WIDTH, HEIGHT);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
-
-	//Check if framebuffer is complete
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		std::cout << "Framebuffer not complete!!!!!" << std::endl;
-	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
 //Render
 void Context::Render() {
 
+	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//-----------STEPS-------------------
-	gStep->RenderStep(gBuffer, gBuffer);
-	lStep->RenderStep(defaultFBuffer, defaultFBuffer);
-	cStep->RenderStep(gBuffer, defaultFBuffer);
-	fStep->RenderStep(defaultFBuffer, defaultFBuffer);
+	pipeline->Render();
 }
 
 

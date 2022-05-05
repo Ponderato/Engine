@@ -5,8 +5,8 @@ AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 
 
 	LoadModel(path);
 
-	this->position = position;
-	this->scale = scale;
+	this->transform.position = position;
+	this->transform.scale = scale;
 };
 
 void AssimpModel::Draw(Program& program) {

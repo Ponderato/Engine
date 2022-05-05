@@ -4,23 +4,17 @@
 #define MESH_H
 
 #include <glm.hpp>
-#include <string>
 #include <vector>
-#include <iostream>
+#include <string>
 
 #include "stb_image.h"
 #include "Program.h"
+#include "Texture.h"
 
 struct Vertex {
 	glm::vec3 pos;
 	glm::vec3 normal;
 	glm::vec2 texCoords;
-};
-
-struct Texture {
-	unsigned int id;
-	std::string type; //matDiffuse, matSpecular, matEmissive
-	std::string path;
 };
 
 class Mesh 
