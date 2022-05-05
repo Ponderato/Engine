@@ -17,6 +17,11 @@ void ForwardStep::RenderStep() {
 	program.SetMat4("projM", proj_M);
 	program.SetMat4("viewM", view_M); 
 
+	for (unsigned int i = 0; i < dataTextures.size(); i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, *dataTextures.at(i));
+	}
+
 	for (int i = 0; i < models.size(); i++) {
 
 		LightCube* aux = dynamic_cast<LightCube*>(models.at(i));

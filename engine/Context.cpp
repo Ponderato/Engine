@@ -71,7 +71,7 @@ void Context::InitData() {
 	pipeline = new Pipeline();
 	pipeline->SetStep(new GeometryStep(camera, programs[2], cubes, models));
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
-	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, WIDTH, HEIGHT));
+	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &defaultFBuffer, WIDTH, HEIGHT));
 	pipeline->SetStep(new ForwardStep(camera, programs[1], lightCubes));
 
 	pipeline->gStep->SetFBO(&gBuffer);
@@ -89,7 +89,7 @@ void Context::InitData() {
 
 	pipeline->fStep->SetFBO(&defaultFBuffer);
 
-	//Get number of color attachments
+	//Get max number of color attachments
 	//int maxColorAttachments;
 	//glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColorAttachments);
 	//

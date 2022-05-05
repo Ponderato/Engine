@@ -1,6 +1,6 @@
 #include "Pipeline.h"
 
-
+//Makes the given step the active one
 void Pipeline::SetStep(Step* step) {
 
 	if (GeometryStep* stepAux = dynamic_cast<GeometryStep*>(step)) {

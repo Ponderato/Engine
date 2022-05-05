@@ -31,13 +31,6 @@ void LightingStep::RenderStep(){
 		glBindTexture(GL_TEXTURE_2D, *dataTextures.at(i));
 	}
 
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, gPos);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, gNorm);
-	//glActiveTexture(GL_TEXTURE2);
-	//glBindTexture(GL_TEXTURE_2D, gColorSpec);
-
 	RenderQuad();
 }
 
