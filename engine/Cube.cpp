@@ -1,6 +1,6 @@
 #include "Cube.h"
 
-Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale) {
+Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
 	
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -32,14 +32,18 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 	textures.push_back({ NULL, "matSpecular", specular });
 	textures.push_back({ NULL, "matEmissive", emissive });
 
+	//Transform
 	this->transform.position = position;
 	this->transform.scale = scale;
+	this->transform.rotation = rotation;
+
+	Parent(parent);
 	
 	mesh = new Mesh(vertices, textures, indices);
 }
 
 
-Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale) {
+Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
 
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -72,11 +76,12 @@ Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::v
 
 	this->transform.position = position;
 	this->transform.scale = scale;
+	this->transform.rotation = rotation;
 
 	mesh = new Mesh(vertices, textures, indices);
 }
 
-Cube::Cube(glm::vec3 position, glm::vec3 scale) {
+Cube::Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -104,6 +109,7 @@ Cube::Cube(glm::vec3 position, glm::vec3 scale) {
 
 	this->transform.position = position;
 	this->transform.scale = scale;
+	this->transform.rotation = rotation;
 
 	mesh = new Mesh(vertices, indices);
 }

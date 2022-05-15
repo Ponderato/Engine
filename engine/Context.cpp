@@ -31,27 +31,10 @@ void Context::InitOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
-//!!!!!!!!!!!!!!!!!!!!SEPARATE THIS METHOD into initCubeData() in order to make 
-//!!!!!!!!!!!!!!!! possible to render different cubes with different textures
 //Initialize data
 void Context::InitData() {
 
-	//Objects
-	//../ refers to the parent folder, so we need two of them to get to the textures folder
-	cubes.push_back(new Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], glm::vec3(1.0f)));
-	cubes.push_back(new Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], glm::vec3(1.0f)));
-
-	for (int i = 2; i < 7; i++) {
-		cubes.push_back(new Cube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f)));
-	}
-
-	for (int i = 0; i < 3; i++) {
-		lightCubes.push_back(new LightCube(lightPos[i], glm::vec3(0.25f), lightColor[i]));
-	}
-
 	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
-
-	models.push_back(new AssimpModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100)));
 
 	//------------------UNIFORMS (lighting info)-----------------
 	//programs[0].Use();
@@ -68,6 +51,7 @@ void Context::InitData() {
 	programs[3].SetMultipleVec3("lightColor", 3, lightColor);
 
 	//Pipeline configuration
+	//NOW THEN STEPS CONTAIN THE NODES(CUBES,MODELS) THAT ARE GOING TO BE RENDERED. CHANGE THIS SO THE NODES RENDER INDIVIDUALY AND THEY CALL THE STEPS.
 	pipeline = new Pipeline();
 	pipeline->SetStep(new GeometryStep(camera, programs[2], cubes, models));
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
@@ -94,6 +78,26 @@ void Context::InitData() {
 	//glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColorAttachments);
 	//
 	//std::cout << maxColorAttachments << std::endl;
+}
+
+void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+	cubes.push_back(new Cube(diffuse, specular, emissive, position, scale, rotation, parent));
+}
+
+void Context::InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
+	cubes.push_back(new Cube(diffuse, specular, position, scale, rotation));
+}
+
+void Context::InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
+	cubes.push_back(new Cube(position, scale, rotation));
+}
+
+void Context::InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color) {
+	lightCubes.push_back(new LightCube(position, scale, rotation, color));
+}
+
+void Context::InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
+	models.push_back(new AssimpModel(path, position, scale, rotation));
 }
 
 //Initialize the shaders

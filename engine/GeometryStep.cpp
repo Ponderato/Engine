@@ -71,9 +71,14 @@ void GeometryStep::RenderStep() {
 
 	for (int i = 0; i < cubes.size(); i++) {
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, cubes.at(i)->transform.position);
+		model = glm::translate(model, cubes.at(i)->transform.position);	
+		model = glm::rotate(model, glm::radians(cubes.at(i)->transform.rotation.w), glm::vec3(cubes.at(i)->transform.rotation.x, cubes.at(i)->transform.rotation.y, cubes.at(i)->transform.rotation.z));
 		model = glm::scale(model, cubes.at(i)->transform.scale);
 		normal = glm::transpose(inverse(model));
+
+		//Update
+		cubes.at(i)->Update();
+
 		program.SetMat4("modelM", model);
 		program.SetMat4("normalM", normal);
 		cubes.at(i)->Draw(program);
@@ -82,8 +87,12 @@ void GeometryStep::RenderStep() {
 	for (int i = 0; i < models.size(); i++) {
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, models.at(i)->transform.position);
+		model = glm::rotate(model, glm::radians(models.at(i)->transform.rotation.w), glm::vec3(models.at(i)->transform.rotation.x, models.at(i)->transform.rotation.y, models.at(i)->transform.rotation.z));
 		model = glm::scale(model, models.at(i)->transform.scale);
 		normal = glm::transpose(glm::inverse(model));
+
+		models.at(i)->Update();
+
 		program.SetMat4("modelM", model);
 		program.SetMat4("normalM", normal);
 		models.at(i)->Draw(program);

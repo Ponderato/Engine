@@ -35,6 +35,12 @@ public:
 
 	void InitData();
 
+	void InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
+	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
+	void InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
+	void InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color);
+	void InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
+
 	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
 
 	void Render();

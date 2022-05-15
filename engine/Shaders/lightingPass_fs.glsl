@@ -68,7 +68,7 @@ void main()
 	specular = texture(gColorSpec, texCoords).a;
 
     if((normal.r == 0) && (normal.g == 0) && (normal.b == 0)){  
-        fColor = vec4(0.2f, 0.2f, 0.2f, 1.0f);
+        fColor = vec4(0.1f, 0.1f, 0.1f, 1.0f);
     }else{
 	    //Now light calculations as usual
         vec3 result;

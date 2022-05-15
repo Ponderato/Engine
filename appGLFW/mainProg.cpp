@@ -14,6 +14,27 @@ float lastY = 300;
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
 
+//Light & cube data
+glm::vec3 lightPos[3] = {
+glm::vec3(2.0f, 2.0f, 0.0f),
+glm::vec3(-2.0f, -3.0f, -4.0f),
+glm::vec3(1.5f, 1.0f, -6.0f)
+};
+glm::vec3 lightColor[3] = {
+	glm::vec3(1.0f, 1.0f, 1.0f),
+	glm::vec3(1.0f, 0.0f, 0.0f),
+	glm::vec3(0.0f, 1.0f, 0.0f)
+};
+glm::vec3 cubePositions[7] = {
+	glm::vec3(0.0f,  0.0f,  0.0f),
+	glm::vec3(1.5f,  1.0f,  0.0f),
+	glm::vec3(-1.0f,  1.0f,  -1.5f),
+	glm::vec3(2.0f,  5.0f, -15.0f),
+	glm::vec3(-2.5f, -4.2f, -4.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -1.4f, -3.5f)
+};
+
 Context context;
 
 //Declaration of methods -> C programming stuff :D
@@ -32,7 +53,21 @@ int main(){
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
+
+	//Init data
+	//../ refers to the parent folder, so we need two of them to get to the textures folder
+	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], glm::vec3(1.0f), glm::vec4(1.0f, 2.0f, 0.7f, 90.0f), nullptr);
+	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], glm::vec3(1.0f), glm::vec4(360.0f));
+	for (int i = 2; i < 7; i++) {
+		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f), glm::vec4(360.0f));
+	}
+	for (int i = 0; i < 3; i++) {
+		context.InitLightCube(lightPos[i], glm::vec3(0.25f), glm::vec4(360.0f), lightColor[i]);
+	}
+	context.InitModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100), glm::vec4(360.0f));
+
 	context.InitData();
+	//Finish InitData
 	
 	//render loop
 	while (!glfwWindowShouldClose(window)) {

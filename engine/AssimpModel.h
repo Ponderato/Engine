@@ -9,7 +9,7 @@ class AssimpModel : public Model
 {
 public:
 
-	AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale);
+	AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
 
 	void Draw(Program &program) override;
 private:

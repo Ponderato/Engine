@@ -1,12 +1,13 @@
 #include "AssimpModel.h"
 
 
-AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale) {
+AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
 
 	LoadModel(path);
 
 	this->transform.position = position;
 	this->transform.scale = scale;
+	this->transform.rotation = rotation;
 };
 
 void AssimpModel::Draw(Program& program) {
