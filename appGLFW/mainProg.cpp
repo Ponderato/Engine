@@ -57,14 +57,14 @@ int main(){
 	//Init data
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
 	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], glm::vec3(1.0f), glm::vec4(1.0f, 2.0f, 0.7f, 90.0f), nullptr);
-	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], glm::vec3(1.0f), glm::vec4(360.0f));
+	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], glm::vec3(1.0f), glm::vec4(360.0f), context.models[0]);
 	for (int i = 2; i < 7; i++) {
-		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f), glm::vec4(360.0f));
+		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f), glm::vec4(360.0f), nullptr);
 	}
 	for (int i = 0; i < 3; i++) {
-		context.InitLightCube(lightPos[i], glm::vec3(0.25f), glm::vec4(360.0f), lightColor[i]);
+		context.InitLightCube(lightPos[i], glm::vec3(0.25f), glm::vec4(360.0f), lightColor[i], nullptr);
 	}
-	context.InitModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100), glm::vec4(360.0f));
+	context.InitModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100), glm::vec4(360.0f), nullptr);
 
 	context.InitData();
 	//Finish InitData

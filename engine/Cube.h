@@ -14,10 +14,10 @@ public:
 
 	//Constructors with & without emmisive texture map
 	Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent);
-	Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
+	Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent);
 
 	//No textures
-	Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
+	Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent);
 
 	void Draw(Program &program) override;
 private:

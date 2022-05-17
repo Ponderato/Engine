@@ -27,6 +27,9 @@ class Context
 public:
 	Camera camera;
 
+	std::vector<Model*> models;//Models and cubes all combined in one vector so in the geometry step we do only one for loop
+	std::vector<Model*> lightCubes;
+
 	Context();
 
 	void InitGLEW();
@@ -36,10 +39,10 @@ public:
 	void InitData();
 
 	void InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
-	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
-	void InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
-	void InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color);
-	void InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation);
+	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
+	void InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
+	void InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color, Node* node);
+	void InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
 
 	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
 
@@ -80,9 +83,7 @@ private:
 
 	//Vectors
 	std::vector<Program> programs;
-	std::vector<Model*> cubes;
-	std::vector<Model*> models;
-	std::vector<Model*> lightCubes;
+
 
 	//Pipeline
 	Pipeline* pipeline;

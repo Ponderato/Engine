@@ -28,9 +28,6 @@ protected:
 
 	glm::mat4 view_M = glm::mat4(1.0f);
 	glm::mat4 proj_M = glm::mat4(1.0f);
-
-	glm::mat4 model = glm::mat4(1.0f);
-	glm::mat4 normal = glm::mat4(1.0f);
 };
 
 #endif 

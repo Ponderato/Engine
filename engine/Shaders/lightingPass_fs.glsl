@@ -34,7 +34,7 @@ vec3 pointLShade(vec3 color, vec3 lightPos){
     float attenuation = 1.0 / (kConst + kLinear*dist + kQuad*dist*dist);
 
     //Ambient lighting.
-    vec3 ambientL = color * diffuse * 0.0f; //We take here the diffuse vec3 since
+    vec3 ambientL = color * diffuse * 0.05f; //We take here the diffuse vec3 since
     //it is obtained from the rgb components of colorSpec, which is the Albedo.
     //ambient *= attenuation;
 
@@ -67,15 +67,11 @@ void main()
 	diffuse = texture(gColorSpec, texCoords).rgb;
 	specular = texture(gColorSpec, texCoords).a;
 
-    if((normal.r == 0) && (normal.g == 0) && (normal.b == 0)){  
-        fColor = vec4(0.1f, 0.1f, 0.1f, 1.0f);
-    }else{
-	    //Now light calculations as usual
-        vec3 result;
-        for (int i = 0; i < 3; i++){
-            result += pointLShade(lightColor[i], lightPosition[i]);
-        }
-
-        fColor = vec4(result, 1.0f);
+	//Now light calculations as usual
+    vec3 result;
+    for (int i = 0; i < 3; i++){
+        result += pointLShade(lightColor[i], lightPosition[i]);
     }
+
+    fColor = vec4(result, 1.0f);
 }

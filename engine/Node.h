@@ -7,7 +7,7 @@
 #include <gtc/quaternion.hpp>
 #include <vector>
 
-struct Transform
+struct Transform 
 {
 	glm::vec3 position = glm::vec3(0.0f);
 	glm::vec3 scale = glm::vec3(1.0f);
@@ -18,21 +18,32 @@ struct Transform
 	glm::mat4 globalModel = glm::mat4(1.0f);
 };
 
+
 class Node
 {
 public:
 	
 	Transform transform;
+
 	Node* parent = nullptr;
 	std::vector<Node*> children;
 
-	void Update();
+	bool renderable = false;
+	bool dirty = false;	
 
 	void Parent(Node* parent);
-
 	bool IsChild(Node* node);
 
-	void Render();
+	void Move(const glm::vec3 newPos);
+	void Scale(const glm::vec3 scaleVector);
+	void Scale(const float scaleFactor);
+	void Rotate(const float angle);
+	void Rotate(const glm::vec3 axis, const float angle);
+
+	void Update();
+private:
+
+	void UpdateMatrix();
 };
 
 #endif 

@@ -53,7 +53,7 @@ void Context::InitData() {
 	//Pipeline configuration
 	//NOW THEN STEPS CONTAIN THE NODES(CUBES,MODELS) THAT ARE GOING TO BE RENDERED. CHANGE THIS SO THE NODES RENDER INDIVIDUALY AND THEY CALL THE STEPS.
 	pipeline = new Pipeline();
-	pipeline->SetStep(new GeometryStep(camera, programs[2], cubes, models));
+	pipeline->SetStep(new GeometryStep(camera, programs[2], models));
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
 	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &defaultFBuffer, WIDTH, HEIGHT));
 	pipeline->SetStep(new ForwardStep(camera, programs[1], lightCubes));
@@ -81,23 +81,23 @@ void Context::InitData() {
 }
 
 void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
-	cubes.push_back(new Cube(diffuse, specular, emissive, position, scale, rotation, parent));
+	models.push_back(new Cube(diffuse, specular, emissive, position, scale, rotation, parent));
 }
 
-void Context::InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
-	cubes.push_back(new Cube(diffuse, specular, position, scale, rotation));
+void Context::InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+	models.push_back(new Cube(diffuse, specular, position, scale, rotation, parent));
 }
 
-void Context::InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
-	cubes.push_back(new Cube(position, scale, rotation));
+void Context::InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+	models.push_back(new Cube(position, scale, rotation, parent));
 }
 
-void Context::InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color) {
-	lightCubes.push_back(new LightCube(position, scale, rotation, color));
+void Context::InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color, Node* parent) {
+	lightCubes.push_back(new LightCube(position, scale, rotation, color, parent));
 }
 
-void Context::InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
-	models.push_back(new AssimpModel(path, position, scale, rotation));
+void Context::InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+	models.push_back(new AssimpModel(path, position, scale, rotation, parent));
 }
 
 //Initialize the shaders
@@ -108,7 +108,7 @@ void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShad
 //Render
 void Context::Render() {
 
-	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+	glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//-----------STEPS-------------------

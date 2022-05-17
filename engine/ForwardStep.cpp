@@ -26,15 +26,14 @@ void ForwardStep::RenderStep() {
 
 		LightCube* aux = dynamic_cast<LightCube*>(models.at(i));
 
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, models.at(i)->transform.position);
-		model = glm::scale(model, models.at(i)->transform.scale);
-		program.SetMat4("modelM", model);
+		models.at(i)->Update();
+
+		program.SetMat4("modelM", models.at(i)->transform.globalModel);
 
 		if (aux != nullptr) {
 			program.SetVec3("lightColor", aux->color);
 		}else {
-			program.SetMat4("normalM", glm::transpose(glm::inverse(model)));
+			program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));
 		}
 
 		models.at(i)->Draw(program);

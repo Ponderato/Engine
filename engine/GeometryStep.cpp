@@ -1,7 +1,7 @@
 #include "GeometryStep.h"
 
-GeometryStep::GeometryStep(Camera& camera, Program& program, std::vector<Model*> cubes, std::vector<Model*> models)
-	: camera(camera), program(program), cubes(cubes), models(models) {
+GeometryStep::GeometryStep(Camera& camera, Program& program, std::vector<Model*> models)
+	: camera(camera), program(program), models(models) {
 
 }
 
@@ -30,7 +30,7 @@ void GeometryStep::SetUp_gBuffer(const unsigned int WIDTH, const unsigned int HE
 	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
 
 	//Textures
-	for each (GLuint* texture in dataTextures) {
+	for (GLuint* texture : dataTextures) {
 		glGenTextures(1, texture);
 		glBindTexture(GL_TEXTURE_2D, *texture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -51,7 +51,6 @@ void GeometryStep::SetUp_gBuffer(const unsigned int WIDTH, const unsigned int HE
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		std::cout << "Framebuffer not complete!!!!!" << std::endl;
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void GeometryStep::RenderStep() {
@@ -66,35 +65,14 @@ void GeometryStep::RenderStep() {
 	program.SetMat4("projM", proj_M);
 	program.SetMat4("viewM", view_M);
 
-	//MAYBE GEOMETRYDATA INSTANCE SO NO NEED OF TWO FOR LOOPS. JUST ONE ITERATING OVER THE 
-	//DATA OF GEOMETRYDATA
-
-	for (int i = 0; i < cubes.size(); i++) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, cubes.at(i)->transform.position);	
-		model = glm::rotate(model, glm::radians(cubes.at(i)->transform.rotation.w), glm::vec3(cubes.at(i)->transform.rotation.x, cubes.at(i)->transform.rotation.y, cubes.at(i)->transform.rotation.z));
-		model = glm::scale(model, cubes.at(i)->transform.scale);
-		normal = glm::transpose(inverse(model));
-
-		//Update
-		cubes.at(i)->Update();
-
-		program.SetMat4("modelM", model);
-		program.SetMat4("normalM", normal);
-		cubes.at(i)->Draw(program);
-	}
-
 	for (int i = 0; i < models.size(); i++) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, models.at(i)->transform.position);
-		model = glm::rotate(model, glm::radians(models.at(i)->transform.rotation.w), glm::vec3(models.at(i)->transform.rotation.x, models.at(i)->transform.rotation.y, models.at(i)->transform.rotation.z));
-		model = glm::scale(model, models.at(i)->transform.scale);
-		normal = glm::transpose(glm::inverse(model));
 
+		//TODO -> SACAR EL UPDATE DE AQUÍ ( METERLO EN EL CONTEXTO), ESTE RENDER SOLO SE TIENE QUE PREOCUPAR DE PASARLE AL SHADER LO QUE HAGA FALTA Y DE 
+		//PINTAR EL MODELO
 		models.at(i)->Update();
 
-		program.SetMat4("modelM", model);
-		program.SetMat4("normalM", normal);
+		program.SetMat4("modelM", models.at(i)->transform.globalModel);
+		program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));
 		models.at(i)->Draw(program);
 	}
 }

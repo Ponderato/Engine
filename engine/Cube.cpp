@@ -37,13 +37,16 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 	this->transform.scale = scale;
 	this->transform.rotation = rotation;
 
+	//We want to render the cubes
+	this->renderable = true;
+
 	Parent(parent);
 	
 	mesh = new Mesh(vertices, textures, indices);
 }
 
 
-Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
+Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
 
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -78,10 +81,14 @@ Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::v
 	this->transform.scale = scale;
 	this->transform.rotation = rotation;
 
+	this->renderable = true;
+
+	Parent(parent);
+
 	mesh = new Mesh(vertices, textures, indices);
 }
 
-Cube::Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
+Cube::Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -110,6 +117,10 @@ Cube::Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation) {
 	this->transform.position = position;
 	this->transform.scale = scale;
 	this->transform.rotation = rotation;
+
+	this->renderable = true;
+
+	Parent(parent);
 
 	mesh = new Mesh(vertices, indices);
 }
