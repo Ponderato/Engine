@@ -9,7 +9,10 @@ class ForwardStep : public Step
 {
 public:
 
-	ForwardStep(Camera& camera, Program& program, std::vector<Model*> models);
+	ForwardStep(Camera& camera, Program& program);
+
+	inline void SetModels(std::vector<Model*> models) { this->models = models; }
+	inline void SetProjectionMatrix(glm::mat4 projM) { this->projM = projM; }
 
 	void RenderStep() override;
 private:
@@ -19,6 +22,7 @@ private:
 
 	std::vector<Model*> models;
 
+	glm::mat4 projM;
 };
 
 #endif

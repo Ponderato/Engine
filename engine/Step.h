@@ -23,11 +23,7 @@ public:
 protected:
 
 	unsigned int* FBO;
-
 	std::vector<GLuint*> dataTextures;
-
-	glm::mat4 view_M = glm::mat4(1.0f);
-	glm::mat4 proj_M = glm::mat4(1.0f);
 };
 
 #endif 

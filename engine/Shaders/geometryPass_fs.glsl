@@ -14,8 +14,7 @@ uniform sampler2D matSpecular1;
 
 void main()
 {
-	//Store the data in the gbuffer
-
+	//STORE THE DATA IN THE G_BUFFER
 	//Fragment pos vector in the first gbuffer texture
 	gPos = fragPos;
 	

@@ -4,10 +4,22 @@ out vec4 fColor;
 
 in vec2 texCoords;
 
+//--------------UNIFORMS------------------
 //Gbuffer data
 uniform sampler2D gPos;
 uniform sampler2D gNorm;
 uniform sampler2D gColorSpec;
+uniform sampler2D gEmissive;
+
+uniform sampler2D aux1;
+uniform sampler2D aux2;
+uniform sampler2D aux3;
+
+//Light properties (WE CAN HAVE 10 LIGHTS)
+uniform vec3 lightColor[10]; 
+uniform vec3 lightPosition[10];
+
+//-----------------------------------------
 
 vec3 fragPos;
 vec3 normal;
@@ -16,10 +28,6 @@ float specular;
 
 //Material properties
 float matShininess = 64.0f;
-
-//Light properties
-uniform vec3 lightColor[3];
-uniform vec3 lightPosition[3];
 
 float kConst = 1.0f;     //Point light
 float kLinear = 0.07f;   //Point light

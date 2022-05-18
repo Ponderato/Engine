@@ -18,10 +18,11 @@ struct Transform
 	glm::mat4 globalModel = glm::mat4(1.0f);
 };
 
-
 class Node
 {
 public:
+
+	Node() {};
 	
 	Transform transform;
 
@@ -29,16 +30,16 @@ public:
 	std::vector<Node*> children;
 
 	bool renderable = false;
+	bool forward = false;
 	bool dirty = false;	
 
 	void Parent(Node* parent);
 	bool IsChild(Node* node);
 
-	void Move(const glm::vec3 newPos);
+	void Move(const glm::vec3 newPos, const float speed);
 	void Scale(const glm::vec3 scaleVector);
 	void Scale(const float scaleFactor);
-	void Rotate(const float angle);
-	void Rotate(const glm::vec3 axis, const float angle);
+	void Rotate(const glm::vec3 axis, const float angle, const float speed);
 
 	void Update();
 private:

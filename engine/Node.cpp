@@ -1,4 +1,5 @@
 #include "Node.h"
+#include <chrono>
 
 void Node::UpdateMatrix() {
 
@@ -59,13 +60,34 @@ bool Node::IsChild(Node* node) {
 void Node::Update() {
 
 	if (dirty) {
-		transform.localModel = glm::translate(transform.localModel, transform.position);
-		transform.localModel = glm::rotate(transform.localModel, glm::radians(transform.rotation.w), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
-		transform.localModel = glm::scale(transform.localModel, transform.scale);
 
 		//Update nodes' matrices
 		UpdateMatrix();
 
 		dirty = false;
 	}
+}
+
+void Node::Move(const glm::vec3 newPos, const float speed) {
+
+	transform.localModel = glm::translate(transform.localModel, newPos * speed);
+	dirty = true;
+}
+
+void Node::Scale(const glm::vec3 scaleVector) {
+
+	transform.localModel = glm::scale(transform.localModel, scaleVector);
+	dirty = true;
+}
+
+void Node::Scale(const float scaleFactor) {
+
+	transform.localModel = glm::scale(transform.localModel, glm::vec3(scaleFactor));
+	dirty = true;
+}
+
+void Node::Rotate(const glm::vec3 axis, const float angle, const float speed) {
+
+	transform.localModel = glm::rotate(transform.localModel, speed * glm::radians( angle), axis);
+	dirty = true;
 }

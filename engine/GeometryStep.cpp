@@ -1,8 +1,7 @@
 #include "GeometryStep.h"
 
-GeometryStep::GeometryStep(Camera& camera, Program& program, std::vector<Model*> models)
-	: camera(camera), program(program), models(models) {
-
+GeometryStep::GeometryStep(Camera& camera, Program& program)
+	: camera(camera), program(program) {
 }
 
 //Attach the textures and calls de glDrawBuffers function
@@ -25,6 +24,9 @@ void GeometryStep::AttachTextures() {
 }
 
 void GeometryStep::SetUp_gBuffer(const unsigned int WIDTH, const unsigned int HEIGHT) {
+
+	this->WIDTH = WIDTH;
+	this->HEIGHT = HEIGHT;
 
 	glGenFramebuffers(1, FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
@@ -58,19 +60,11 @@ void GeometryStep::RenderStep() {
 	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	view_M = camera.GetLookAtMatrix();
-	proj_M = glm::perspective(glm::radians(camera.fov), 800.0f / 600.0f, 0.1f, 100.0f);
-
 	program.Use();
-	program.SetMat4("projM", proj_M);
-	program.SetMat4("viewM", view_M);
+	program.SetMat4("projM", projM);
+	program.SetMat4("viewM", camera.GetLookAtMatrix());
 
 	for (int i = 0; i < models.size(); i++) {
-
-		//TODO -> SACAR EL UPDATE DE AQUÍ ( METERLO EN EL CONTEXTO), ESTE RENDER SOLO SE TIENE QUE PREOCUPAR DE PASARLE AL SHADER LO QUE HAGA FALTA Y DE 
-		//PINTAR EL MODELO
-		models.at(i)->Update();
-
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);
 		program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));
 		models.at(i)->Draw(program);

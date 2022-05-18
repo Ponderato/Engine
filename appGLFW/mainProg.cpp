@@ -6,10 +6,14 @@
 #include <Context.h>
 
 //Data
+const unsigned int WIDTH = 800;
+const unsigned int HEIGHT = 600;
+
 bool firstMouse = true;
 const float sensitivity = 0.1f;
-float lastX = 400;
-float lastY = 300;
+float lastX = WIDTH / 2;
+float lastY = HEIGHT / 2;
+
 
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
@@ -49,25 +53,32 @@ int main(){
 
 	GLFWwindow* window = initContext();
 	context.InitOGL();
+
 	context.InitShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
 
-	//Init data
+	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
+
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
-	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], glm::vec3(1.0f), glm::vec4(1.0f, 2.0f, 0.7f, 90.0f), nullptr);
+	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], glm::vec3(1.0f), glm::vec4(1.0f, 2.0f, 0.7f, 90.0f), context.parentNode);
 	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], glm::vec3(1.0f), glm::vec4(360.0f), context.models[0]);
 	for (int i = 2; i < 7; i++) {
-		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f), glm::vec4(360.0f), nullptr);
+		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], glm::vec3(1.0f), glm::vec4(360.0f), context.parentNode);
 	}
-	for (int i = 0; i < 3; i++) {
-		context.InitLightCube(lightPos[i], glm::vec3(0.25f), glm::vec4(360.0f), lightColor[i], nullptr);
-	}
-	context.InitModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100), glm::vec4(360.0f), nullptr);
 
-	context.InitData();
-	//Finish InitData
+	context.InitModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), glm::vec3(100), glm::vec4(360.0f), context.parentNode);
+
+	for (int i = 0; i < 3; i++) {
+		context.InitLightCube(lightPos[i], glm::vec3(0.25f), glm::vec4(360.0f), lightColor[i], context.parentNode);
+	}
+	
+	context.SetWIdth(WIDTH);
+	context.SetHeight(HEIGHT);
+	context.SetProjectionMatrix(0.1f, 100.f);
+	context.SetDefaultPipeline();
+	context.SetUniforms();
 	
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -80,7 +91,8 @@ int main(){
 		processInput(window);
 	
 		//rendering commands
-		context.Render();
+		context.deltaTime = deltaTime;
+		context.Update();
 	
 		//check and call events and swap buffers
 		glfwSwapBuffers(window);
@@ -99,7 +111,7 @@ GLFWwindow* initContext() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	//Create the window and set the context to it.
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();

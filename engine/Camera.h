@@ -14,7 +14,6 @@ enum MovementDir {
 	RIGHT
 };
 
-//class __declspec(dllexport) Camera
 class Camera 
 {
 public:

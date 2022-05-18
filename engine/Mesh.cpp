@@ -77,16 +77,6 @@ void Mesh::SetUpMeshTextures() {
 		}
 
 		delete[] data;
-
-		//glActiveTexture(GL_TEXTURE0 + i);
-		//glBindTexture(GL_TEXTURE_2D, textures[i].id);
-		//
-		////Set to default
-		//glActiveTexture(GL_TEXTURE0);
-
-		//std::cout << textures[i].id << std::endl;
-		//std::cout << textures[i].type << std::endl;
-		//std::cout << textures[i].path << std::endl;
 	}
 }
 

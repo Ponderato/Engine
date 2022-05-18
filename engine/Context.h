@@ -15,7 +15,6 @@
 #include "Camera.h"
 #include "AssimpModel.h"
 
-
 #include "GeometryStep.h"
 #include "LightingStep.h"
 #include "CopyStep.h"
@@ -25,18 +24,26 @@
 class Context
 {
 public:
+
+	float deltaTime;
+
 	Camera camera;
+	Pipeline* pipeline;
+	Node* parentNode = new Node();
+	std::vector<Program> programs;
+
+	unsigned int WIDTH;
+	unsigned int HEIGHT;
 
 	std::vector<Model*> models;//Models and cubes all combined in one vector so in the geometry step we do only one for loop
-	std::vector<Model*> lightCubes;
 
 	Context();
 
+	inline void SetWIdth(const unsigned int WIDTH) { this->WIDTH = WIDTH; }
+	inline void SetHeight(const unsigned int HEIGHT) { this->HEIGHT = HEIGHT; }
+
 	void InitGLEW();
-
 	void InitOGL();
-
-	void InitData();
 
 	void InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
 	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
@@ -45,13 +52,15 @@ public:
 	void InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
 
 	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
+	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch);
 
-	void Render();
+	void SetUniforms();
+	void SetDefaultPipeline();
 
+	inline void SetProjectionMatrix(float near, float far) { this->projM = glm::perspective(glm::radians(camera.fov), (float)WIDTH / HEIGHT, near, far); };
+
+	void Update();
 private:
-
-	const unsigned int WIDTH = 800;
-	const unsigned int HEIGHT = 600;
 
 	//Light & cube data
 	glm::vec3 lightPos[3] = {
@@ -64,15 +73,8 @@ private:
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	};
-	glm::vec3 cubePositions[7] = {
-		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(1.5f,  1.0f,  0.0f),
-		glm::vec3(-1.0f,  1.0f,  -1.5f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-2.5f, -4.2f, -4.5f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -1.4f, -3.5f)
-	};
+
+	glm::mat4 projM;
 
 	//Framebuffers
 	unsigned int defaultFBuffer = 0;
@@ -81,13 +83,11 @@ private:
 	//Gbuffer data (Texture Id's)
 	unsigned int gPos, gNorm, gColorSpec;
 
-	//Vectors
-	std::vector<Program> programs;
+	std::vector<Model*> renderableModels;
+	std::vector<Model*> renderableForwardModels;
 
-
-	//Pipeline
-	Pipeline* pipeline;
-
+	void CheckRenderable();
+	void UpdateModels();
 };
 
 #endif

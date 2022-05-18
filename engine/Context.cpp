@@ -22,7 +22,6 @@ void Context::InitOGL() {
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	//glDepthMask(GL_FALSE); //This makes the depth buffer (zbuffer) for read only. Do not update the depth buffer.
 
@@ -31,15 +30,7 @@ void Context::InitOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
-//Initialize data
-void Context::InitData() {
-
-	camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
-
-	//------------------UNIFORMS (lighting info)-----------------
-	//programs[0].Use();
-	//programs[0].SetMultipleVec3("lightPosition", 3, lightPos);
-	//programs[0].SetMultipleVec3("lightColor", 3, lightColor);
+void Context::SetUniforms() {
 
 	//Deferred Shading
 	programs[3].Use();
@@ -49,20 +40,23 @@ void Context::InitData() {
 			 
 	programs[3].SetMultipleVec3("lightPosition", 3, lightPos);
 	programs[3].SetMultipleVec3("lightColor", 3, lightColor);
+}
+
+void Context::SetDefaultPipeline() {
 
 	//Pipeline configuration
-	//NOW THEN STEPS CONTAIN THE NODES(CUBES,MODELS) THAT ARE GOING TO BE RENDERED. CHANGE THIS SO THE NODES RENDER INDIVIDUALY AND THEY CALL THE STEPS.
 	pipeline = new Pipeline();
-	pipeline->SetStep(new GeometryStep(camera, programs[2], models));
+	pipeline->SetStep(new GeometryStep(camera, programs[2]));
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
 	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &defaultFBuffer, WIDTH, HEIGHT));
-	pipeline->SetStep(new ForwardStep(camera, programs[1], lightCubes));
+	pipeline->SetStep(new ForwardStep(camera, programs[1]));
 
 	pipeline->gStep->SetFBO(&gBuffer);
 	pipeline->gStep->SetInputTexture(0, &gPos);
 	pipeline->gStep->SetInputTexture(1, &gNorm);
 	pipeline->gStep->SetInputTexture(2, &gColorSpec);
 	pipeline->gStep->SetUp_gBuffer(WIDTH, HEIGHT);
+	pipeline->gStep->SetProjectionMatrix(projM);
 
 	pipeline->lStep->SetFBO(&defaultFBuffer);
 	pipeline->lStep->SetInputTexture(0, pipeline->gStep->GetOutputTexture(0));
@@ -72,12 +66,11 @@ void Context::InitData() {
 	pipeline->cStep->SetFBO(&gBuffer);
 
 	pipeline->fStep->SetFBO(&defaultFBuffer);
+	pipeline->fStep->SetProjectionMatrix(projM);
+}
 
-	//Get max number of color attachments
-	//int maxColorAttachments;
-	//glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColorAttachments);
-	//
-	//std::cout << maxColorAttachments << std::endl;
+void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch) {
+	camera = Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch);
 }
 
 void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
@@ -93,25 +86,56 @@ void Context::InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, 
 }
 
 void Context::InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color, Node* parent) {
-	lightCubes.push_back(new LightCube(position, scale, rotation, color, parent));
+	models.push_back(new LightCube(position, scale, rotation, color, parent));
 }
 
 void Context::InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
 	models.push_back(new AssimpModel(path, position, scale, rotation, parent));
 }
 
-//Initialize the shaders
 void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath) {
 	programs.push_back(Program(vertexShaderPath, fragmentShaderPath));
 }
 
+void Context::CheckRenderable() {
+
+	renderableModels.clear();
+	renderableForwardModels.clear();
+
+	for (Model* model : models) {
+		if (model->renderable) {
+			if (model->forward) {
+				renderableForwardModels.push_back(model);
+			}
+			else {
+				renderableModels.push_back(model);
+			}
+		}
+	}
+
+	pipeline->gStep->SetModels(renderableModels);
+	pipeline->fStep->SetModels(renderableForwardModels);
+}
+
+void Context::UpdateModels() {
+	for (Model* model : models) {
+		model->Update();
+	}
+}
+
 //Render
-void Context::Render() {
+void Context::Update() {
 
 	glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//-----------STEPS-------------------
+	//models[7]->Move(glm::vec3(0.0f, 0.005f, 0.0f), deltaTime);
+	models[7]->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 17.0f, 2 *  deltaTime);
+	//models[7]->Scale(1.001f);
+
+	UpdateModels();
+	CheckRenderable();
+
 	pipeline->Render();
 }
 
