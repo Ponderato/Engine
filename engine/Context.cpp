@@ -32,19 +32,17 @@ void Context::InitOGL() {
 
 void Context::SetUniforms() {
 
-
-}
-
-void Context::SetDefaultPipeline() {
-
-	//Uniforms
+	//Deferred Shading
 	programs[3].Use();
 	programs[3].SetInt("gPos", 0);
 	programs[3].SetInt("gNorm", 1);
 	programs[3].SetInt("gColorSpec", 2);
-
+			 
 	programs[3].SetMultipleVec3("lightPosition", 3, lightPos);
 	programs[3].SetMultipleVec3("lightColor", 3, lightColor);
+}
+
+void Context::SetDefaultPipeline() {
 
 	//Pipeline configuration
 	pipeline = new Pipeline();
