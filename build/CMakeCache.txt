@@ -227,6 +227,9 @@ GLFW3_INCLUDE_DIR:PATH=D:/OpenGL/LearnOpenGL-master/includes/GLFW
 //Path to a library.
 GLFW3_LIBRARY:FILEPATH=D:/OpenGL/LearnOpenGL-master/lib/glfw3.lib
 
+//The directory containing a CMake configuration file for GLM.
+GLM_DIR:PATH=GLM_DIR-NOTFOUND
+
 //Path to a file.
 GLM_INCLUDE_DIR:PATH=D:/OpenGL/glm-0.9.9.8/glm/glm
 
