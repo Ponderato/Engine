@@ -78,7 +78,7 @@ int main(){
 	context.SetHeight(HEIGHT);
 	context.SetProjectionMatrix(0.1f, 100.f);
 	context.SetDefaultPipeline();
-	context.SetUniforms();
+	//context.SetUniforms();
 	
 	//render loop
 	while (!glfwWindowShouldClose(window)) {

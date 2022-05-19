@@ -76,10 +76,10 @@ private:
 
 	glm::mat4 projM;
 
+	//DefaultPipeline
 	//Framebuffers
 	unsigned int defaultFBuffer = 0;
 	unsigned int gBuffer;
-
 	//Gbuffer data (Texture Id's)
 	unsigned int gPos, gNorm, gColorSpec;
 
