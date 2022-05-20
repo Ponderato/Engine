@@ -6,6 +6,8 @@ ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3.cpp
 
 SET(headers
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_glfw.h
+${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3.h
+${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3_loader.h
 )
 
 FILE(GLOB_RECURSE imgui
