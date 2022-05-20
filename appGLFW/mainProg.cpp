@@ -1,5 +1,9 @@
 #pragma once
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include <GL/glew.h>
 #include <glfw3.h>
 
@@ -9,6 +13,8 @@
 const unsigned int WIDTH = 800;
 const unsigned int HEIGHT = 600;
 
+
+static bool moveMouse = false;
 bool firstMouse = true;
 const float sensitivity = 0.1f;
 float lastX = WIDTH / 2;
@@ -42,17 +48,21 @@ glm::vec3 cubePositions[7] = {
 Context context;
 
 //Declaration of methods -> C programming stuff :D
-GLFWwindow* initContext();
+GLFWwindow* InitContext();
+void InitImGui(GLFWwindow* window);
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn);
-void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
-void processInput(GLFWwindow* window);
+void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void Framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn);
+void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
+void ProcessInput(GLFWwindow* window);
 
 int main(){
 
-	GLFWwindow* window = initContext();
+	GLFWwindow* window = InitContext();
+
 	context.InitOGL();
+	InitImGui(window);
 
 	context.InitShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
@@ -86,25 +96,44 @@ int main(){
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-	
-		//input
-		processInput(window);
-	
+
+		//Input
+		ProcessInput(window);
+
+		//Imgui
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		
 		//rendering commands
 		context.deltaTime = deltaTime;
 		context.Update();
-	
+
+		//ImGui
+		ImGui::Begin("Window");
+		ImGui::Text("Some text");
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		//check and call events and swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	//Terminate and clean all GLFW's resources allocated when we exit the render loop.
+	//ImGui Cleanup
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+	
+	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
 }
 
-GLFWwindow* initContext() {
+GLFWwindow* InitContext() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -123,9 +152,10 @@ GLFWwindow* initContext() {
 	//OpenGL nedds to be initialized by this point. Here that is done in glfwMakeContextCurrent.
 	context.InitGLEW();
 
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, Mouse_callback);
+	glfwSetScrollCallback(window, Scroll_callback);
+	glfwSetKeyCallback(window, Key_callback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -133,35 +163,59 @@ GLFWwindow* initContext() {
 	return window;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height){
+void InitImGui(GLFWwindow* window) {
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+}
+
+void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
 	glViewport(0, 0, width, height);
 }
 
-void mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
+void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
 
-	float xPos = static_cast<float>(xPosIn);
-	float yPos = static_cast<float>(yPosIn);
+	if (moveMouse) {
+		float xPos = static_cast<float>(xPosIn);
+		float yPos = static_cast<float>(yPosIn);
 
-	if (firstMouse) {
+		if (firstMouse) {
+			lastX = xPos;
+			lastY = yPos;
+			firstMouse = false;
+		}
+
+		float xOffset = (xPos - lastX);
+		float yOffset = (lastY - yPos); //Reversed since y-coords range from bottom to top
+
 		lastX = xPos;
 		lastY = yPos;
-		firstMouse = false;
+
+		context.camera.ProcessMouseMovement(xOffset, yOffset);
 	}
-
-	float xOffset = (xPos - lastX);
-	float yOffset = (lastY - yPos); //Reversed since y-coords range from bottom to top
-	
-	lastX = xPos;
-	lastY = yPos;
-
-	context.camera.ProcessMouseMovement(xOffset, yOffset);
 }
 
-void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
+void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
 	context.camera.ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
-void processInput(GLFWwindow* window){
+void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+		if (!moveMouse) {
+			moveMouse = true;
+			std::cout << "true" << std::endl;
+		}
+		else {
+			moveMouse = false;
+			std::cout << "false" << std::endl;
+		}
+	}
+}
+
+void ProcessInput(GLFWwindow* window){
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
@@ -189,6 +243,4 @@ void processInput(GLFWwindow* window){
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		context.camera.ProcessKeyboard(RIGHT, deltaTime);
 	}
-		
-
 }

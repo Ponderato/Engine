@@ -131,6 +131,7 @@ void Context::Update() {
 
 	//models[7]->Move(glm::vec3(0.0f, 0.005f, 0.0f), deltaTime);
 	models[7]->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 17.0f, 2 *  deltaTime);
+	models[0]->Rotate(glm::vec3(0.0f, 0.0f, 1.0f), 17.0f, 2 * deltaTime);
 	//models[7]->Scale(1.001f);
 
 	UpdateModels();
