@@ -23,15 +23,6 @@ void Step::SetUp_Buffer(const unsigned int WIDTH, const unsigned int HEIGHT) {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
 
-	//Textures
-	for (GLuint* texture : dataTextures) {
-		glGenTextures(1, texture);
-		glBindTexture(GL_TEXTURE_2D, *texture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	}
-
 	AttachTextures();
 
 	//Depth buffer

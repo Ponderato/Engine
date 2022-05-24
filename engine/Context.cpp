@@ -54,11 +54,36 @@ void Context::SetPipeline() {
 	GetFrameBufferID(&middleBuffer);
 	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, (GLint*)&defaultBuffer); //It is already binded at the end of previous method, so no need of calling the method again
 
+	//Now we set up the textures
+	glGenTextures(1, &gPos);
+	glBindTexture(GL_TEXTURE_2D, gPos);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glGenTextures(1, &gNorm);
+	glBindTexture(GL_TEXTURE_2D, gNorm);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glGenTextures(1, &gColorSpec);
+	glBindTexture(GL_TEXTURE_2D, gColorSpec);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glGenTextures(1, &renderTexture);
+	glBindTexture(GL_TEXTURE_2D, renderTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	//Pipeline configuration
 	pipeline = new Pipeline();
 	pipeline->SetStep(new GeometryStep(camera, programs[2]));
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
-	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &defaultBuffer, WIDTH, HEIGHT, 0, 0));
+	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &middleBuffer, WIDTH, HEIGHT, 0, 0));
 	pipeline->SetStep(new ForwardStep(camera, programs[1]));
 
 	pipeline->gStep->SetFBO(&gBuffer);
@@ -68,14 +93,16 @@ void Context::SetPipeline() {
 	pipeline->gStep->SetUp_Buffer(WIDTH, HEIGHT);
 	pipeline->gStep->SetProjectionMatrix(projM);
 
-	pipeline->lStep->SetFBO(&defaultBuffer);
+	pipeline->lStep->SetFBO(&middleBuffer);
 	pipeline->lStep->SetInputTexture(0, pipeline->gStep->GetOutputTexture(0));
 	pipeline->lStep->SetInputTexture(1, pipeline->gStep->GetOutputTexture(1));
 	pipeline->lStep->SetInputTexture(2, pipeline->gStep->GetOutputTexture(2));
+	pipeline->lStep->SetInputTexture(3, &renderTexture);
+	pipeline->lStep->SetUp_Buffer(WIDTH, HEIGHT);
 
 	pipeline->cStep->SetFBO(&gBuffer);
 
-	pipeline->fStep->SetFBO(&defaultBuffer);
+	pipeline->fStep->SetFBO(&middleBuffer);
 	pipeline->fStep->SetProjectionMatrix(projM);
 
 	//Finally set the uniforms
@@ -161,14 +188,15 @@ void Context::Update() {
 
 	pipeline->Render();
 
+	//Copy the image from middleBuffer to Dafault
 	//glBindFramebuffer(GL_READ_FRAMEBUFFER, middleBuffer);
 	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultBuffer);
-	//glReadBuffer(GL_COLOR_ATTACHMENT0); 
+	//glReadBuffer(GL_COLOR_ATTACHMENT3); 
 	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
 	//
 	//glBlitFramebuffer(0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	//
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 

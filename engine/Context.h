@@ -59,7 +59,7 @@ public:
 
 	inline void SetProjectionMatrix(float near, float far) { this->projM = glm::perspective(glm::radians(camera.fov), (float)WIDTH / HEIGHT, near, far); };
 
-	unsigned int GetRenderTexture();
+	inline unsigned int GetRenderTexture() { return this->renderTexture; };
 
 	void Update();
 private:

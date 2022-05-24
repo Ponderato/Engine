@@ -112,7 +112,7 @@ int main(){
 
 		//ImGui
 		ImGui::Begin("Render View");
-		//ImGui::Image((void*)(intptr_t)context.pipeline->tStep->GetOutputTexture(0), ImVec2(400, 300));
+		ImGui::Image((void*)(intptr_t)context.GetRenderTexture(), ImVec2(WIDTH - 100, HEIGHT - 100));
 		//ImGui::Text("Some text");
 		ImGui::End();
 
@@ -217,17 +217,6 @@ void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void ProcessInput(GLFWwindow* window){
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, true);
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		context.camera.ProcessKeyboard(FORWARD, deltaTime);

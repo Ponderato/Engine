@@ -15,7 +15,6 @@ public:
 	inline void SetProjectionMatrix(glm::mat4 projM) { this->projM = projM; }
 
 	void RenderStep() override;
-
 private:
 
 	Camera& camera;

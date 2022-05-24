@@ -19,7 +19,7 @@ void main()
 
 	normal = mat3(normalM) * aNormal;
 	fragPos = worldPos.xyz;
-	texCoords = aTexCoords;
+	texCoords = vec2(aTexCoords.x, aTexCoords.y);
 
 	gl_Position =  projM * viewM * worldPos;
 }
