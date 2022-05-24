@@ -30,4 +30,6 @@ void Pipeline::Render() {
 
 	if (fStep != nullptr)
 		fStep->RenderStep();
+
 }
+

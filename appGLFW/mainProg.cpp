@@ -68,6 +68,7 @@ int main(){
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
+	//context.InitShaders("toTex_vs.glsl", "toTex_fs.glsl");				  //programs[4]
 
 	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
 
@@ -87,8 +88,8 @@ int main(){
 	context.SetWIdth(WIDTH);
 	context.SetHeight(HEIGHT);
 	context.SetProjectionMatrix(0.1f, 100.f);
-	context.SetDefaultPipeline();
-	context.SetUniforms();
+	context.SetPipeline();
+	context.SetLightUniforms(context.programs[3], 3, lightColor, lightPos);
 	
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -110,8 +111,9 @@ int main(){
 		context.Update();
 
 		//ImGui
-		ImGui::Begin("Window");
-		ImGui::Text("Some text");
+		ImGui::Begin("Render View");
+		//ImGui::Image((void*)(intptr_t)context.pipeline->tStep->GetOutputTexture(0), ImVec2(400, 300));
+		//ImGui::Text("Some text");
 		ImGui::End();
 
 		ImGui::Render();
@@ -202,15 +204,14 @@ void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
 	context.camera.ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
+//Key pressed only once
 void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
 		if (!moveMouse) {
 			moveMouse = true;
-			std::cout << "true" << std::endl;
 		}
 		else {
 			moveMouse = false;
-			std::cout << "false" << std::endl;
 		}
 	}
 }

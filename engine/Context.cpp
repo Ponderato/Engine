@@ -30,6 +30,11 @@ void Context::InitOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
+void Context::SetLightUniforms(Program& program, int nLights, glm::vec3 lightColor[], glm::vec3 lightPos[]) {
+	program.SetMultipleVec3("lightPosition", nLights, lightPos);
+	program.SetMultipleVec3("lightColor", nLights, lightColor);
+}
+
 void Context::SetUniforms() {
 
 	//Deferred Shading
@@ -37,36 +42,44 @@ void Context::SetUniforms() {
 	programs[3].SetInt("gPos", 0);
 	programs[3].SetInt("gNorm", 1);
 	programs[3].SetInt("gColorSpec", 2);
-			 
-	programs[3].SetMultipleVec3("lightPosition", 3, lightPos);
-	programs[3].SetMultipleVec3("lightColor", 3, lightColor);
 }
 
-void Context::SetDefaultPipeline() {
+void Context::SetPipeline() {
+
+	//First we create the buffers and get they'r Id's
+	glGenFramebuffers(1, &gBuffer);
+	glGenFramebuffers(1, &middleBuffer);
+
+	GetFrameBufferID(&gBuffer);
+	GetFrameBufferID(&middleBuffer);
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, (GLint*)&defaultBuffer); //It is already binded at the end of previous method, so no need of calling the method again
 
 	//Pipeline configuration
 	pipeline = new Pipeline();
 	pipeline->SetStep(new GeometryStep(camera, programs[2]));
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
-	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &defaultFBuffer, WIDTH, HEIGHT));
+	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &defaultBuffer, WIDTH, HEIGHT, 0, 0));
 	pipeline->SetStep(new ForwardStep(camera, programs[1]));
 
 	pipeline->gStep->SetFBO(&gBuffer);
 	pipeline->gStep->SetInputTexture(0, &gPos);
 	pipeline->gStep->SetInputTexture(1, &gNorm);
 	pipeline->gStep->SetInputTexture(2, &gColorSpec);
-	pipeline->gStep->SetUp_gBuffer(WIDTH, HEIGHT);
+	pipeline->gStep->SetUp_Buffer(WIDTH, HEIGHT);
 	pipeline->gStep->SetProjectionMatrix(projM);
 
-	pipeline->lStep->SetFBO(&defaultFBuffer);
+	pipeline->lStep->SetFBO(&defaultBuffer);
 	pipeline->lStep->SetInputTexture(0, pipeline->gStep->GetOutputTexture(0));
 	pipeline->lStep->SetInputTexture(1, pipeline->gStep->GetOutputTexture(1));
 	pipeline->lStep->SetInputTexture(2, pipeline->gStep->GetOutputTexture(2));
 
 	pipeline->cStep->SetFBO(&gBuffer);
 
-	pipeline->fStep->SetFBO(&defaultFBuffer);
+	pipeline->fStep->SetFBO(&defaultBuffer);
 	pipeline->fStep->SetProjectionMatrix(projM);
+
+	//Finally set the uniforms
+	SetUniforms();
 }
 
 void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch) {
@@ -123,6 +136,15 @@ void Context::UpdateModels() {
 	}
 }
 
+void Context::GetFrameBufferID(unsigned int *framebuffer)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, *framebuffer);
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, (GLint*)framebuffer);
+
+	//Unbind it
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 //Render
 void Context::Update() {
 
@@ -138,6 +160,16 @@ void Context::Update() {
 	CheckRenderable();
 
 	pipeline->Render();
+
+	//glBindFramebuffer(GL_READ_FRAMEBUFFER, middleBuffer);
+	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultBuffer);
+	//glReadBuffer(GL_COLOR_ATTACHMENT0); 
+	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	//
+	//glBlitFramebuffer(0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	//
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 

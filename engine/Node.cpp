@@ -60,10 +60,8 @@ bool Node::IsChild(Node* node) {
 void Node::Update() {
 
 	if (dirty) {
-
 		//Update nodes' matrices
 		UpdateMatrix();
-
 		dirty = false;
 	}
 }

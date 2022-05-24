@@ -54,40 +54,36 @@ public:
 	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
 	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch);
 
-	void SetUniforms();
-	void SetDefaultPipeline();
+	void SetPipeline();
+	void SetLightUniforms(Program& program, int nLights, glm::vec3 lightColor[], glm::vec3 lightPos[]);
 
 	inline void SetProjectionMatrix(float near, float far) { this->projM = glm::perspective(glm::radians(camera.fov), (float)WIDTH / HEIGHT, near, far); };
+
+	unsigned int GetRenderTexture();
 
 	void Update();
 private:
 
-	//Light & cube data
-	glm::vec3 lightPos[3] = {
-	glm::vec3(2.0f, 2.0f, 0.0f),
-	glm::vec3(-2.0f, -3.0f, -4.0f),
-	glm::vec3(1.5f, 1.0f, -6.0f)
-	};
-	glm::vec3 lightColor[3] = {
-		glm::vec3(1.0f, 1.0f, 1.0f),
-		glm::vec3(1.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 1.0f, 0.0f)
-	};
-
 	glm::mat4 projM;
 
 	//Framebuffers
-	unsigned int defaultFBuffer = 0;
+	unsigned int defaultBuffer;
 	unsigned int gBuffer;
+	unsigned int middleBuffer;
 
 	//Gbuffer data (Texture Id's)
 	unsigned int gPos, gNorm, gColorSpec;
+	unsigned int renderTexture;
 
 	std::vector<Model*> renderableModels;
 	std::vector<Model*> renderableForwardModels;
 
+	void SetUniforms();
+
 	void CheckRenderable();
 	void UpdateModels();
+
+	void GetFrameBufferID(unsigned int *framebuffer);
 };
 
 #endif

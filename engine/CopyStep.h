@@ -9,7 +9,7 @@ class CopyStep : public Step
 {
 public:
 
-	CopyStep(GLbitfield mask, unsigned int* drawBuffer, unsigned int width, unsigned int height);
+	CopyStep(GLbitfield mask, unsigned int* drawBuffer, unsigned int width, unsigned int height, int readAttachment, int drawAttachment);
 
 	void RenderStep() override;
 private:
@@ -20,6 +20,8 @@ private:
 
 	const unsigned int width;
 	const unsigned int height;
+	int readAttachment;
+	int drawAttachment;
 };
 
 #endif

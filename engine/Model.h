@@ -16,7 +16,7 @@ class Model : public Node
 {
 public:
 
-	virtual void Draw(Program& program);
+	virtual void Draw(Program& program) = 0;
 };
 
 #endif

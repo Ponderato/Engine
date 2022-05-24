@@ -1,17 +1,20 @@
 #include "CopyStep.h"
 
-CopyStep::CopyStep(GLbitfield mask, unsigned int* drawBuffer, unsigned int width, unsigned int height) : width(width), height(height){
+CopyStep::CopyStep(GLbitfield mask, unsigned int* drawBuffer, unsigned int width, unsigned int height, int readAttachment, int drawAttachment) : width(width), height(height){
 
 	this->mask = mask;
 	this->drawBuffer = drawBuffer;
+	this->readAttachment = readAttachment;
+	this->drawAttachment = drawAttachment;
 }
 
-//Copy data from one framebuffer(read) to another(draw) and binds the last one
+//Copy data from FBO to drawBuffer and binds the last one
 void CopyStep::RenderStep() {
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, *FBO);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, *drawBuffer); 
-	glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, mask, GL_NEAREST);
+	glReadBuffer(mask + readAttachment);
+	glDrawBuffer(mask + drawAttachment);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, *drawBuffer);
+	glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, mask, GL_NEAREST);
 }
