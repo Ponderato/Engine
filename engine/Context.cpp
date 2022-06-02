@@ -188,7 +188,7 @@ void Context::Update() {
 
 	pipeline->Render();
 
-	//Copy the image from middleBuffer to Dafault
+	//Copy the image from middleBuffer to Default
 	//glBindFramebuffer(GL_READ_FRAMEBUFFER, middleBuffer);
 	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultBuffer);
 	//glReadBuffer(GL_COLOR_ATTACHMENT3); 

@@ -50,6 +50,10 @@ Context context;
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* InitContext();
 void InitImGui(GLFWwindow* window);
+void InitImGuiFrame();
+void FinishImGui();
+void RenderImGui();
+void SetImGuiWindows();
 
 void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -64,6 +68,7 @@ int main(){
 	context.InitOGL();
 	InitImGui(window);
 
+	#pragma region INITGEO
 	context.InitShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
@@ -84,6 +89,7 @@ int main(){
 	for (int i = 0; i < 3; i++) {
 		context.InitLightCube(lightPos[i], glm::vec3(0.25f), glm::vec4(360.0f), lightColor[i], context.parentNode);
 	}
+	#pragma endregion
 	
 	context.SetWIdth(WIDTH);
 	context.SetHeight(HEIGHT);
@@ -102,33 +108,23 @@ int main(){
 		ProcessInput(window);
 
 		//Imgui
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		InitImGuiFrame();
 		
-		//rendering commands
+		//Rendering commands
 		context.deltaTime = deltaTime;
 		context.Update();
 
 		//ImGui
-		ImGui::Begin("Render View");
-		ImGui::Image((void*)(intptr_t)context.GetRenderTexture(), ImVec2(WIDTH - 100, HEIGHT - 100));
-		//ImGui::Text("Some text");
-		ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		SetImGuiWindows();
+		RenderImGui();
 
 		//check and call events and swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	//Terminate and clean all GLFW's resources allocated when we exit the render loop.
-	//ImGui Cleanup
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
+	//Terminate and clean all GLFW's & ImGui resources allocated when we exit the render loop.
+	FinishImGui();
 	
 	glfwDestroyWindow(window);
 	glfwTerminate();
@@ -154,7 +150,8 @@ GLFWwindow* InitContext() {
 	//OpenGL nedds to be initialized by this point. Here that is done in glfwMakeContextCurrent.
 	context.InitGLEW();
 
-	glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
+	//We want the image not to resize inside the imgui window, so we dont need the resize callback
+	//glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, Mouse_callback);
 	glfwSetScrollCallback(window, Scroll_callback);
 	glfwSetKeyCallback(window, Key_callback);
@@ -166,15 +163,84 @@ GLFWwindow* InitContext() {
 }
 
 void InitImGui(GLFWwindow* window) {
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;   // Enable Docking
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
+
+	
+
 	ImGui::StyleColorsDark();
+
+	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
+
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
+void InitImGuiFrame() {
+
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+}
+
+void FinishImGui() {
+	
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+}
+
+void RenderImGui() {
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		GLFWwindow* backup_current_context = glfwGetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		glfwMakeContextCurrent(backup_current_context);
+	}
+}
+
+void SetImGuiWindows() {
+
+	ImGui::DockSpaceOverViewport(); // Docking into the base glfw window
+
+	//Render window
+	ImGui::Begin("Render View");
+	ImVec2 size = ImGui::GetWindowSize();
+	//Final two vec2 to invert the image. This is needed because OpenGL and ImGui screen coordinates are the opposite.
+	ImGui::Image((void*)(intptr_t)context.GetRenderTexture(), ImVec2(size.x - 15, size.y - 35), ImVec2(0, 1), ImVec2(1, 0)); 
+	ImGui::End();
+
+	//Hierarchy panel
+	ImGui::Begin("Hierarchy");
+	ImGui::End();
+
+	//Inspector panel
+	ImGui::Begin("Inspector");
+	ImGui::End();
+}
+
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
+
+	//ImGuiIO& io = ImGui::GetIO();
+	//io.DisplaySize = ImVec2(width, height);
+	//io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
+
 	glViewport(0, 0, width, height);
 }
 
