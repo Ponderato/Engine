@@ -1,10 +1,18 @@
 SET(sources
 mainProg.cpp
+HierarchyPanel.cpp
+RenderPanel.cpp
+InspectorPanel.cpp
+Panel.cpp
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_glfw.cpp
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3.cpp
 )
 
 SET(headers
+HierarchyPanel.h
+RenderPanel.h
+InspectorPanel.h
+Panel.h
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_glfw.h
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3.h
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3_loader.h

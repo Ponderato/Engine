@@ -22,7 +22,7 @@ class Node
 {
 public:
 
-	Node() {};
+	Node() = default;
 	
 	Transform transform;
 

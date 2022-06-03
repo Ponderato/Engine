@@ -7,12 +7,14 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 
-#include <Context.h>
+#include "Context.h"
+#include "HierarchyPanel.h"
+#include "RenderPanel.h"
+#include "InspectorPanel.h"
 
 //Data
-const unsigned int WIDTH = 800;
+const unsigned int WIDTH = 1000;
 const unsigned int HEIGHT = 600;
-
 
 static bool moveMouse = false;
 bool firstMouse = true;
@@ -46,6 +48,9 @@ glm::vec3 cubePositions[7] = {
 };
 
 Context context;
+HierarchyPanel h_panel;
+RenderPanel r_panel;
+InspectorPanel i_panel;
 
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* InitContext();
@@ -63,6 +68,7 @@ void ProcessInput(GLFWwindow* window);
 
 int main(){
 
+	//Initialization
 	GLFWwindow* window = InitContext();
 
 	context.InitOGL();
@@ -97,7 +103,7 @@ int main(){
 	context.SetPipeline();
 	context.SetLightUniforms(context.programs[3], 3, lightColor, lightPos);
 	
-	//render loop
+	//Render loop
 	while (!glfwWindowShouldClose(window)) {
 	
 		float currentFrame = glfwGetTime();
@@ -125,13 +131,13 @@ int main(){
 
 	//Terminate and clean all GLFW's & ImGui resources allocated when we exit the render loop.
 	FinishImGui();
-	
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
 }
 
 GLFWwindow* InitContext() {
+
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -170,8 +176,6 @@ void InitImGui(GLFWwindow* window) {
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;   // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
 
-	
-
 	ImGui::StyleColorsDark();
 
 	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
@@ -202,6 +206,11 @@ void FinishImGui() {
 
 void RenderImGui() {
 
+	//Window renders
+	r_panel.OnImGuiRender();
+	h_panel.OnImGuiRender();
+	i_panel.OnImGuiRender();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -220,19 +229,14 @@ void SetImGuiWindows() {
 	ImGui::DockSpaceOverViewport(); // Docking into the base glfw window
 
 	//Render window
-	ImGui::Begin("Render View");
-	ImVec2 size = ImGui::GetWindowSize();
-	//Final two vec2 to invert the image. This is needed because OpenGL and ImGui screen coordinates are the opposite.
-	ImGui::Image((void*)(intptr_t)context.GetRenderTexture(), ImVec2(size.x - 15, size.y - 35), ImVec2(0, 1), ImVec2(1, 0)); 
-	ImGui::End();
-
+	r_panel.SetContext(context);
+	r_panel.SetRenderImage(context.GetRenderTexture());
+	
 	//Hierarchy panel
-	ImGui::Begin("Hierarchy");
-	ImGui::End();
+	h_panel.SetContext(context);
 
 	//Inspector panel
-	ImGui::Begin("Inspector");
-	ImGui::End();
+	i_panel.SetContext(context);
 }
 
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){

@@ -4,6 +4,18 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\mainProg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\HierarchyPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\RenderPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\InspectorPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Panel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_glfw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -27,6 +39,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\HierarchyPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\RenderPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\InspectorPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_glfw.h">
       <Filter>Header Files</Filter>
     </ClInclude>

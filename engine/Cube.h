@@ -10,7 +10,7 @@ class Cube : public Model
 public:
 
 	//Default constructor
-	Cube() {};
+	Cube() = default;
 
 	//Constructors with & without emmisive texture map
 	Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent);

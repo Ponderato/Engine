@@ -37,7 +37,7 @@ public:
 
 	std::vector<Model*> models;//Models and cubes all combined in one vector so in the geometry step we do only one for loop
 
-	Context();
+	Context() = default;
 
 	inline void SetWIdth(const unsigned int WIDTH) { this->WIDTH = WIDTH; }
 	inline void SetHeight(const unsigned int HEIGHT) { this->HEIGHT = HEIGHT; }

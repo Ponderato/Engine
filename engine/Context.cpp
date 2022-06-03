@@ -1,10 +1,5 @@
 #include "Context.h"
 
-//Empty constructor
-Context::Context() {
-
-}
-
 //Initialize GLEW library.
 void Context::InitGLEW() {
 
