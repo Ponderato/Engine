@@ -12,6 +12,8 @@ public:
 	AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent);
 
 	void Draw(Program &program) override;
+
+	void Aux() override;
 private:
 
 	std::vector<Mesh> meshes;

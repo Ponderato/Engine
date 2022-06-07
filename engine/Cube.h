@@ -20,6 +20,8 @@ public:
 	Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent);
 
 	void Draw(Program &program) override;
+
+	void Aux() override;
 private:
 
 	float cubeVertices[72] = {

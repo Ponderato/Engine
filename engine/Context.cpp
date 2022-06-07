@@ -137,7 +137,7 @@ void Context::CheckRenderable() {
 	renderableModels.clear();
 	renderableForwardModels.clear();
 
-	for (Model* model : models) {
+	for (Node* model : models) {
 		if (model->renderable) {
 			if (model->forward) {
 				renderableForwardModels.push_back(model);
@@ -153,7 +153,7 @@ void Context::CheckRenderable() {
 }
 
 void Context::UpdateModels() {
-	for (Model* model : models) {
+	for (Node* model : models) {
 		model->Update();
 	}
 }

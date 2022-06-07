@@ -9,6 +9,7 @@
 #include "Cube.h"
 #include "LightCube.h"
 #include "AssimpModel.h"
+#include "Node.h"
 
 class Step 
 {

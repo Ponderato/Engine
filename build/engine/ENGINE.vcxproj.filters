@@ -102,9 +102,6 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Texture.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h">
       <Filter>Headers</Filter>
     </ClInclude>

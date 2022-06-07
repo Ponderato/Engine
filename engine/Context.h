@@ -35,7 +35,7 @@ public:
 	unsigned int WIDTH;
 	unsigned int HEIGHT;
 
-	std::vector<Model*> models;//Models and cubes all combined in one vector so in the geometry step we do only one for loop
+	std::vector<Node*> models;//Models and cubes all combined so we can show them
 
 	Context() = default;
 
@@ -75,8 +75,8 @@ private:
 	unsigned int gPos, gNorm, gColorSpec;
 	unsigned int renderTexture;
 
-	std::vector<Model*> renderableModels;
-	std::vector<Model*> renderableForwardModels;
+	std::vector<Node*> renderableModels;
+	std::vector<Node*> renderableForwardModels;
 
 	void SetUniforms();
 

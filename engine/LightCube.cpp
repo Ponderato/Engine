@@ -4,4 +4,5 @@ LightCube::LightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, gl
 
 	this->color = color;
 	this->forward = true;
+	this->tag = "LightCube";
 }

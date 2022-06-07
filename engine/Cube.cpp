@@ -1,6 +1,6 @@
 #include "Cube.h"
 
-Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) : Model(){
 	
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -41,12 +41,13 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 	this->renderable = true;
 
 	Parent(parent);
+	this->tag = "Cube";
 	
 	mesh = new Mesh(vertices, textures, indices);
 }
 
 
-Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) : Model() {
 
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
@@ -84,11 +85,12 @@ Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, glm::v
 	this->renderable = true;
 
 	Parent(parent);
+	this->tag = "Cube";
 
 	mesh = new Mesh(vertices, textures, indices);
 }
 
-Cube::Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+Cube::Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) : Model() {
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -121,6 +123,7 @@ Cube::Cube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent
 	this->renderable = true;
 
 	Parent(parent);
+	this->tag = "Cube";
 
 	mesh = new Mesh(vertices, indices);
 }
@@ -129,3 +132,6 @@ void Cube::Draw(Program& program){
 	mesh->Draw(program);
 }
 
+void Cube::Aux() {
+
+}

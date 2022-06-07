@@ -89,3 +89,7 @@ void Node::Rotate(const glm::vec3 axis, const float angle, const float speed) {
 	transform.localModel = glm::rotate(transform.localModel, speed * glm::radians( angle), axis);
 	dirty = true;
 }
+
+void Node::Aux() {
+
+}

@@ -15,8 +15,11 @@ void GeometryStep::RenderStep() {
 	program.SetMat4("viewM", camera.GetLookAtMatrix());
 
 	for (int i = 0; i < models.size(); i++) {
+
+		Model* auxModel = dynamic_cast<Model*>(models.at(i));
+
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);
 		program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));
-		models.at(i)->Draw(program);
+		auxModel->Draw(program);
 	}
 }

@@ -6,6 +6,7 @@
 #include <glm.hpp>
 #include <gtc/quaternion.hpp>
 #include <vector>
+#include <string>
 
 struct Transform 
 {
@@ -22,12 +23,15 @@ class Node
 {
 public:
 
-	Node() = default;
+	Node() { static int id = 0; ID = id++; };
 	
 	Transform transform;
 
 	Node* parent = nullptr;
 	std::vector<Node*> children;
+
+	std::string tag = "";
+	int ID = 0;
 
 	bool renderable = false;
 	bool forward = false;
@@ -42,6 +46,14 @@ public:
 	void Rotate(const glm::vec3 axis, const float angle, const float speed);
 
 	void Update();
+
+	//Needed to be able to dynamically cast in the steps
+	virtual void Aux();
+
+	operator uint32_t() const { return (uint32_t)this; }
+	//bool operator==(const Node& other) const { return this->ID == other.ID; }
+	//bool operator!=(const Node& other) const { return !(*this == other); }
+
 private:
 
 	void UpdateMatrix();

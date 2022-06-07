@@ -1,7 +1,7 @@
 #include "AssimpModel.h"
 
 
-AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
+AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) : Model(){
 
 	LoadModel(path);
 
@@ -12,6 +12,7 @@ AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 
 	this->renderable = true;
 
 	Parent(parent);
+	this->tag = "Model";
 };
 
 void AssimpModel::Draw(Program& program) {
@@ -160,6 +161,10 @@ std::vector<Texture> AssimpModel::LoadTextures(aiMaterial* material, aiTextureTy
 		}
 	}
 	return textures;
+}
+
+void AssimpModel::Aux() {
+
 }
 
 //unsigned int Model::LoadTexFromFile(const char* path, const std::string& directory)

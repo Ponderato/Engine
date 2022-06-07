@@ -11,7 +11,7 @@ public:
 
 	ForwardStep(Camera& camera, Program& program);
 
-	inline void SetModels(std::vector<Model*> models) { this->models = models; }
+	inline void SetModels(std::vector<Node*> models) { this->models = models; }
 	inline void SetProjectionMatrix(glm::mat4 projM) { this->projM = projM; }
 
 	void RenderStep() override;
@@ -20,7 +20,7 @@ private:
 	Camera& camera;
 	Program& program;
 
-	std::vector<Model*> models;
+	std::vector<Node*> models;
 
 	glm::mat4 projM;
 };

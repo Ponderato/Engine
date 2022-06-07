@@ -298,7 +298,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Program.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Texture.h" />
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\oglContext.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h" />
     <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_fs.glsl">
     </None>
