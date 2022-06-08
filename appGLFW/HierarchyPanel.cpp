@@ -30,15 +30,14 @@ void HierarchyPanel::DrawChildNodes(std::vector<Node*> nodes) {
 
 void HierarchyPanel::DrawNode(Node* node) {
 
-	auto& tag = node->tag; //We keep a reference so we can change the name later
-
 	ImGuiTreeNodeFlags flags = ((selectedNode.ID == node->ID) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
-	bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)node, flags, tag.c_str());
+	bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)node, flags, node->tag.c_str());
 
 	if (ImGui::IsItemClicked()) {
 		selectedNode = *node;
+		selected = true;
 	}
-
+	
 	if (opened) {
 
 		if (node->children.size() > 0)

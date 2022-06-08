@@ -208,7 +208,10 @@ void RenderImGui() {
 
 	//Window renders
 	r_panel.OnImGuiRender();
+
 	h_panel.OnImGuiRender();
+
+
 	i_panel.OnImGuiRender();
 
 	ImGui::Render();
@@ -237,6 +240,8 @@ void SetImGuiWindows() {
 
 	//Inspector panel
 	i_panel.SetContext(context);
+	i_panel.SetSelectedNode(h_panel.GetSelectedNode());
+	i_panel.SetSelected(h_panel.isSelected());
 }
 
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){

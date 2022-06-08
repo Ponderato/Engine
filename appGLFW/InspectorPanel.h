@@ -12,7 +12,18 @@ public:
 	InspectorPanel() = default;
 	InspectorPanel(const Context& context);
 
+	inline void SetSelectedNode(Node& node) { this->selectedNode = node; }
+	inline void SetSelected(bool selected) { this->selected = selected; }
+
 	void OnImGuiRender() override;
+
+
+private:
+
+	Node selectedNode;
+	bool selected = false;
+
+	void DrawComponents(Node node);
 };
 
 #endif
