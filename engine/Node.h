@@ -37,23 +37,21 @@ public:
 	bool forward = false;
 	bool dirty = false;	
 
+	//Needed to be able to dynamically cast in the steps
+	virtual void Aux();
+
 	void Parent(Node* parent);
 	bool IsChild(Node* node);
 
 	void Move(const glm::vec3 newPos, const float speed);
+	void Move(const glm::vec3 newPos);
 	void Scale(const glm::vec3 scaleVector);
 	void Scale(const float scaleFactor);
 	void Rotate(const glm::vec3 axis, const float angle, const float speed);
 
 	void Update();
 
-	//Needed to be able to dynamically cast in the steps
-	virtual void Aux();
-
 	operator uint32_t() const { return (uint32_t)this; }
-	//bool operator==(const Node& other) const { return this->ID == other.ID; }
-	//bool operator!=(const Node& other) const { return !(*this == other); }
-
 private:
 
 	void UpdateMatrix();

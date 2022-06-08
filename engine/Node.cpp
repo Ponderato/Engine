@@ -68,11 +68,25 @@ void Node::Update() {
 
 void Node::Move(const glm::vec3 newPos, const float speed) {
 
+	transform.position = newPos;
+
 	transform.localModel = glm::translate(transform.localModel, newPos * speed);
 	dirty = true;
 }
 
+void Node::Move(const glm::vec3 newPos) {
+
+	transform.position = newPos;
+
+	transform.localModel[3].x = newPos.x;
+	transform.localModel[3].y = newPos.y;
+	transform.localModel[3].z = newPos.z;
+	dirty = true;
+}
+
 void Node::Scale(const glm::vec3 scaleVector) {
+
+	transform.scale = scaleVector;
 
 	transform.localModel = glm::scale(transform.localModel, scaleVector);
 	dirty = true;
@@ -80,13 +94,20 @@ void Node::Scale(const glm::vec3 scaleVector) {
 
 void Node::Scale(const float scaleFactor) {
 
+	transform.scale *= scaleFactor;
+
 	transform.localModel = glm::scale(transform.localModel, glm::vec3(scaleFactor));
 	dirty = true;
 }
 
 void Node::Rotate(const glm::vec3 axis, const float angle, const float speed) {
 
-	transform.localModel = glm::rotate(transform.localModel, speed * glm::radians( angle), axis);
+	transform.rotation.x = axis.x;
+	transform.rotation.y = axis.y;
+	transform.rotation.z = axis.z;
+	transform.rotation.w = speed;
+
+	transform.localModel = glm::rotate(transform.localModel, speed * glm::radians(angle), axis);
 	dirty = true;
 }
 

@@ -1,4 +1,5 @@
 #include "InspectorPanel.h"
+#include "gtc/type_ptr.hpp"
 
 InspectorPanel::InspectorPanel(const Context& context) : Panel(context) {
 }
@@ -15,19 +16,30 @@ void InspectorPanel::OnImGuiRender() {
 
 void InspectorPanel::DrawComponents(Node node) {
 
-	//TAG COMPONENT
+	//Get a reference to the given node so we can work with it.
+	Node* NODE = 0;
+	for each (Node* auxNode in context.models) {
+		if (auxNode->ID == node.ID)
+			NODE = auxNode;
+	}
 
-	//auto& tag = node.tag; //We keep a reference so we can change the name later
+	//--------------------------TAG--------------------------------
 	char buffer[256];
 	memset(buffer, 0, sizeof(buffer));						//Set buffer to 0
-	strcpy_s(buffer, sizeof(buffer), node.tag.c_str());		//Copy the tag into the buffer to then pass it to the input text
+	strcpy_s(buffer, sizeof(buffer), NODE->tag.c_str());		//Copy the tag into the buffer to then pass it to the input text
 
-	//TODO -> NOT EFFICIENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 	if (ImGui::InputText("Tag", buffer, sizeof(buffer))) {
-		for each (Node* auxNode in context.models) {
-			if (auxNode->ID == node.ID)
-				auxNode->tag = std::string(buffer);
+		NODE->tag = std::string(buffer);
+	}
+
+	//--------------------------POSITION--------------------------------
+	if (ImGui::CollapsingHeader("Transform")) {
+		glm::vec3 pos = NODE->transform.position;
+		if (ImGui::DragFloat3("Position", glm::value_ptr(pos), 0.1f)) {
+			NODE->Move(pos);
 		}
 	}
+
+
 
 }
