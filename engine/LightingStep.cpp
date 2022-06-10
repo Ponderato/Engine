@@ -30,7 +30,7 @@ void LightingStep::RenderStep(){
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, *dataTextures.at(i));
 	}
-
+	
 	RenderQuad();
 }
 

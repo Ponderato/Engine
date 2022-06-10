@@ -22,17 +22,18 @@ const float sensitivity = 0.1f;
 float lastX = WIDTH / 2;
 float lastY = HEIGHT / 2;
 
+const unsigned int N_LIGHTS = 3;
 
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
 
 //Light & cube data
-glm::vec3 lightPos[3] = {
+glm::vec3 lightPos[N_LIGHTS] = {
 glm::vec3(2.0f, 2.0f, 0.0f),
 glm::vec3(-2.0f, -3.0f, -4.0f),
 glm::vec3(1.5f, 1.0f, -6.0f)
 };
-glm::vec3 lightColor[3] = {
+glm::vec3 lightColor[N_LIGHTS] = {
 	glm::vec3(1.0f, 1.0f, 1.0f),
 	glm::vec3(1.0f, 0.0f, 0.0f),
 	glm::vec3(0.0f, 1.0f, 0.0f)
@@ -79,7 +80,6 @@ int main(){
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
-	//context.InitShaders("toTex_vs.glsl", "toTex_fs.glsl");				  //programs[4]
 
 	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
 
@@ -101,7 +101,7 @@ int main(){
 	context.SetHeight(HEIGHT);
 	context.SetProjectionMatrix(0.1f, 100.f);
 	context.SetPipeline();
-	context.SetLightUniforms(context.programs[3], 3, lightColor, lightPos);
+	context.SetLightUniforms(context.programs[3], N_LIGHTS, lightColor, lightPos);
 	
 	//Render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -233,14 +233,14 @@ void SetImGuiWindows() {
 	ImGui::DockSpaceOverViewport(); // Docking into the base glfw window
 
 	//Render window
-	r_panel.SetContext(context);
+	r_panel.SetContext(&context);
 	r_panel.SetRenderImage(context.GetRenderTexture());
 	
 	//Hierarchy panel
-	h_panel.SetContext(context);
+	h_panel.SetContext(&context);
 
 	//Inspector panel
-	i_panel.SetContext(context);
+	i_panel.SetContext(&context);
 
 }
 

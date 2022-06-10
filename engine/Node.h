@@ -43,11 +43,9 @@ public:
 	void Parent(Node* parent);
 	bool IsChild(Node* node);
 
-	void Move(const glm::vec3 newPos, const float speed);
 	void Move(const glm::vec3 newPos);
 	void Scale(const glm::vec3 scaleVector);
-	void Scale(const float scaleFactor);
-	void Rotate(const glm::vec3 axis, const float angle, const float speed);
+	void Rotate(const glm::vec3 axis, const float angle);
 
 	void Update();
 

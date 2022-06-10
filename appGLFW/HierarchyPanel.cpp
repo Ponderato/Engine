@@ -1,14 +1,17 @@
 #include "HierarchyPanel.h"
 
 
-HierarchyPanel::HierarchyPanel(const Context& context) : Panel(context) {
+HierarchyPanel::HierarchyPanel(Context* context) : Panel(context) {
 }
 
 void HierarchyPanel::OnImGuiRender() {
 
 	ImGui::Begin("Hierarchy");
 
-	DrawParentNodes(context.models);
+	DrawParentNodes(context->models);
+
+	//if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+	//	selectedNode = {};
 	
 	ImGui::End();
 }
@@ -16,7 +19,7 @@ void HierarchyPanel::OnImGuiRender() {
 void HierarchyPanel::DrawParentNodes(std::vector<Node*> nodes) {
 
 	for each (Node* node in nodes) {
-		if (node->parent == context.parentNode)
+		if (node->parent == context->parentNode)
 			DrawNode(node);
 	}
 }

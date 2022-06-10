@@ -66,14 +66,6 @@ void Node::Update() {
 	}
 }
 
-void Node::Move(const glm::vec3 newPos, const float speed) {
-
-	transform.position = newPos;
-
-	transform.localModel = glm::translate(transform.localModel, newPos * speed);
-	dirty = true;
-}
-
 void Node::Move(const glm::vec3 newPos) {
 
 	transform.position = newPos;
@@ -88,29 +80,28 @@ void Node::Scale(const glm::vec3 scaleVector) {
 
 	transform.scale = scaleVector;
 
-	transform.localModel = glm::scale(transform.localModel, scaleVector);
+	//Since i can do this like below instead of like in rotate method, i do it thta way cause is more efficient. Same happens with Move method.
+	transform.localModel[0].x = scaleVector.x;
+	transform.localModel[1].y = scaleVector.y;
+	transform.localModel[2].z = scaleVector.z;
 	dirty = true;
 }
 
-void Node::Scale(const float scaleFactor) {
-
-	transform.scale *= scaleFactor;
-
-	transform.localModel = glm::scale(transform.localModel, glm::vec3(scaleFactor));
-	dirty = true;
-}
-
-void Node::Rotate(const glm::vec3 axis, const float angle, const float speed) {
+void Node::Rotate(const glm::vec3 axis, const float angle) {
 
 	transform.rotation.x = axis.x;
 	transform.rotation.y = axis.y;
 	transform.rotation.z = axis.z;
-	transform.rotation.w = speed;
+	transform.rotation.w = angle;
 
-	transform.localModel = glm::rotate(transform.localModel, speed * glm::radians(angle), axis);
+	glm::mat4 position = glm::translate(glm::mat4(1.0f), transform.position);
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(axis.x, axis.y, axis.z));
+	glm::mat4 scale = glm::scale(glm::mat4(1.0f), transform.scale);
+
+	transform.localModel = position * rotation * scale;
+
 	dirty = true;
 }
 
-void Node::Aux() {
-
-}
+//Needed to be able to dynamically cast in the steps
+void Node::Aux() {}

@@ -10,7 +10,7 @@ class RenderPanel : public Panel
 public:
 
 	RenderPanel() = default;
-	RenderPanel(const Context& context);
+	RenderPanel(Context* context);
 
 	void OnImGuiRender() override;
 

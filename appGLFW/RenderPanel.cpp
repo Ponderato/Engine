@@ -1,6 +1,6 @@
 #include "RenderPanel.h"
 
-RenderPanel::RenderPanel(const Context& context) : Panel(context) {
+RenderPanel::RenderPanel(Context* context) : Panel(context) {
 }
 
 void RenderPanel::OnImGuiRender() {

@@ -14,14 +14,14 @@ class Panel
 public:
 	
 	Panel() = default;
-	Panel(const Context& context);
+	Panel(Context* context);
 
-	inline void SetContext(const Context& context) { this->context = context; };
+	inline void SetContext(Context* context) { this->context = context; };
 
 	virtual void OnImGuiRender() = 0;
 protected:
 
-	Context context;
+	Context* context;
 };
 
 #endif

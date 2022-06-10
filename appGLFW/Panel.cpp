@@ -1,6 +1,6 @@
 #include "Panel.h"
 
-Panel::Panel(const Context& context) {
+Panel::Panel(Context* context) {
 
 	SetContext(context);
 }

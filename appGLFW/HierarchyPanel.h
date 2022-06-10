@@ -11,7 +11,7 @@ class HierarchyPanel : public Panel
 public:
 
 	HierarchyPanel() = default;
-	HierarchyPanel(const Context& context);
+	HierarchyPanel(Context* context);
 
 	inline Node GetSelectedNode() { return this->selectedNode; }
 	inline bool isSelected() { return this->selected; }
