@@ -24,6 +24,8 @@ private:
 	bool selected = false;
 
 	void DrawComponents(Node node);
+	void DrawVec3(const std::string& label, glm::vec3* values, float reset = 0.0f, float columnWidth = 100.0f);
+	glm::vec3 ChekRotation(glm::vec3 rotation);
 };
 
 #endif

@@ -108,24 +108,24 @@ void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const flo
 	camera = Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch);
 }
 
-void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
-	models.push_back(new Cube(diffuse, specular, emissive, position, scale, rotation, parent));
+void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* parent) {
+	models.push_back(new Cube(diffuse, specular, emissive, position, parent));
 }
 
-void Context::InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
-	models.push_back(new Cube(diffuse, specular, position, scale, rotation, parent));
+void Context::InitCube(std::string diffuse, std::string specular, glm::vec3 position, Node* parent) {
+	models.push_back(new Cube(diffuse, specular, position, parent));
 }
 
-void Context::InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
-	models.push_back(new Cube(position, scale, rotation, parent));
+void Context::InitCube(glm::vec3 position, Node* parent) {
+	models.push_back(new Cube(position,  parent));
 }
 
-void Context::InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color, Node* parent) {
-	models.push_back(new LightCube(position, scale, rotation, color, parent));
+void Context::InitLightCube(glm::vec3 position, glm::vec3 color, Node* parent) {
+	models.push_back(new LightCube(position, color, parent));
 }
 
-void Context::InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) {
-	models.push_back(new AssimpModel(path, position, scale, rotation, parent));
+void Context::InitModel(const std::string& path, glm::vec3 position, Node* parent) {
+	models.push_back(new AssimpModel(path, position, parent));
 }
 
 void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath) {

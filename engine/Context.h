@@ -45,11 +45,11 @@ public:
 	void InitGLEW();
 	void InitOGL();
 
-	void InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
-	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
-	void InitCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
-	void InitLightCube(glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, glm::vec3 color, Node* node);
-	void InitModel(const std::string& path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* node);
+	void InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* node);
+	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, Node* node);
+	void InitCube(glm::vec3 position, Node* node);
+	void InitLightCube(glm::vec3 position, glm::vec3 color, Node* node);
+	void InitModel(const std::string& path, glm::vec3 position, Node* node);
 
 	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
 	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch);

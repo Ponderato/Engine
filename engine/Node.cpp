@@ -23,7 +23,7 @@ void Node::Parent(Node* parent) {
 
 		//Matrices calculations when there is no parent
 		transform.localModel = glm::translate(transform.localModel, transform.position);
-		transform.localModel = glm::rotate(transform.localModel, glm::radians(transform.rotation.w), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
+		transform.localModel = glm::rotate(transform.localModel, glm::radians(360.0f), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
 		transform.localModel = glm::scale(transform.localModel, transform.scale);
 				 
 		transform.globalModel = transform.localModel;
@@ -37,7 +37,7 @@ void Node::Parent(Node* parent) {
 		if (IsChild(parent)) return;
 
 		transform.globalModel = glm::translate(transform.globalModel, transform.position);
-		transform.globalModel = glm::rotate(transform.globalModel, glm::radians(transform.rotation.w), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
+		transform.globalModel = glm::rotate(transform.globalModel, glm::radians(360.0f), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
 		transform.globalModel = glm::scale(transform.globalModel, transform.scale);
 
 		transform.localModel = glm::inverse(parent->transform.globalModel) * transform.globalModel;
@@ -80,26 +80,26 @@ void Node::Scale(const glm::vec3 scaleVector) {
 
 	transform.scale = scaleVector;
 
-	//Since i can do this like below instead of like in rotate method, i do it thta way cause is more efficient. Same happens with Move method.
+	//Since i can do this like below instead of like in rotate method, i do it thta way cause is more efficient. Same happens with Move method
 	transform.localModel[0].x = scaleVector.x;
 	transform.localModel[1].y = scaleVector.y;
 	transform.localModel[2].z = scaleVector.z;
 	dirty = true;
 }
 
-void Node::Rotate(const glm::vec3 axis, const float angle) {
+void Node::Rotate(const glm::vec3 axis) {
 
 	transform.rotation.x = axis.x;
 	transform.rotation.y = axis.y;
 	transform.rotation.z = axis.z;
-	transform.rotation.w = angle;
 
 	glm::mat4 position = glm::translate(glm::mat4(1.0f), transform.position);
-	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(axis.x, axis.y, axis.z));
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(axis.x), glm::vec3(axis.x, 0, 0))
+		* glm::rotate(glm::mat4(1.0f), glm::radians(axis.y), glm::vec3(0, axis.y, 0))
+		* glm::rotate(glm::mat4(1.0f), glm::radians(axis.z), glm::vec3(0, 0, axis.z));
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), transform.scale);
 
 	transform.localModel = position * rotation * scale;
-
 	dirty = true;
 }
 

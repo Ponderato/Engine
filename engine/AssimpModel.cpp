@@ -1,13 +1,11 @@
 #include "AssimpModel.h"
 
 
-AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, glm::vec3 scale, glm::vec4 rotation, Node* parent) : Model(){
+AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, Node* parent) : Model(){
 
 	LoadModel(path);
 
 	this->transform.position = position;
-	this->transform.scale = scale;
-	this->transform.rotation = rotation;
 
 	this->renderable = true;
 

@@ -12,7 +12,7 @@ struct Transform
 {
 	glm::vec3 position = glm::vec3(0.0f);
 	glm::vec3 scale = glm::vec3(1.0f);
-	glm::vec4 rotation = glm::vec4(360.0f); //vec3 for axis and 4th element for degrees
+	glm::vec3 rotation = glm::vec3(360.0f); //vec3 for axis and 4th element for degrees
 	//glm::quat rotation; //TODO QUATERNIONS
 
 	glm::mat4 localModel = glm::mat4(1.0f);
@@ -45,7 +45,7 @@ public:
 
 	void Move(const glm::vec3 newPos);
 	void Scale(const glm::vec3 scaleVector);
-	void Rotate(const glm::vec3 axis, const float angle);
+	void Rotate(const glm::vec3 axis);
 
 	void Update();
 
