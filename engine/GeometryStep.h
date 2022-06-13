@@ -12,7 +12,6 @@ public:
 	GeometryStep(Camera& camera, Program& program);
 
 	inline void SetModels(std::vector<Node*> models) { this->models = models; }
-	inline void SetProjectionMatrix(glm::mat4 projM) { this->projM = projM; }
 
 	void RenderStep() override;
 private:
@@ -21,8 +20,6 @@ private:
 	Program& program;
 
 	std::vector<Node*> models;
-
-	glm::mat4 projM;
 };
 
 

@@ -8,7 +8,7 @@ void HierarchyPanel::OnImGuiRender() {
 
 	ImGui::Begin("Hierarchy");
 
-	DrawParentNodes(context->models);
+	DrawParentNodes(context->nodes);
 
 	//if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 	//	selectedNode = {};

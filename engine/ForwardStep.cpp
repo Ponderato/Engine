@@ -10,7 +10,7 @@ void ForwardStep::RenderStep() {
 	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
 
 	program.Use();
-	program.SetMat4("projM", projM);
+	program.SetMat4("projM", camera.GetProjectionMatrix());
 	program.SetMat4("viewM", camera.GetLookAtMatrix());
 
 	for (unsigned int i = 0; i < dataTextures.size(); i++) {

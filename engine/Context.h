@@ -35,7 +35,7 @@ public:
 	unsigned int WIDTH;
 	unsigned int HEIGHT;
 
-	std::vector<Node*> models;//Models and cubes all combined so we can show them
+	std::vector<Node*> nodes;//Models and cubes all combined so we can show them
 
 	Context() = default;
 
@@ -52,19 +52,15 @@ public:
 	void InitModel(const std::string& path, glm::vec3 position, Node* node);
 
 	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
-	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch);
+	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent);
 
 	void SetPipeline();
 	void SetLightUniforms(Program& program, int nLights, glm::vec3 lightColor[], glm::vec3 lightPos[]);
-
-	inline void SetProjectionMatrix(float near, float far) { this->projM = glm::perspective(glm::radians(camera.fov), (float)WIDTH / HEIGHT, near, far); };
 
 	inline unsigned int GetRenderTexture() { return this->renderTexture; };
 
 	void Update();
 private:
-
-	glm::mat4 projM;
 
 	//Framebuffers
 	unsigned int defaultBuffer;

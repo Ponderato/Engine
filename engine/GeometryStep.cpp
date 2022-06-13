@@ -11,7 +11,7 @@ void GeometryStep::RenderStep() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	program.Use();
-	program.SetMat4("projM", projM);
+	program.SetMat4("projM", camera.GetProjectionMatrix());
 	program.SetMat4("viewM", camera.GetLookAtMatrix());
 
 	for (int i = 0; i < models.size(); i++) {

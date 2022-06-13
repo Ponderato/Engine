@@ -86,7 +86,6 @@ void Context::SetPipeline() {
 	pipeline->gStep->SetInputTexture(1, &gNorm);
 	pipeline->gStep->SetInputTexture(2, &gColorSpec);
 	pipeline->gStep->SetUp_Buffer(WIDTH, HEIGHT);
-	pipeline->gStep->SetProjectionMatrix(projM);
 
 	pipeline->lStep->SetFBO(&middleBuffer);
 	pipeline->lStep->SetInputTexture(0, pipeline->gStep->GetOutputTexture(0));
@@ -98,34 +97,34 @@ void Context::SetPipeline() {
 	pipeline->cStep->SetFBO(&gBuffer);
 
 	pipeline->fStep->SetFBO(&middleBuffer);
-	pipeline->fStep->SetProjectionMatrix(projM);
 
 	//Finally set the uniforms
 	SetUniforms();
 }
 
-void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch) {
-	camera = Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch);
+void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
+	camera = Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch, parent);
+	nodes.push_back(&camera);
 }
 
 void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* parent) {
-	models.push_back(new Cube(diffuse, specular, emissive, position, parent));
+	nodes.push_back(new Cube(diffuse, specular, emissive, position, parent));
 }
 
 void Context::InitCube(std::string diffuse, std::string specular, glm::vec3 position, Node* parent) {
-	models.push_back(new Cube(diffuse, specular, position, parent));
+	nodes.push_back(new Cube(diffuse, specular, position, parent));
 }
 
 void Context::InitCube(glm::vec3 position, Node* parent) {
-	models.push_back(new Cube(position,  parent));
+	nodes.push_back(new Cube(position,  parent));
 }
 
 void Context::InitLightCube(glm::vec3 position, glm::vec3 color, Node* parent) {
-	models.push_back(new LightCube(position, color, parent));
+	nodes.push_back(new LightCube(position, color, parent));
 }
 
 void Context::InitModel(const std::string& path, glm::vec3 position, Node* parent) {
-	models.push_back(new AssimpModel(path, position, parent));
+	nodes.push_back(new AssimpModel(path, position, parent));
 }
 
 void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath) {
@@ -137,7 +136,7 @@ void Context::CheckRenderable() {
 	renderableModels.clear();
 	renderableForwardModels.clear();
 
-	for (Node* model : models) {
+	for (Node* model : nodes) {
 		if (model->renderable) {
 			if (model->forward) {
 				renderableForwardModels.push_back(model);
@@ -153,7 +152,7 @@ void Context::CheckRenderable() {
 }
 
 void Context::UpdateModels() {
-	for (Node* model : models) {
+	for (Node* model : nodes) {
 		model->Update();
 	}
 }
@@ -173,23 +172,12 @@ void Context::Update() {
 	glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//models[7]->Move(glm::vec3(0.0f, 0.005f, 0.0f), deltaTime);
-	//models[7]->Rotate(glm::vec3(0.0f, 1.0f, 0.0f), 17.0f, 2 *  deltaTime);
-	//models[0]->Rotate(glm::vec3(0.0f, 0.0f, 1.0f), 17.0f, 2 * deltaTime);
-	//models[7]->Scale(1.001f);
-
 	UpdateModels();
 	CheckRenderable();
 
-	pipeline->Render();
+	std::vector<glm::vec3> pos;
 
-	//Copy the image from middleBuffer to Default
-	//glBindFramebuffer(GL_READ_FRAMEBUFFER, middleBuffer);
-	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultBuffer);
-	//glReadBuffer(GL_COLOR_ATTACHMENT3); 
-	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
-	//
-	//glBlitFramebuffer(0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	pipeline->Render();
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

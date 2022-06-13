@@ -75,17 +75,16 @@ int main(){
 	context.InitOGL();
 	InitImGui(window);
 
-	#pragma region INITGEO
+
 	context.InitShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
 
-	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f);
-
+#pragma region INITGEO
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
 	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], context.parentNode);
-	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], context.models[0]);
+	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], context.nodes[0]);
 	for (int i = 2; i < 7; i++) {
 		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], context.parentNode);
 	}
@@ -96,13 +95,17 @@ int main(){
 		context.InitLightCube(lightPos[i], lightColor[i], context.parentNode);
 	}
 	#pragma endregion
+
+	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f, context.parentNode);
+	context.camera.SetAspectRatio(800 / 600);
 	
 	context.SetWIdth(WIDTH);
 	context.SetHeight(HEIGHT);
-	context.SetProjectionMatrix(0.1f, 100.f);
 	context.SetPipeline();
 	context.SetLightUniforms(context.programs[3], N_LIGHTS, lightColor, lightPos);
 	
+	glViewport(0, 0, WIDTH, HEIGHT);
+
 	//Render loop
 	while (!glfwWindowShouldClose(window)) {
 	
@@ -245,10 +248,6 @@ void SetImGuiWindows() {
 }
 
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
-
-	//ImGuiIO& io = ImGui::GetIO();
-	//io.DisplaySize = ImVec2(width, height);
-	//io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
 
 	glViewport(0, 0, width, height);
 }
