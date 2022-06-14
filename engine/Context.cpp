@@ -104,7 +104,6 @@ void Context::SetPipeline() {
 	pipeline->lStep->SetInputTexture(2, pipeline->gStep->GetOutputTexture(2));
 	pipeline->lStep->SetInputTexture(3, &renderTexture);
 	pipeline->lStep->SetUp_Buffer(WIDTH, HEIGHT);
-	pipeline->lStep->SetModels(nodes);
 
 	pipeline->cStep->SetFBO(&gBuffer);
 
@@ -161,6 +160,7 @@ void Context::CheckRenderable() {
 
 	pipeline->gStep->SetModels(renderableModels);
 	pipeline->fStep->SetModels(renderableForwardModels);
+	pipeline->lStep->SetModels(nodes);
 }
 
 void Context::UpdateModels() {
@@ -181,19 +181,14 @@ void Context::GetFrameBufferID(unsigned int *framebuffer)
 //Render
 void Context::Update() {
 
-	//glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	UpdateModels();
 	CheckRenderable();
 
-	//nodes[8]->Move(glm::vec3(-2.0f, 0.0f, 0.0f));
-	//SetLightUniforms(programs[3]);
-
 	pipeline->Render();
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 }
 
 

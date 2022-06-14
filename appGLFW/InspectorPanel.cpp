@@ -1,6 +1,7 @@
 #include "InspectorPanel.h"
 
 #include <imgui_internal.h>
+#include <gtc/type_ptr.hpp>
 
 InspectorPanel::InspectorPanel(Context* context) : Panel(context) {
 }
@@ -84,7 +85,6 @@ void InspectorPanel::DrawFloat(const std::string& label, float* value, ImVec4 co
 	float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 	ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
 
-
 	ImGui::PushStyleColor(ImGuiCol_Button, color);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x + 0.1f, color.y + 0.1f, color.z + 0.1f, color.w + 0.1f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, color);
@@ -98,6 +98,18 @@ void InspectorPanel::DrawFloat(const std::string& label, float* value, ImVec4 co
 	ImGui::DragFloat("##.", value, 0.1f);
 }
 
+void InspectorPanel::DrawTag(char buffer[]) {
+
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, 70);
+	ImGui::Text("Tag");
+	ImGui::NextColumn();
+
+	ImGui::InputText("##Tag", buffer, sizeof(buffer));
+		
+	ImGui::Columns(1);
+}
+
 void InspectorPanel::DrawComponents(Node node) {
 
 	//Get a reference to the given node so we can work with it.
@@ -107,29 +119,21 @@ void InspectorPanel::DrawComponents(Node node) {
 			NODE = auxNode;
 	}
 
+	Camera* camera = dynamic_cast<Camera*>(NODE);
+
 	//--------------------------TAG--------------------------------
 	char buffer[256];
 	memset(buffer, 0, sizeof(buffer));						//Set buffer to 0
-	strcpy_s(buffer, sizeof(buffer), NODE->tag.c_str());		//Copy the tag into the buffer to then pass it to the input text
+	strcpy_s(buffer, sizeof(buffer), NODE->tag.c_str());	//Copy the tag into the buffer to then pass it to the input text
 
-	ImGui::Columns(2);
-	ImGui::SetColumnWidth(0, 70);
-	ImGui::Text("Tag");
-	ImGui::NextColumn();
-
-	if (ImGui::InputText("##Tag", buffer, sizeof(buffer))) {
-		NODE->tag = std::string(buffer);
-	}
-
-	ImGui::Columns(1);
+	DrawTag(buffer);
+	NODE->tag = std::string(buffer);
 
 	//--------------------------TRANSFORM--------------------------------
+	#pragma region TRANSFORM
 	if (ImGui::CollapsingHeader("Transform")) {
 
-		Camera* camera = dynamic_cast<Camera*>(NODE);
-
-		//if (ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)NODE, ImGuiTreeNodeFlags_DefaultOpen, "Transform")) { //DONT FORGET THE TREE POP
-			//--------------------------POSITION--------------------------------
+		//--------------------------POSITION--------------------------------
 		glm::vec3 pos = NODE->transform.position;
 		DrawVec3("Position", &pos, 0.0f, 70.0f);
 		NODE->Move(pos);
@@ -157,6 +161,38 @@ void InspectorPanel::DrawComponents(Node node) {
 		}
 
 	}
+	#pragma endregion
+
+	//--------------------------MATRIX--------------------------------
+	#pragma region MATRIX
+	if (!camera) {
+		if (ImGui::CollapsingHeader("Matrix")) {
+
+			glm::vec4 row = glm::vec4(NODE->transform.localModel[0].x, NODE->transform.localModel[1].x, NODE->transform.localModel[2].x, NODE->transform.localModel[3].x);
+			if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
+				NODE->Move(glm::vec3(row.w, NODE->transform.localModel[3].y, NODE->transform.localModel[3].z));
+				NODE->Scale(glm::vec3(row.x, NODE->transform.localModel[1].y, NODE->transform.localModel[2].z));
+			}
+
+			row = glm::vec4(NODE->transform.localModel[0].y, NODE->transform.localModel[1].y, NODE->transform.localModel[2].y, NODE->transform.localModel[3].y);
+			if (ImGui::DragFloat4("  ", glm::value_ptr(row), 0.1f)) {
+				NODE->Move(glm::vec3(NODE->transform.localModel[3].x, row.w, NODE->transform.localModel[3].z));
+				NODE->Scale(glm::vec3(NODE->transform.localModel[0].x, row.y, NODE->transform.localModel[2].z));
+			}
+
+			row = glm::vec4(NODE->transform.localModel[0].z, NODE->transform.localModel[1].z, NODE->transform.localModel[2].z, NODE->transform.localModel[3].z);
+			if (ImGui::DragFloat4("   ", glm::value_ptr(row), 0.1f)) {
+				NODE->Move(glm::vec3(NODE->transform.localModel[3].x, NODE->transform.localModel[3].y, row.w));
+				NODE->Scale(glm::vec3(NODE->transform.localModel[0].x, NODE->transform.localModel[1].y, row.z));
+			}
+
+			row = glm::vec4(NODE->transform.localModel[0].w, NODE->transform.localModel[1].w, NODE->transform.localModel[2].w, NODE->transform.localModel[3].w);
+			if (ImGui::DragFloat4("    ", glm::value_ptr(row), 0.1f)) {
+			}
+		}
+	}
+
+	#pragma endregion
 }
 
 glm::vec3 InspectorPanel::ChekRotation(glm::vec3 rotation) {

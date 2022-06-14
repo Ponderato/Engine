@@ -84,7 +84,7 @@ int main(){
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
 
-#pragma region INITGEO
+	#pragma region INITGEO
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
 	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], context.parentNode);
 	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], context.nodes[0]);

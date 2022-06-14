@@ -103,5 +103,6 @@ void Node::Rotate(const glm::vec3 axis) {
 	dirty = true;
 }
 
+
 //Needed to be able to dynamically cast in the steps
 void Node::Aux() {}
