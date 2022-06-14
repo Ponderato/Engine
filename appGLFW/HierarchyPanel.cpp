@@ -18,7 +18,7 @@ void HierarchyPanel::OnImGuiRender() {
 
 void HierarchyPanel::DrawParentNodes(std::vector<Node*> nodes) {
 
-	for each (Node* node in nodes) {
+	for(Node* node : nodes) {
 		if (node->parent == context->parentNode)
 			DrawNode(node);
 	}
@@ -26,7 +26,7 @@ void HierarchyPanel::DrawParentNodes(std::vector<Node*> nodes) {
 
 void HierarchyPanel::DrawChildNodes(std::vector<Node*> nodes) {
 
-	for each (Node * node in nodes) {
+	for(Node * node : nodes) {
 		DrawNode(node);
 	}
 }

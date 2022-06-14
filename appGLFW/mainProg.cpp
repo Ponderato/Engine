@@ -13,14 +13,17 @@
 #include "InspectorPanel.h"
 
 //Data
-const unsigned int WIDTH = 1000;
-const unsigned int HEIGHT = 600;
+const unsigned int OGL_WIDTH = 1000;
+const unsigned int OGL_HEIGHT = 600;
+
+const float WIDTH = 800.0f;
+const float HEIGHT = 600.0f;
 
 static bool moveMouse = false;
 bool firstMouse = true;
 const float sensitivity = 0.1f;
-float lastX = WIDTH / 2;
-float lastY = HEIGHT / 2;
+float lastX = OGL_WIDTH / 2;
+float lastY = OGL_HEIGHT / 2;
 
 const unsigned int N_LIGHTS = 3;
 
@@ -97,12 +100,11 @@ int main(){
 	#pragma endregion
 
 	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f, context.parentNode);
-	context.camera.SetAspectRatio(800 / 600);
+	context.camera.SetAspectRatio(WIDTH / HEIGHT);
 	
 	context.SetWIdth(WIDTH);
 	context.SetHeight(HEIGHT);
 	context.SetPipeline();
-	context.SetLightUniforms(context.programs[3], N_LIGHTS, lightColor, lightPos);
 	
 	glViewport(0, 0, WIDTH, HEIGHT);
 
@@ -147,7 +149,7 @@ GLFWwindow* InitContext() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	//Create the window and set the context to it.
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "ENGINE", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(OGL_WIDTH, OGL_HEIGHT, "ENGINE", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -160,7 +162,7 @@ GLFWwindow* InitContext() {
 	context.InitGLEW();
 
 	//We want the image not to resize inside the imgui window, so we dont need the resize callback
-	//glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
+	glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, Mouse_callback);
 	glfwSetScrollCallback(window, Scroll_callback);
 	glfwSetKeyCallback(window, Key_callback);
@@ -249,7 +251,8 @@ void SetImGuiWindows() {
 
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
 
-	glViewport(0, 0, width, height);
+	context.camera.Resize();
+	glViewport(0, 0, WIDTH, HEIGHT);
 }
 
 void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){

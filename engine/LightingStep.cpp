@@ -1,6 +1,6 @@
 #include "LightingStep.h"
 
-LightingStep::LightingStep(Camera& camera, Program& program) 
+LightingStep::LightingStep(Camera& camera, Program& program)
 	: camera(camera), program(program) {
 
 	//Setup the plane VAO
@@ -15,7 +15,6 @@ LightingStep::LightingStep(Camera& camera, Program& program)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-
 }
 
 void LightingStep::RenderStep(){
@@ -25,6 +24,7 @@ void LightingStep::RenderStep(){
 
 	program.Use();
 	program.SetVec3("viewerPos", camera.position);
+	SetLightUniforms();
 
 	for (unsigned int i = 0; i < dataTextures.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i);
@@ -39,4 +39,20 @@ void LightingStep::RenderQuad() {
 	glBindVertexArray(quadVAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
+}
+
+void LightingStep::SetLightUniforms() {
+
+	int count = 0;
+
+	for (Node* node : models) {
+
+		LightCube* light = dynamic_cast<LightCube*>(node);
+
+		if (light) {
+			program.SetVec3("lightPosition[" + std::to_string(count) + "]", light->transform.position);
+			program.SetVec3("lightColor[" + std::to_string(count) + "]", light->color);
+			count += 1;
+		}
+	}
 }

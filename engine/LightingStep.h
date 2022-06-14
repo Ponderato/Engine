@@ -11,6 +11,8 @@ public:
 
 	LightingStep(Camera& camera, Program& program);
 
+	inline void SetModels(std::vector<Node*> models) { this->models = models; }
+
 	void RenderStep() override;
 private:
 
@@ -30,6 +32,9 @@ private:
 
 	//Methods
 	void RenderQuad();
+
+	std::vector<Node*> models;
+	void SetLightUniforms();
 };
 
 

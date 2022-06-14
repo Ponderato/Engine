@@ -1,6 +1,5 @@
-
-
 #include "Program.h"
+#include "gtc/type_ptr.hpp"
 
 Program::Program(const char* vertexShaderPath, const char* fragmentShaderPath) {
 
@@ -82,12 +81,9 @@ void Program::SetInt(const std::string& name, int value) const {
 }
 
 void Program::SetVec3(const std::string& name, const glm::vec3 vector) const {
-	glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &vector.x);
+	glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, glm::value_ptr(vector));
 }
 
-void Program::SetMultipleVec3(const std::string& name, int count, const glm::vec3 vector[]) const {
-	glUniform3fv(glGetUniformLocation(ID, name.c_str()), count, &vector[0].x);
-}
 
 void Program::SetMat4(const std::string& name, const glm::mat4 matrix) const {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &matrix[0][0]);

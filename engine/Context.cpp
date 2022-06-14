@@ -25,9 +25,20 @@ void Context::InitOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
-void Context::SetLightUniforms(Program& program, int nLights, glm::vec3 lightColor[], glm::vec3 lightPos[]) {
-	program.SetMultipleVec3("lightPosition", nLights, lightPos);
-	program.SetMultipleVec3("lightColor", nLights, lightColor);
+void Context::SetLightUniforms(Program& program) {
+
+	int count = 0;
+
+	for (Node * node : nodes) {
+
+		LightCube* light = dynamic_cast<LightCube*>(node);
+
+		if (light) {
+			program.SetVec3("lightPosition[" + std::to_string(count) + "]", light->transform.position);
+			program.SetVec3("lightColor[" + std::to_string(count) + "]", light->color);
+			count += 1;
+		}
+	}
 }
 
 void Context::SetUniforms() {
@@ -93,6 +104,7 @@ void Context::SetPipeline() {
 	pipeline->lStep->SetInputTexture(2, pipeline->gStep->GetOutputTexture(2));
 	pipeline->lStep->SetInputTexture(3, &renderTexture);
 	pipeline->lStep->SetUp_Buffer(WIDTH, HEIGHT);
+	pipeline->lStep->SetModels(nodes);
 
 	pipeline->cStep->SetFBO(&gBuffer);
 
@@ -169,13 +181,14 @@ void Context::GetFrameBufferID(unsigned int *framebuffer)
 //Render
 void Context::Update() {
 
-	glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
+	//glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	UpdateModels();
 	CheckRenderable();
 
-	std::vector<glm::vec3> pos;
+	//nodes[8]->Move(glm::vec3(-2.0f, 0.0f, 0.0f));
+	//SetLightUniforms(programs[3]);
 
 	pipeline->Render();
 	

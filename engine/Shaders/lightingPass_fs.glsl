@@ -19,6 +19,9 @@ uniform sampler2D aux3;
 uniform vec3 lightColor[10]; 
 uniform vec3 lightPosition[10];
 
+//Other data
+uniform vec3 viewerPos;
+
 //-----------------------------------------
 
 vec3 fragPos;
@@ -32,9 +35,6 @@ float matShininess = 64.0f;
 float kConst = 1.0f;     //Point light
 float kLinear = 0.07f;   //Point light
 float kQuad = 0.017f;    //Point light
-
-//Other data
-uniform vec3 viewerPos;
 
 vec3 pointLShade(vec3 color, vec3 lightPos){
     //Attenuation
@@ -54,9 +54,7 @@ vec3 pointLShade(vec3 color, vec3 lightPos){
 
     //Specular lighting
     vec3 viewerDir = normalize(viewerPos - fragPos);
-    vec3 reflectDir = reflect(-lightDir, normal);//-lightDir because it expects a 
-    //vector that points from the light to the frag pos and the way we calculate the 
-    //substraction, it is going the oposite direction
+    vec3 reflectDir = reflect(lightDir, normal);
     float spec = pow(max(dot(viewerDir, reflectDir), 0.0), matShininess);//last value refers to the shininess
     vec3 specularL = color * spec * specular;
     specularL *= attenuation;

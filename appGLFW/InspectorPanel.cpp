@@ -1,5 +1,4 @@
 #include "InspectorPanel.h"
-#include "gtc/type_ptr.hpp"
 
 #include <imgui_internal.h>
 
@@ -103,7 +102,7 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//Get a reference to the given node so we can work with it.
 	Node* NODE = 0;
-	for each (Node * auxNode in context->nodes) {
+	for(Node * auxNode : context->nodes) {
 		if (auxNode->ID == node.ID)
 			NODE = auxNode;
 	}
