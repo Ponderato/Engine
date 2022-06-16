@@ -253,8 +253,6 @@ void SetImGuiWindows() {
 
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
 
-
-	context.camera.Resize();
 	glViewport(0, 0, WIDTH, HEIGHT);
 }
 
