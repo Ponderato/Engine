@@ -25,22 +25,6 @@ void Context::InitOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
-void Context::SetLightUniforms(Program& program) {
-
-	int count = 0;
-
-	for (Node * node : nodes) {
-
-		LightCube* light = dynamic_cast<LightCube*>(node);
-
-		if (light) {
-			program.SetVec3("lightPosition[" + std::to_string(count) + "]", light->transform.position);
-			program.SetVec3("lightColor[" + std::to_string(count) + "]", light->color);
-			count += 1;
-		}
-	}
-}
-
 void Context::SetUniforms() {
 
 	//Deferred Shading

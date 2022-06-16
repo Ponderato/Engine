@@ -55,7 +55,6 @@ public:
 	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent);
 
 	void SetPipeline();
-	void SetLightUniforms(Program& program);
 
 	inline unsigned int GetRenderTexture() { return this->renderTexture; };
 

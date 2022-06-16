@@ -115,6 +115,8 @@ int main(){
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
+		
+
 		//Input
 		ProcessInput(window);
 
@@ -251,6 +253,7 @@ void SetImGuiWindows() {
 
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
 
+
 	context.camera.Resize();
 	glViewport(0, 0, WIDTH, HEIGHT);
 }
@@ -295,19 +298,19 @@ void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void ProcessInput(GLFWwindow* window){
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 		context.camera.ProcessKeyboard(FORWARD, deltaTime);
 	}
-
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+	
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		context.camera.ProcessKeyboard(BACKWARD, deltaTime);
 	}
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
+	
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
 		context.camera.ProcessKeyboard(LEFT, deltaTime);
 	}
-
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+	
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		context.camera.ProcessKeyboard(RIGHT, deltaTime);
 	}
 }

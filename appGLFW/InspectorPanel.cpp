@@ -166,7 +166,7 @@ void InspectorPanel::DrawComponents(Node node) {
 	//--------------------------MATRIX--------------------------------
 	#pragma region MATRIX
 	if (!camera) {
-		if (ImGui::CollapsingHeader("Matrix")) {
+		if (ImGui::CollapsingHeader("Local Matrix")) {
 
 			glm::vec4 row = glm::vec4(NODE->transform.localModel[0].x, NODE->transform.localModel[1].x, NODE->transform.localModel[2].x, NODE->transform.localModel[3].x);
 			if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
