@@ -128,18 +128,38 @@ void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShad
 
 void Context::DeleteNode(Node* node) {
 
-	LightCube* light = dynamic_cast<LightCube*>(node);
+	if (nodes.size() > 1) {
+		int index = 0;
 
-	int index = 0;
-
-	for (Node* aux : nodes) {
-		if (aux->ID == node->ID) {
-			nodes.erase(nodes.begin() + index);
-			if (light) {
-				
+		for (Node* aux : nodes) {
+			if (aux->ID == node->ID) {
+				if (aux->children.size() > 0) {
+					DeleteChildNodes(aux);
+				}
+				nodes.erase(nodes.begin() + index);
 			}
+			index++;
 		}
-		index++;
+		node->parent->children.clear();
+	}
+}
+
+void Context::DeleteChildNodes(Node* node) {
+
+	for (Node* aux : node->children) {
+		if (aux->children.size() > 0) {
+			DeleteChildNodes(aux);
+		}
+
+		node->children.erase(node->children.begin());
+
+		int index = 0;
+		for (Node* aux2 : nodes) {
+			if (aux->ID == aux2->ID) {
+				nodes.erase(nodes.begin() + index);
+			}
+			index++;
+		}
 	}
 }
 

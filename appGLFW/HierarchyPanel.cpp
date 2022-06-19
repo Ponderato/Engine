@@ -8,7 +8,6 @@ void HierarchyPanel::OnImGuiRender() {
 
 	DrawParentNodes(context->nodes);
 
-	//DrawButton("Add", ImVec2(50, 20));
 	if (ImGui::Button("Add", ImVec2(50, 20)));
 	
 	ImGui::End();
@@ -41,8 +40,9 @@ void HierarchyPanel::DrawNode(Node* node) {
 	
 	if (opened) {
 
-		if (node->children.size() > 0)
+		if (node->children.size() > 0) {
 			DrawChildNodes(node->children);
+		}
 
 		ImGui::TreePop();
 	}

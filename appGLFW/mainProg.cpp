@@ -127,7 +127,6 @@ int main(){
 		context.Update();
 
 		//ImGui
-		SetImGuiWindows();
 		RenderImGui();
 
 		//check and call events and swap buffers
@@ -211,6 +210,8 @@ void FinishImGui() {
 }
 
 void RenderImGui() {
+
+	SetImGuiWindows();
 
 	//Window renders
 	r_panel.OnImGuiRender();

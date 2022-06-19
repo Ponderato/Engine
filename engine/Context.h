@@ -57,6 +57,7 @@ public:
 	void SetPipeline();
 
 	void DeleteNode(Node* node);
+	void DeleteChildNodes(Node* node);
 
 	inline unsigned int GetRenderTexture() { return this->renderTexture; };
 
