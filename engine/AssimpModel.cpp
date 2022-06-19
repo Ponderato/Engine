@@ -7,6 +7,7 @@ AssimpModel::AssimpModel(const std::string &path, glm::vec3 position, Node* pare
 
 	this->transform.position = position;
 
+	this->hasTex = true;
 	this->renderable = true;
 
 	Parent(parent);

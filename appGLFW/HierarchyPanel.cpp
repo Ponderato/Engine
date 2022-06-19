@@ -1,8 +1,6 @@
 #include "HierarchyPanel.h"
 
-
-HierarchyPanel::HierarchyPanel(Context* context) : Panel(context) {
-}
+HierarchyPanel::HierarchyPanel(Context* context) : Panel(context) {}
 
 void HierarchyPanel::OnImGuiRender() {
 
@@ -10,8 +8,8 @@ void HierarchyPanel::OnImGuiRender() {
 
 	DrawParentNodes(context->nodes);
 
-	//if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-	//	selectedNode = {};
+	//DrawButton("Add", ImVec2(50, 20));
+	if (ImGui::Button("Add", ImVec2(50, 20)));
 	
 	ImGui::End();
 }

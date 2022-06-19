@@ -4,6 +4,7 @@
 #define HIERARCHYPANEL_H
 
 #include "Panel.h"
+#include "AddPanel.h"
 #include "Node.h"
 
 class HierarchyPanel : public Panel
@@ -20,6 +21,8 @@ public:
 
 	
 private:
+
+	AddPanel addPanel;
 
 	Node selectedNode;
 	bool selected = false;

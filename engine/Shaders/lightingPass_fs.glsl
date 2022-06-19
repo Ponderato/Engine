@@ -19,6 +19,7 @@ uniform sampler2D aux3;
 //Light properties (WE CAN HAVE 10 LIGHTS)
 uniform vec3 lightColor[10]; 
 uniform vec3 lightPosition[10];
+uniform int nLights;
 
 //Other data
 uniform vec3 viewerPos;
@@ -76,7 +77,7 @@ void main()
 
 	//Now light calculations as usual
     vec3 result;
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < nLights; i++){
         result += pointLShade(lightColor[i], lightPosition[i]);
     }
 

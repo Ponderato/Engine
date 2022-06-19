@@ -126,6 +126,23 @@ void Context::InitShaders(const char* vertexShaderPath, const char* fragmentShad
 	programs.push_back(Program(vertexShaderPath, fragmentShaderPath));
 }
 
+void Context::DeleteNode(Node* node) {
+
+	LightCube* light = dynamic_cast<LightCube*>(node);
+
+	int index = 0;
+
+	for (Node* aux : nodes) {
+		if (aux->ID == node->ID) {
+			nodes.erase(nodes.begin() + index);
+			if (light) {
+				
+			}
+		}
+		index++;
+	}
+}
+
 void Context::CheckRenderable() {
 
 	renderableModels.clear();

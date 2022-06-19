@@ -55,4 +55,6 @@ void LightingStep::SetLightUniforms() {
 			count += 1;
 		}
 	}
+
+	program.SetInt("nLights", count);
 }

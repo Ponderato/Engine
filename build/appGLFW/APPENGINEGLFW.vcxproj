@@ -317,12 +317,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\HierarchyPanel.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\RenderPanel.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\InspectorPanel.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\AddPanel.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Panel.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_opengl3.cpp" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\HierarchyPanel.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\RenderPanel.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\InspectorPanel.h" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\AddPanel.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Panel.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_opengl3.h" />
