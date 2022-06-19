@@ -16,6 +16,13 @@ void GeometryStep::RenderStep() {
 
 	for (int i = 0; i < models.size(); i++) {
 
+		if (!models.at(i)->hasTex) {
+			program.SetInt("hasTex", 0);
+		}
+		else {
+			program.SetInt("hasTex", 1);
+		}
+
 		Model* auxModel = dynamic_cast<Model*>(models.at(i));
 
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);

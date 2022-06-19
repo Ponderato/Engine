@@ -33,6 +33,7 @@ public:
 	std::string tag = "";
 	int ID = 0;
 
+	bool hasTex = false;
 	bool renderable = false;
 	bool forward = false;
 	bool dirty = false;	

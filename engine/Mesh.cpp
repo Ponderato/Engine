@@ -88,7 +88,7 @@ void Mesh::Draw(Program &program) {
 	unsigned int emissiveNumber = 1;
 
 	for (int i = 0; i < textures.size(); i++) {
-		
+
 		glActiveTexture(GL_TEXTURE0 + i);
 
 		std::string number;
@@ -109,6 +109,7 @@ void Mesh::Draw(Program &program) {
 		program.SetInt((name + number).c_str(), i);
 
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		
 	}
 
 	//Draw mesh

@@ -37,11 +37,19 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 
 	//We want to render the cubes
 	this->renderable = true;
+	this->hasTex = true;
 
 	Parent(parent);
 	this->tag = "Cube";
-	
-	mesh = new Mesh(vertices, textures, indices);
+
+
+	if (TexOK(textures)) {
+		mesh = new Mesh(vertices, textures, indices);
+	}
+	else {
+		this->hasTex = false;
+		mesh = new Mesh(vertices, indices);
+	}
 }
 
 
@@ -79,11 +87,17 @@ Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, Node* 
 	this->transform.position = position;
 
 	this->renderable = true;
+	this->hasTex = true;
 
 	Parent(parent);
 	this->tag = "Cube";
 
-	mesh = new Mesh(vertices, textures, indices);
+	if (TexOK(textures)) {
+		mesh = new Mesh(vertices, textures, indices);
+	}else {
+		this->hasTex = false;
+		mesh = new Mesh(vertices, indices);
+	}
 }
 
 Cube::Cube(glm::vec3 position, Node* parent) : Model() {
@@ -124,6 +138,19 @@ Cube::Cube(glm::vec3 position, Node* parent) : Model() {
 
 void Cube::Draw(Program& program){
 	mesh->Draw(program);
+}
+
+bool Cube::TexOK(std::vector<Texture> textures) {
+	
+	int width, height, nrChannels;
+	for (Texture tex : textures) {
+		unsigned char* data = stbi_load(tex.path.c_str(), &width, &height, &nrChannels, 0);
+		if (!data) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void Cube::Aux() {

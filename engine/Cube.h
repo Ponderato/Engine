@@ -137,6 +137,8 @@ private:
 		20, 22, 23
 	};
 
+	bool TexOK(std::vector<Texture> textures);
+
 	Mesh* mesh;
 };
 

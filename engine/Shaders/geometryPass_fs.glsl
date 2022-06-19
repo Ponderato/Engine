@@ -12,6 +12,8 @@ in vec2 texCoords;
 uniform sampler2D matDiffuse1;
 uniform sampler2D matSpecular1;
 
+uniform int hasTex;
+
 void main()
 {
 	//STORE THE DATA IN THE G_BUFFER
@@ -22,10 +24,16 @@ void main()
 	gNorm = normalize(normal);
 	
 	//Diffuse  color
-	gColorSpec.rgb = texture(matDiffuse1, texCoords).rgb;
+	if (hasTex == 0)
+		gColorSpec.rgb = vec3(1, 1, 1);
+	else
+		gColorSpec.rgb = texture(matDiffuse1, texCoords).rgb;
 	
 	//Specular intensity
-	gColorSpec.a = texture(matSpecular1, texCoords).r;
+	if (hasTex == 0)
+		gColorSpec.a = 1;
+	else
+		gColorSpec.a = texture(matSpecular1, texCoords).r;
 
 }
 

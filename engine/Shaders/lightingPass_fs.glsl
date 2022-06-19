@@ -11,6 +11,7 @@ uniform sampler2D gNorm;
 uniform sampler2D gColorSpec;
 uniform sampler2D gEmissive;
 
+//Aux data
 uniform sampler2D aux1;
 uniform sampler2D aux2;
 uniform sampler2D aux3;
