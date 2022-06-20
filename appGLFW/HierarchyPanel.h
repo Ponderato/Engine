@@ -22,7 +22,7 @@ public:
 	
 private:
 
-	AddPanel addPanel;
+	AddPanel* addPanel = new AddPanel();
 
 	Node selectedNode;
 	bool selected = false;

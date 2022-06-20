@@ -8,8 +8,11 @@ void HierarchyPanel::OnImGuiRender() {
 
 	DrawParentNodes(context->nodes);
 
-	if (ImGui::Button("Add", ImVec2(50, 20)));
-	
+	if (ImGui::Button("Add", ImVec2(50, 20))) {
+		addPanel->close = true;
+	}
+	addPanel->OnImGuiRender();
+
 	ImGui::End();
 }
 

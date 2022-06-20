@@ -16,13 +16,6 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//Get a reference to the given node so we can work with it.
 	Node* NODE = new Node();
-	//int index = 0;
-	//for (int i = 0; i < context->nodes.size(); i++) {
-	//	if (context->nodes.at(i)->ID == node.ID) {
-	//		NODE = context->nodes.at(i);
-	//		index = i;
-	//	}
-	//}
 	
 	for (Node* auxNode : context->nodes) {
 		if (auxNode->ID == node.ID)
@@ -32,7 +25,7 @@ void InspectorPanel::DrawComponents(Node node) {
 	Camera* camera = dynamic_cast<Camera*>(NODE);
 
 	//--------------------------DELETE BUTTON--------------------------------
-	if (ImGui::Button("Delete", ImVec2(50, 20))){
+	if (ImGui::Button("Remove", ImVec2(50, 20))){
 		context->DeleteNode(NODE);
 	}
 

@@ -211,6 +211,8 @@ void FinishImGui() {
 
 void RenderImGui() {
 
+	//ImGui::ShowDemoWindow();
+
 	SetImGuiWindows();
 
 	//Window renders

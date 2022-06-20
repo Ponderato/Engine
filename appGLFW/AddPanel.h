@@ -9,13 +9,14 @@ class AddPanel : public Panel
 {
 public:
 
+	bool close = false;
+
 	AddPanel() = default;
 	AddPanel(Context* context);
 
 	void OnImGuiRender() override;
 
 private:
-
 
 };
 

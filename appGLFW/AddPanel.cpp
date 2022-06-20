@@ -4,7 +4,19 @@ AddPanel::AddPanel(Context* context) : Panel(context) {}
 
 void AddPanel::OnImGuiRender() {
 
-	ImGui::Begin("Add");
+    if (close) {
 
-	ImGui::End();
+        ImGui::SetNextWindowSize(ImVec2(500, 500));
+
+        if (!ImGui::Begin("Add Node", &close))
+        {
+            close = false;
+            ImGui::End();
+        }
+        else
+        {
+            ImGui::End();
+        }
+    }
+
 }
