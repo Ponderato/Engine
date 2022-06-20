@@ -46,6 +46,7 @@ public:
 	void InitOGL();
 
 	void InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* node);
+	void InitCube(std::string diffuse, std::string specular, std::string emissive, Node* node);
 	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, Node* node);
 	void InitCube(glm::vec3 position, Node* node);
 	void InitLightCube(glm::vec3 position, glm::vec3 color, Node* node);

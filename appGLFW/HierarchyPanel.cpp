@@ -10,6 +10,7 @@ void HierarchyPanel::OnImGuiRender() {
 
 	if (ImGui::Button("Add", ImVec2(50, 20))) {
 		addPanel->close = true;
+		addPanel->SetContext(this->context);
 	}
 	addPanel->OnImGuiRender();
 

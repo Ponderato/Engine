@@ -53,6 +53,7 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 }
 
 
+
 Cube::Cube(std::string diffuse, std::string specular, glm::vec3 position, Node* parent) : Model() {
 
 	std::vector<Vertex> vertices;

@@ -12,11 +12,9 @@ public:
 	//Default constructor
 	Cube() = default;
 
-	//Constructors with & without emmisive texture map
+	//Constructors 
 	Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* parent);
 	Cube(std::string diffuse, std::string specular, glm::vec3 position, Node* parent);
-
-	//No textures
 	Cube(glm::vec3 position, Node* parent);
 
 	void Draw(Program &program) override;

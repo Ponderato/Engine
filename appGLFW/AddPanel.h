@@ -18,6 +18,13 @@ public:
 
 private:
 
+	void AddCube();
+
+	char diffusePath[256];
+	char specPath[256];
+	char emissivePath[256];
+
+
 };
 
 #endif

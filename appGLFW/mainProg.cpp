@@ -85,13 +85,14 @@ int main(){
 
 	#pragma region INITGEO
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
-	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], context.parentNode);
+	context.InitCube("C:/Users/JONÁS/Desktop/Nueva carpeta/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], context.parentNode);
 	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], context.nodes[0]);
 	for (int i = 2; i < 7; i++) {
 		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], context.parentNode);
 	}
 
 	context.InitModel("../../models/shiba/shiba.obj", glm::vec3(2, -2, 0), context.parentNode);
+	context.nodes[7]->Scale(glm::vec3(100.0f));
 
 	for (int i = 0; i < 3; i++) {
 		context.InitLightCube(lightPos[i], lightColor[i], context.parentNode);
@@ -113,8 +114,6 @@ int main(){
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-
-		
 
 		//Input
 		ProcessInput(window);
