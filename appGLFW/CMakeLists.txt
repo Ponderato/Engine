@@ -4,6 +4,7 @@ HierarchyPanel.cpp
 RenderPanel.cpp
 InspectorPanel.cpp
 AddPanel.cpp
+ParentPanel.cpp
 Panel.cpp
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_glfw.cpp
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3.cpp
@@ -13,6 +14,7 @@ SET(headers
 HierarchyPanel.h
 RenderPanel.h
 InspectorPanel.h
+ParentPanel.h
 AddPanel.h
 Panel.h
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_glfw.h

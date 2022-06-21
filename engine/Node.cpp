@@ -28,7 +28,7 @@ void Node::Parent(Node* parent) {
 				 
 		transform.globalModel = transform.localModel;
 	}
-	else {
+	else{
 		//Avoid cycles.
 		//It can not be its own parent
 		if (parent == this) return;
@@ -59,8 +59,22 @@ void Node::UnParent() {
 			index++;
 		}
 
-		Parent(this->parent->parent);
+		NewParent(this->parent->parent);
 	}
+}
+
+void Node::NewParent(Node* parent) {
+	//Avoid cycles.
+	//It can not be its own parent
+	if (parent == this) return;
+
+	//Avoid cyclic parents
+	if (IsChild(parent)) return;
+
+	
+
+	this->parent = parent;
+	this->parent->children.push_back(this);
 }
 
 //Checks if the given Node is a child of this node

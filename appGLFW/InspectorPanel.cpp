@@ -9,6 +9,8 @@ void InspectorPanel::OnImGuiRender() {
 	if (selected)
 		DrawComponents(selectedNode);
 
+	parentPanel->OnImGuiRender();
+
 	ImGui::End();
 }
 
@@ -27,12 +29,21 @@ void InspectorPanel::DrawComponents(Node node) {
 	//--------------------------DELETE BUTTON--------------------------------
 	if (ImGui::Button("Remove", ImVec2(50, 20))){
 		context->DeleteNode(NODE);
+		this->selected = false;
 	}
 
 	//--------------------------PARENTING BUTTON--------------------------------
-	ImGui::SameLine();
-	if (ImGui::Button("Parent", ImVec2(50, 20))) {
+	
+	if (!camera) {
+		ImGui::SameLine();
+		if (ImGui::Button("Parent", ImVec2(50, 20))) {
+			parentPanel->close = true;
+			parentPanel->SetContext(this->context);
+			parentPanel->SetNodeToParent(NODE);
+		}
 	}
+
+	
 
 	//--------------------------UNPARENTING BUTTON--------------------------------
 	if (NODE->parent != this->context->parentNode) {

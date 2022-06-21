@@ -15,6 +15,7 @@ public:
 	HierarchyPanel(Context* context);
 
 	inline Node GetSelectedNode() { return this->selectedNode; }
+	inline void SetSelected(bool selected) { this->selected = selected; }
 	inline bool isSelected() { return this->selected; }
 
 	void OnImGuiRender() override;

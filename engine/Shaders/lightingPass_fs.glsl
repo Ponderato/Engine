@@ -16,10 +16,10 @@ uniform sampler2D aux1;
 uniform sampler2D aux2;
 uniform sampler2D aux3;
 
-//Light properties (WE CAN HAVE 10 LIGHTS)
-uniform vec3 lightColor[10]; 
-uniform vec3 lightPosition[10];
+//Light properties (WE CAN HAVE 100 LIGHTS)
 uniform int nLights;
+uniform vec3 lightColor[100]; 
+uniform vec3 lightPosition[100];
 
 //Other data
 uniform vec3 viewerPos;

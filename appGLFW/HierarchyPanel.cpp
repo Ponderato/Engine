@@ -14,8 +14,6 @@ void HierarchyPanel::OnImGuiRender() {
 	}
 	addPanel->OnImGuiRender();
 
-	ImGui::SameLine();
-
 	ImGui::End();
 }
 

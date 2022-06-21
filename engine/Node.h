@@ -43,6 +43,9 @@ public:
 
 	void Parent(Node* parent);
 	void UnParent();
+
+	void NewParent(Node* parent);
+
 	bool IsChild(Node* node);
 
 	void Move(const glm::vec3 newPos);

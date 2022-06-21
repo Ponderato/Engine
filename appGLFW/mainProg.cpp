@@ -223,6 +223,8 @@ void RenderImGui() {
 	i_panel.SetSelected(h_panel.isSelected());
 	i_panel.OnImGuiRender();
 
+	h_panel.SetSelected(i_panel.isSelected());
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
