@@ -28,7 +28,7 @@ private:
 	float blue = 0.0f;
 	void AddLight();
 
-
+	char modelPath[256];
 	void AddModel();
 };
 

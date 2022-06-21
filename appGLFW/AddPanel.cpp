@@ -16,7 +16,9 @@ void AddPanel::OnImGuiRender() {
         else
         {
             AddCube();
+            AddModel();
             AddLight();
+            
             ImGui::End();
         }
     }
@@ -75,6 +77,25 @@ void AddPanel::AddLight() {
 
     if (ImGui::Button("Add Light", ImVec2(80, 20))) {
         this->context->InitLightCube(glm::vec3(0.0f), glm::vec3(red, green, blue), this->context->parentNode);
+    }
+
+    ImGui::Columns(1);
+}
+
+void AddPanel::AddModel() {
+
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, 300);
+
+    ImGui::InputText("Model Path", modelPath, sizeof(modelPath));
+    ImGui::NextColumn();
+
+
+    if (ImGui::Button("Add Model", ImVec2(80, 20))) {
+
+        if (std::string(modelPath) != "") {
+            this->context->InitModel(std::string(modelPath), glm::vec3(0.0f), this->context->parentNode);
+        }
     }
 
     ImGui::Columns(1);
