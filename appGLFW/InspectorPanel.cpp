@@ -29,6 +29,19 @@ void InspectorPanel::DrawComponents(Node node) {
 		context->DeleteNode(NODE);
 	}
 
+	//--------------------------PARENTING BUTTON--------------------------------
+	ImGui::SameLine();
+	if (ImGui::Button("Parent", ImVec2(50, 20))) {
+	}
+
+	//--------------------------UNPARENTING BUTTON--------------------------------
+	if (NODE->parent != this->context->parentNode) {
+		ImGui::SameLine();
+		if (ImGui::Button("Unparent", ImVec2(70, 20))) {
+			NODE->UnParent();
+		}
+	}
+
 	//--------------------------TAG--------------------------------
 	char buffer[256];
 	memset(buffer, 0, sizeof(buffer));						//Set buffer to 0

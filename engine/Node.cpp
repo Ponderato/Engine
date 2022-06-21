@@ -47,6 +47,22 @@ void Node::Parent(Node* parent) {
 	}
 }
 
+void Node::UnParent() {
+
+	if (this->parent->parent) {
+
+		int index = 0;
+		for (Node* node : this->parent->children) {
+			if (this->ID == node->ID) {
+				this->parent->children.erase(this->parent->children.begin() + index);
+			}
+			index++;
+		}
+
+		Parent(this->parent->parent);
+	}
+}
+
 //Checks if the given Node is a child of this node
 bool Node::IsChild(Node* node) {
 
