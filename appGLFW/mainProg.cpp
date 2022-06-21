@@ -65,6 +65,7 @@ void RenderImGui();
 void SetImGuiWindows();
 
 void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void Window_size_callback(GLFWwindow* window, int width, int height);
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn);
 void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
@@ -161,7 +162,8 @@ GLFWwindow* InitContext() {
 	context.InitGLEW();
 
 	//We want the image not to resize inside the imgui window, so we dont need the resize callback
-	glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
+	//glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
+	glfwSetWindowSizeCallback(window, Window_size_callback);
 	glfwSetCursorPosCallback(window, Mouse_callback);
 	glfwSetScrollCallback(window, Scroll_callback);
 	glfwSetKeyCallback(window, Key_callback);
@@ -256,7 +258,24 @@ void SetImGuiWindows() {
 
 void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
 
-	glViewport(0, 0, WIDTH, HEIGHT);
+	if (width < 1000)
+		width = 1000;
+
+	if (height < 600)
+		height = 600;
+
+	glViewport(0, 0, width, height);
+}
+
+void Window_size_callback(GLFWwindow* window, int width, int height) {
+
+	if (width < 1000)
+		width = 1000;
+
+	if (height < 600)
+		height = 600;
+
+	glfwSetWindowSize(window, width, height);
 }
 
 void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){

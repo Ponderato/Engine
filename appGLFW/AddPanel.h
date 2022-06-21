@@ -18,13 +18,18 @@ public:
 
 private:
 
-	void AddCube();
-
 	char diffusePath[256];
 	char specPath[256];
 	char emissivePath[256];
+	void AddCube();
+
+	float red = 0.0f;
+	float green = 0.0f;
+	float blue = 0.0f;
+	void AddLight();
 
 
+	void AddModel();
 };
 
 #endif

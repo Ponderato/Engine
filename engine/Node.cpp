@@ -71,7 +71,15 @@ void Node::NewParent(Node* parent) {
 	//Avoid cyclic parents
 	if (IsChild(parent)) return;
 
-	
+	glm::mat4 position = glm::translate(glm::mat4(1.0f), transform.position);
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.x), glm::vec3(transform.rotation.x, 0, 0))
+		* glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.y), glm::vec3(0, transform.rotation.y, 0))
+		* glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.z), glm::vec3(0, 0, transform.rotation.z));
+	glm::mat4 scale = glm::scale(glm::mat4(1.0f), transform.scale);
+
+	transform.localModel = position * rotation * scale;
+
+	dirty = true;
 
 	this->parent = parent;
 	this->parent->children.push_back(this);

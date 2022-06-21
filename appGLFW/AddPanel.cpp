@@ -16,6 +16,7 @@ void AddPanel::OnImGuiRender() {
         else
         {
             AddCube();
+            AddLight();
             ImGui::End();
         }
     }
@@ -25,8 +26,7 @@ void AddPanel::OnImGuiRender() {
 void AddPanel::AddCube() {
 
     ImGui::Columns(4);
-
-    ImGui::SetColumnWidth(0, 250);
+    ImGui::SetColumnWidth(0, 300);
 
     ImGui::InputText("Diffuse", diffusePath, sizeof(diffusePath));
     ImGui::NextColumn();
@@ -50,4 +50,32 @@ void AddPanel::AddCube() {
         }
     }
 
+    ImGui::Columns(1);
+}
+
+void AddPanel::AddLight() {
+    
+    ImGui::Columns(4);
+    ImGui::SetColumnWidth(0, 300);
+
+    ImGui::InputFloat("Red", &red, 0.1f);
+    if (red < 0.0f)
+        red = 0.0f;
+    ImGui::NextColumn();
+
+    ImGui::InputFloat("Green", &green, 0.1f);
+    if (green < 0.0f)
+        green = 0.0f;
+    ImGui::NextColumn();
+    
+    ImGui::InputFloat("Blue", &blue, 0.1f);
+    if (blue < 0.0f)
+        blue = 0.0f;
+    ImGui::NextColumn();
+
+    if (ImGui::Button("Add Light", ImVec2(80, 20))) {
+        this->context->InitLightCube(glm::vec3(0.0f), glm::vec3(red, green, blue), this->context->parentNode);
+    }
+
+    ImGui::Columns(1);
 }
