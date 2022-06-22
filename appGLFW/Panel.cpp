@@ -100,7 +100,7 @@ void Panel::DrawTag(char buffer[]) {
 	ImGui::Text("Tag");
 	ImGui::NextColumn();
 
-	ImGui::InputText("##Tag", buffer, sizeof(buffer));
+	ImGui::InputText("##Tag", buffer, 50);
 
 	ImGui::Columns(1);
 }
