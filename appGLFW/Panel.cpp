@@ -66,6 +66,8 @@ void Panel::DrawVec3(const std::string& label, glm::vec3* values, float reset, f
 
 void Panel::DrawFloat(const std::string& label, float* value, ImVec4 color, float reset, float columnWidth) {
 
+	ImGui::PushID(label.c_str());
+
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 70);
 	ImGui::Text(label.c_str());
@@ -85,6 +87,10 @@ void Panel::DrawFloat(const std::string& label, float* value, ImVec4 color, floa
 	ImGui::SameLine();
 
 	ImGui::DragFloat("##.", value, 0.1f);
+
+	ImGui::Columns(1);
+
+	ImGui::PopID();
 }
 
 void Panel::DrawTag(char buffer[]) {

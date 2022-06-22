@@ -30,7 +30,10 @@ void ParentPanel::OnImGuiRender() {
 void ParentPanel::DrawParentNodes(std::vector<Node*> nodes) {
 
 	for (Node* node : nodes) {
-		if (node->parent == context->parentNode)
+
+		Camera* camera = dynamic_cast<Camera*>(node);
+		
+		if (!camera && node->parent == context->parentNode)
 			DrawNode(node);
 	}
 }

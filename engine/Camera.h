@@ -36,6 +36,8 @@ public:
 	float far;
 	float aspectRatio;
 
+	bool moveMouse = false;
+
 	glm::mat4 projectionMatrix;
 
 	Camera() = default;
@@ -52,6 +54,10 @@ public:
 	void ProcessKeyboard(MovementDir direction, float deltaTime);
 	void ProcessMouseMovement(float xOffset, float yOffset);
 	void ProcessMouseScroll(float yOffset);
+
+	void UpdateYaw(float yaw);
+	void UpdatePitch(float pitch);
+
 
 	void Resize();
 private:

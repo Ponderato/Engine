@@ -189,6 +189,7 @@ void InitImGui(GLFWwindow* window) {
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		style.WindowRounding = 0.0f;
+		//style.Colors[ImGuiCol_TitleBg] = ImVec4(1, 1, 0, 1);
 		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 	}
 
@@ -280,7 +281,7 @@ void Window_size_callback(GLFWwindow* window, int width, int height) {
 
 void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
 
-	if (moveMouse) {
+	if (context.camera.moveMouse) {
 		float xPos = static_cast<float>(xPosIn);
 		float yPos = static_cast<float>(yPosIn);
 
@@ -306,14 +307,14 @@ void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
 
 //Key pressed only once
 void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-		if (!moveMouse) {
-			moveMouse = true;
-		}
-		else {
-			moveMouse = false;
-		}
-	}
+	//f (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+	//	if (!moveMouse) {
+	//		moveMouse = true;
+	//	}
+	//	else {
+	//		moveMouse = false;
+	//	}
+	//
 }
 
 void ProcessInput(GLFWwindow* window){

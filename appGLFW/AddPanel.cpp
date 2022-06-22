@@ -16,9 +16,9 @@ void AddPanel::OnImGuiRender() {
         else
         {
             AddCube();
-            AddModel();
             AddLight();
-            
+            AddModel();
+
             ImGui::End();
         }
     }
@@ -36,7 +36,7 @@ void AddPanel::AddCube() {
     ImGui::InputText("Specular", specPath, sizeof(specPath));
     ImGui::NextColumn();
 
-    ImGui::InputText("Emmisisve", emissivePath, sizeof(emissivePath));
+    ImGui::InputText("Emissive", emissivePath, sizeof(emissivePath));
     ImGui::NextColumn();
 
     if (ImGui::Button("Add Cube", ImVec2(80, 20))) {

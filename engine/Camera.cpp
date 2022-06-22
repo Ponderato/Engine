@@ -34,6 +34,18 @@ void Camera::CalculateVectors() {
 	up = glm::normalize(glm::cross(right, front));
 }
 
+void Camera::UpdateYaw(float yaw) {
+
+	this->yaw = yaw;
+	CalculateVectors();
+}
+
+void Camera::UpdatePitch(float pitch) {
+
+	this->pitch = pitch;
+	CalculateVectors();
+}
+
 void Camera::ProcessKeyboard(MovementDir direction, float deltaTime) {
 
 	float vel = speed * deltaTime;
@@ -54,7 +66,7 @@ void Camera::ProcessKeyboard(MovementDir direction, float deltaTime) {
 }
 
 void Camera::ProcessMouseMovement(float xOffset, float yOffset) {
-	
+
 	xOffset = xOffset * sensitivity;
 	yOffset = yOffset * sensitivity;
 
