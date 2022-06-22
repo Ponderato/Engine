@@ -60,6 +60,7 @@ void Panel::DrawVec3(const std::string& label, glm::vec3* values, float reset, f
 	ImGui::PopStyleVar();
 
 	ImGui::Columns(1);
+	ImGui::Spacing();
 
 	ImGui::PopID();
 }
@@ -69,7 +70,7 @@ void Panel::DrawFloat(const std::string& label, float* value, ImVec4 color, floa
 	ImGui::PushID(label.c_str());
 
 	ImGui::Columns(2);
-	ImGui::SetColumnWidth(0, 70);
+	ImGui::SetColumnWidth(0, columnWidth);
 	ImGui::Text(label.c_str());
 	ImGui::NextColumn();
 
@@ -96,7 +97,7 @@ void Panel::DrawFloat(const std::string& label, float* value, ImVec4 color, floa
 void Panel::DrawTag(char buffer[]) {
 
 	ImGui::Columns(2);
-	ImGui::SetColumnWidth(0, 70);
+	ImGui::SetColumnWidth(0, 80);
 	ImGui::Text("Tag");
 	ImGui::NextColumn();
 

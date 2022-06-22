@@ -6,6 +6,8 @@ InspectorPanel.cpp
 AddPanel.cpp
 ParentPanel.cpp
 Panel.cpp
+ShaderEditorPanel.cpp
+TextEditor.cpp
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_glfw.cpp
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3.cpp
 )
@@ -17,6 +19,8 @@ InspectorPanel.h
 ParentPanel.h
 AddPanel.h
 Panel.h
+ShaderEditorPanel.h
+TextEditor.h
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_glfw.h
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3.h
 ${CMAKE_SOURCE_DIR}/imgui/imgui_impl_opengl3_loader.h

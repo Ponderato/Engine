@@ -165,7 +165,7 @@ GLFWwindow* InitContext() {
 	//glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
 	glfwSetWindowSizeCallback(window, Window_size_callback);
 	glfwSetCursorPosCallback(window, Mouse_callback);
-	glfwSetScrollCallback(window, Scroll_callback);
+	//glfwSetScrollCallback(window, Scroll_callback);
 	glfwSetKeyCallback(window, Key_callback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);

@@ -77,7 +77,7 @@ private:
 	std::vector<Node*> renderableModels;
 	std::vector<Node*> renderableForwardModels;
 
-	void SetUniforms();
+	void SetDSUniforms();
 
 	void CheckRenderable();
 	void UpdateModels();

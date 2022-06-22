@@ -25,6 +25,7 @@ void InspectorPanel::DrawComponents(Node node) {
 	}
 
 	Camera* camera = dynamic_cast<Camera*>(NODE);
+	LightCube* light = dynamic_cast<LightCube*>(NODE);
 
 	//--------------------------DELETE BUTTON--------------------------------
 	if (!camera) {
@@ -32,12 +33,8 @@ void InspectorPanel::DrawComponents(Node node) {
 			context->DeleteNode(NODE);
 			this->selected = false;
 		}
-	
-
 
 	//--------------------------PARENTING BUTTON--------------------------------
-	
-	
 		ImGui::SameLine();
 		if (ImGui::Button("Parent", ImVec2(50, 20))) {
 			parentPanel->close = true;
@@ -62,6 +59,38 @@ void InspectorPanel::DrawComponents(Node node) {
 	DrawTag(buffer);
 	NODE->tag = std::string(buffer);
 
+	//--------------------------INTENSITY--------------------------------
+	if (light) {
+		float intensity = light->intensity;
+		DrawFloat("Intensity", &intensity, ImVec4(1.0f, 0.0f, 1.0f, 1.0f), 1.0f, 80.0f);
+		light->SetIntensity(intensity);
+	}
+
+	//--------------------------CAMERA STUFF--------------------------------
+	if (camera) {
+		float fov = camera->fov;
+		DrawFloat("FOV", &fov, ImVec4(0.8f, 0.8f, 0.0f, 1.0f), 45.0f, 80.0f);
+		camera->SetFOV(fov);
+
+		//ImGui::NextLine();
+
+		float yaw = camera->yaw;
+		DrawFloat("YAW (Y)", &yaw, ImVec4(1.0f, 0.5f, 0.0f, 1.0f), -90.0f, 80.0f);
+		camera->UpdateYaw(yaw);
+
+		float pitch = camera->pitch;
+		DrawFloat("PITCH (X)", &pitch, ImVec4(0.4f, 0.2f, 0.05f, 1.0f), 0.0f, 80.0f);
+		camera->UpdatePitch(pitch);
+
+		//if (ImGui::Button("Mouse", ImVec2(50, 20))) {
+		//	if(!camera->moveMouse)
+		//		camera->moveMouse = true;
+		//	else
+		//		camera->moveMouse = false;
+		//}
+
+	}
+
 	//--------------------------TRANSFORM--------------------------------
 	#pragma region TRANSFORM
 	if (ImGui::CollapsingHeader("Transform")) {
@@ -73,42 +102,16 @@ void InspectorPanel::DrawComponents(Node node) {
 
 		//--------------------------SCALE--------------------------------
 		if (!camera) {
+
 			glm::vec3 scale = NODE->transform.scale;
 			DrawVec3("Scale", &scale, 1.0f, 70.0f);
 			NODE->Scale(scale);
 
-
 			//--------------------------ROTATION--------------------------------
-
 			glm::vec3 rotation = glm::vec3(NODE->transform.rotation.x, NODE->transform.rotation.y, NODE->transform.rotation.z);
 			DrawVec3("Rotation", &rotation, 0.0f, 70.0f);
 			rotation = ChekRotation(rotation);
 			NODE->Rotate(glm::vec3(rotation.x, rotation.y, rotation.z));
-
-		}
-		//--------------------------CAMERA STUFF--------------------------------
-		if (camera) {
-			float fov = camera->fov;
-			DrawFloat("FOV", &fov, ImVec4(0.8f, 0.8f, 0.0f, 1.0f), 45.0f, 70.0f);
-			camera->SetFOV(fov);
-
-			//ImGui::NextLine();
-
-			float yaw = camera->yaw;
-			DrawFloat("YAW (Y)", &yaw, ImVec4(0.2f, 0.7f, 0.2f, 1.0f), -90.0f, 70.0f);
-			camera->UpdateYaw(yaw);
-
-			float pitch = camera->pitch;
-			DrawFloat("PITCH (X)", &pitch, ImVec4(0.8f, 0.1f, 0.15f, 1.0f), 0.0f, 70.0f);
-			camera->UpdatePitch(pitch);
-
-			//if (ImGui::Button("Mouse", ImVec2(50, 20))) {
-			//	if(!camera->moveMouse)
-			//		camera->moveMouse = true;
-			//	else
-			//		camera->moveMouse = false;
-			//}
-
 		}
 
 	}

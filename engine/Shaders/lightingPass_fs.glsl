@@ -18,6 +18,7 @@ uniform sampler2D aux3;
 
 //Light properties (WE CAN HAVE 100 LIGHTS)
 uniform int nLights;
+uniform float intensity[100];
 uniform vec3 lightColor[100]; 
 uniform vec3 lightPosition[100];
 
@@ -38,10 +39,11 @@ float kConst = 1.0f;     //Point light
 float kLinear = 0.07f;   //Point light
 float kQuad = 0.017f;    //Point light
 
-vec3 pointLShade(vec3 color, vec3 lightPos){
+vec3 pointLShade(vec3 color, vec3 lightPos, float intensity){
     //Attenuation
     float dist = length(lightPos - fragPos);
     float attenuation = 1.0 / (kConst + kLinear*dist + kQuad*dist*dist);
+    attenuation *= intensity;
 
     //Ambient lighting.
     vec3 ambientL = color * diffuse * 0.05f; //We take here the diffuse vec3 since
@@ -64,7 +66,8 @@ vec3 pointLShade(vec3 color, vec3 lightPos){
     //Emissive lighting
     //vec3 emissive = texture(matEmissive, texCoords).rgb;
 
-    return ambientL + diffuseL + specularL;
+    return  ambientL + diffuseL + specularL;
+    //return result * intensity;
 }
 
 void main()
@@ -78,7 +81,7 @@ void main()
 	//Now light calculations as usual
     vec3 result;
     for (int i = 0; i < nLights; i++){
-        result += pointLShade(lightColor[i], lightPosition[i]);
+        result += pointLShade(lightColor[i], lightPosition[i], intensity[i]);
     }
 
     fColor = vec4(result, 1.0f);

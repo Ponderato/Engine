@@ -50,6 +50,7 @@ void LightingStep::SetLightUniforms() {
 		LightCube* light = dynamic_cast<LightCube*>(node);
 
 		if (light) {
+			program.SetFloat("intensity[" + std::to_string(count) + "]", light->intensity);
 			program.SetVec3("lightPosition[" + std::to_string(count) + "]", glm::vec3(light->transform.globalModel[3].x, light->transform.globalModel[3].y, light->transform.globalModel[3].z));
 			program.SetVec3("lightColor[" + std::to_string(count) + "]", light->color);
 			count += 1;

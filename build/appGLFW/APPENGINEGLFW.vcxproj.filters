@@ -22,6 +22,12 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\ShaderEditorPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\TextEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_glfw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,6 +67,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\ShaderEditorPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\appGLFW\TextEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\imgui\imgui_impl_glfw.h">

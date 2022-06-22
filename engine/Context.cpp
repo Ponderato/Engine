@@ -25,7 +25,8 @@ void Context::InitOGL() {
 	//glEnable(GL_CULL_FACE); //Enable culling for not visible faces. Take into account that in our scene all objects are opaque.
 }
 
-void Context::SetUniforms() {
+//Set deferred shading uniforms
+void Context::SetDSUniforms() {
 
 	//Deferred Shading
 	programs[3].Use();
@@ -94,7 +95,7 @@ void Context::SetPipeline() {
 	pipeline->fStep->SetFBO(&middleBuffer);
 
 	//Finally set the uniforms
-	SetUniforms();
+	SetDSUniforms();
 }
 
 void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
