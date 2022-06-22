@@ -4,6 +4,7 @@
 #define SHADEREDITORPANEL_H
 
 #include "Panel.h"
+#include "TextEditor.h"
 
 class ShaderEditorPanel : public Panel
 {
@@ -16,6 +17,7 @@ public:
 
 private:
 
+	TextEditor editor;
 
 };
 

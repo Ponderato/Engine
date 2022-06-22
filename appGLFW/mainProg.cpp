@@ -11,6 +11,7 @@
 #include "HierarchyPanel.h"
 #include "RenderPanel.h"
 #include "InspectorPanel.h"
+#include "ShaderEditorPanel.h"
 
 //Data
 const unsigned int OGL_WIDTH = 1000;
@@ -55,6 +56,7 @@ Context context;
 HierarchyPanel h_panel;
 RenderPanel r_panel;
 InspectorPanel i_panel;
+ShaderEditorPanel se_panel;
 
 //Declaration of methods -> C programming stuff :D
 GLFWwindow* InitContext();
@@ -228,6 +230,9 @@ void RenderImGui() {
 
 	h_panel.SetSelected(i_panel.isSelected());
 
+	se_panel.OnImGuiRender();
+
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -254,6 +259,9 @@ void SetImGuiWindows() {
 
 	//Inspector panel
 	i_panel.SetContext(&context);
+
+	//ShaderEditor panel
+	se_panel.SetContext(&context);
 
 }
 

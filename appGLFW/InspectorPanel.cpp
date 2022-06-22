@@ -97,19 +97,19 @@ void InspectorPanel::DrawComponents(Node node) {
 
 		//--------------------------POSITION--------------------------------
 		glm::vec3 pos = NODE->transform.position;
-		DrawVec3("Position", &pos, 0.0f, 70.0f);
+		DrawVec3("Position", &pos, 0.0f, 80.0f);
 		NODE->Move(pos);
 
 		//--------------------------SCALE--------------------------------
 		if (!camera) {
 
 			glm::vec3 scale = NODE->transform.scale;
-			DrawVec3("Scale", &scale, 1.0f, 70.0f);
+			DrawVec3("Scale", &scale, 1.0f, 80.0f);
 			NODE->Scale(scale);
 
 			//--------------------------ROTATION--------------------------------
 			glm::vec3 rotation = glm::vec3(NODE->transform.rotation.x, NODE->transform.rotation.y, NODE->transform.rotation.z);
-			DrawVec3("Rotation", &rotation, 0.0f, 70.0f);
+			DrawVec3("Rotation", &rotation, 0.0f, 80.0f);
 			rotation = ChekRotation(rotation);
 			NODE->Rotate(glm::vec3(rotation.x, rotation.y, rotation.z));
 		}
