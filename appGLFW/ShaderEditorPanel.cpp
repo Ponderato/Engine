@@ -17,14 +17,18 @@ void ShaderEditorPanel::OnImGuiRender() {
 	
 	SelectFile();
 
-	// TODO -> THE GIVEN STRING SHOULD BE THE NAME OF THE SHADER WE ARE MODIFYING.
 	editor.Render("Editor");
+
+	//std::string aux = editor.GetText();
+	//
+	//std::cout << aux << std::endl;
 
 	ImGui::End();
 }
 
-void ShaderEditorPanel::SetEditorStyle() {
+void ShaderEditorPanel::ConfigureEditor() {
 
+	//Style
 	editor.SetShowWhitespaces(false);
 	editor.SetPalette(TextEditor::GetDarkPalette());
 
@@ -36,6 +40,10 @@ void ShaderEditorPanel::SelectFile() {
 
 		filePath = OpenFile("Shaders (*.glsl)\0*.glsl\0");
 		fileName = GetFileName(filePath);
+
+		std::string content = GetFileContent(filePath);
+		editor.SetText(content);
+
 	}
 
 	ImGui::SameLine();
@@ -44,7 +52,6 @@ void ShaderEditorPanel::SelectFile() {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
 	TextCentered(fileName.c_str());
 	ImGui::PopStyleColor();
-
 }
 
 void ShaderEditorPanel::TextCentered(std::string text) {
@@ -90,15 +97,24 @@ std::string ShaderEditorPanel::OpenFile(const char* filter) {
 
 std::string ShaderEditorPanel::GetFileName(std::string path) {
 
-	std::vector<std::string> names;
+	std::string name;
 	std::stringstream s_stream(path);
 
 	while (s_stream.good()) {
 		std::string substr;
 		std::getline(s_stream, substr, '\\');
-		names.push_back(substr);
+		name = substr;
 	}
 
-	return names.at(names.size() - 1);
+	return name;
 
+}
+
+std::string ShaderEditorPanel::GetFileContent(std::string path) {
+
+	std::ifstream t(path);
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+
+	return buffer.str();
 }

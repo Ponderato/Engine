@@ -13,7 +13,7 @@ public:
 	ShaderEditorPanel() = default;
 	ShaderEditorPanel(Context* context);
 
-	void SetEditorStyle();
+	void ConfigureEditor();
 
 	void OnImGuiRender() override;
 
@@ -29,6 +29,7 @@ private:
 	std::string OpenFile(const char* filter);
 
 	std::string GetFileName(std::string path);
+	std::string GetFileContent(std::string path);
 	
 };
 

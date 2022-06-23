@@ -186,7 +186,7 @@ void InitImGui(GLFWwindow* window) {
 
 	ImGui::StyleColorsDark();
 
-	se_panel.SetEditorStyle();
+	se_panel.ConfigureEditor();
 
 	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 	ImGuiStyle& style = ImGui::GetStyle();
