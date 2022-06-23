@@ -13,12 +13,23 @@ public:
 	ShaderEditorPanel() = default;
 	ShaderEditorPanel(Context* context);
 
+	void SetEditorStyle();
+
 	void OnImGuiRender() override;
 
 private:
 
+	std::string filePath;
+	std::string fileName = "No File Opened";
 	TextEditor editor;
 
+	void SelectFile();
+	void TextCentered(std::string text);
+
+	std::string OpenFile(const char* filter);
+
+	std::string GetFileName(std::string path);
+	
 };
 
 #endif

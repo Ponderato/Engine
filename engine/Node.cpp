@@ -16,35 +16,21 @@ void Node::UpdateMatrix() {
 
 void Node::Parent(Node* parent) {
 
-	if (parent == nullptr) {
+	//Avoid cycles.
+	//It can not be its own parent
+	if (parent == this) return;
 
-		//TODO -> NOSOS SIN PADRE DEBEN SER HIJOS DEL NODO RAÍZ DE LA ESCENA
-		this->parent = nullptr;
+	//Avoid cyclic parents
+	if (IsChild(parent)) return;
 
-		//Matrices calculations when there is no parent
-		transform.localModel = glm::translate(transform.localModel, transform.position);
-		transform.localModel = glm::rotate(transform.localModel, glm::radians(360.0f), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
-		transform.localModel = glm::scale(transform.localModel, transform.scale);
-				 
-		transform.globalModel = transform.localModel;
-	}
-	else{
-		//Avoid cycles.
-		//It can not be its own parent
-		if (parent == this) return;
+	transform.globalModel = glm::translate(transform.globalModel, transform.position);
+	transform.globalModel = glm::rotate(transform.globalModel, glm::radians(360.0f), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
+	transform.globalModel = glm::scale(transform.globalModel, transform.scale);
 
-		//Avoid cyclic parents
-		if (IsChild(parent)) return;
+	transform.localModel = glm::inverse(parent->transform.globalModel) * transform.globalModel;
 
-		transform.globalModel = glm::translate(transform.globalModel, transform.position);
-		transform.globalModel = glm::rotate(transform.globalModel, glm::radians(360.0f), glm::vec3(transform.rotation.x, transform.rotation.y, transform.rotation.z));
-		transform.globalModel = glm::scale(transform.globalModel, transform.scale);
-
-		transform.localModel = glm::inverse(parent->transform.globalModel) * transform.globalModel;
-
-		this->parent = parent;
-		this->parent->children.push_back(this);
-	}
+	this->parent = parent;
+	this->parent->children.push_back(this);
 }
 
 void Node::UnParent() {
