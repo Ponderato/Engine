@@ -81,7 +81,7 @@ int main(){
 	context.InitOGL();
 	InitImGui(window);
 
-	context.InitShaders("default_vs.glsl", "default_fs.glsl");            //programs[0]
+	context.InitShaders("forward_vs.glsl", "forward_fs.glsl");            //programs[0]
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]

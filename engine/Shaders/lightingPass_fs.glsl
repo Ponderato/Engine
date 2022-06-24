@@ -86,7 +86,3 @@ void main()
 
     fColor = vec4(result, 1.0f);
 }
-
-
-
-

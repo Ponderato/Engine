@@ -67,18 +67,19 @@ void ShaderEditorPanel::SelectFile() {
 	}
 
 	if (ImGui::Button("Save", ImVec2(50, 20))) {
-		
-		std::string content = editor.GetText();
-		SaveFileContent(filePath, content);
 
-		if (filePath == context->programs.at(programNum).vsPath) {
-			context->programs.at(programNum) = Program(filePath.c_str(), context->programs.at(programNum).fsPath.c_str());
-		}
-		else {
-			context->programs.at(programNum) = Program(context->programs.at(programNum).vsPath.c_str(), filePath.c_str());
-		}
+		if (fileName != "No File Opened") {
 
-		
+			std::string content = editor.GetText();
+			SaveFileContent(filePath, content);
+
+			if (filePath == context->programs.at(programNum).vsPath) {
+				context->programs.at(programNum) = Program(filePath.c_str(), context->programs.at(programNum).fsPath.c_str());
+			}
+			else {
+				context->programs.at(programNum) = Program(context->programs.at(programNum).vsPath.c_str(), filePath.c_str());
+			}
+		}
 	}
 }
 
