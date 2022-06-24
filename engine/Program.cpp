@@ -84,14 +84,14 @@ void Program::CheckCompilling(unsigned int identifier, std::string type) {
 		glGetProgramiv(identifier, GL_LINK_STATUS, &success);
 		if (!success) {
 			glGetProgramInfoLog(identifier, 1024, NULL, info);
-			std::cout << "ERROR::PROGRAM_LINKING_ERROR: " << "\n" << info << "\n -- --------------------------------------------------- --" << std::endl;
+			//std::cout << "ERROR::PROGRAM_LINKING_ERROR: " << "\n" << info << "\n -- --------------------------------------------------- --" << std::endl;
 			failed = true;
 		}
 	}else{
 		glGetShaderiv(identifier, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(identifier, 1024, NULL, info);
-			std::cout << "ERROR::SHADER_COMPILATION_ERROR in " << type << " shader: " << "\n" << info << "\n -- --------------------------------------------------- --" << std::endl;
+			//std::cout << "ERROR::SHADER_COMPILATION_ERROR in " << type << " shader: " << "\n" << info << "\n -- --------------------------------------------------- --" << std::endl;
 			failed = true;
 		}
 	}

@@ -81,17 +81,20 @@ void ShaderEditorPanel::SelectFile() {
 			std::string content = editor.GetText();
 			SaveFileContent(filePath, content);
 
+			Program prev = context->programs.at(programNum);
+
 			error = " ";
 
 			if (filePath == context->programs.at(programNum).vsPath) {
 				context->programs.at(programNum) = Program(filePath.c_str(), context->programs.at(programNum).fsPath.c_str());
-				if (context->programs.at(programNum).failed)
-					error = context->programs.at(programNum).error;
 			}
 			else {
 				context->programs.at(programNum) = Program(context->programs.at(programNum).vsPath.c_str(), filePath.c_str());
-				if (context->programs.at(programNum).failed)
-					error = context->programs.at(programNum).error;
+			}
+
+			if (context->programs.at(programNum).failed) {
+				error = context->programs.at(programNum).error;
+				context->programs.at(programNum) = prev;
 			}
 		}
 	}
