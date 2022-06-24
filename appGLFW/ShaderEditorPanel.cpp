@@ -16,6 +16,9 @@ void ShaderEditorPanel::OnImGuiRender() {
 	ImGui::Begin("Shader Editor");
 	
 	SelectFile();
+	ImGui::SameLine();
+	SaveFileBtn();
+	DrawFileName(fileName, ImVec4(1, 1, 0, 1));
 
 	editor.Render("Editor");
 
@@ -31,7 +34,6 @@ void ShaderEditorPanel::ConfigureEditor() {
 	//Style
 	editor.SetShowWhitespaces(false);
 	editor.SetPalette(TextEditor::GetDarkPalette());
-
 }
 
 void ShaderEditorPanel::SelectFile() {
@@ -46,16 +48,32 @@ void ShaderEditorPanel::SelectFile() {
 
 	}
 
+}
+
+void ShaderEditorPanel::DrawFileName(std::string name, ImVec4 color) {
+
 	ImGui::SameLine();
 	//ImGui::Spacing();
 
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
-	TextCentered(fileName.c_str());
+	ImGui::PushStyleColor(ImGuiCol_Text, color);
+	TextCentered(name.c_str());
 	ImGui::PopStyleColor();
 }
 
+void ShaderEditorPanel::SaveFileBtn() {
+
+	if (ImGui::Button("Save File", ImVec2(90, 20))) {
+
+		filePath = SaveFile("Shaders (*.glsl)\0*.glsl\0");
+		//fileName = GetFileName(filePath);
+		
+		std::string content = editor.GetText();
+		SaveFileContent(filePath, content);
+	}
+}
+
 void ShaderEditorPanel::TextCentered(std::string text) {
-	float win_width = ImGui::GetWindowSize().x + 90; //+ 90 from the select file button
+	float win_width = ImGui::GetWindowSize().x + 180; //+ 180 from the buttons
 	float text_width = ImGui::CalcTextSize(text.c_str()).x;
 
 	// calculate the indentation that centers the text on one line, relative
@@ -95,6 +113,26 @@ std::string ShaderEditorPanel::OpenFile(const char* filter) {
 	return fileName;
 }
 
+std::string ShaderEditorPanel::SaveFile(const char* filter) {
+
+	OPENFILENAMEA ofn;
+	CHAR szFile[260] = { 0 };
+
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = filter;
+	ofn.nFilterIndex = 1;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+	if (GetSaveFileNameA(&ofn) == TRUE) {
+		return ofn.lpstrFile;
+	}
+
+	return fileName;
+}
+
 std::string ShaderEditorPanel::GetFileName(std::string path) {
 
 	std::string name;
@@ -117,4 +155,10 @@ std::string ShaderEditorPanel::GetFileContent(std::string path) {
 	buffer << t.rdbuf();
 
 	return buffer.str();
+}
+
+void ShaderEditorPanel::SaveFileContent(std::string path, std::string content) {
+
+	std::ofstream t(path);
+	t << content;
 }
