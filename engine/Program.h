@@ -23,6 +23,9 @@ public:
 	std::string vsPath;
 	std::string fsPath;
 
+	std::string error;
+	bool failed = false;
+
 	Program(const char* vertexShaderPath, const char* fragmentShaderPath);
 
 	inline void Use() { glUseProgram(ID); }

@@ -78,20 +78,25 @@ void Program::CheckCompilling(unsigned int identifier, std::string type) {
 
 	int success;
 	char info[1024];
+	failed = false;
 
 	if (type == "PROGRAM") {
 		glGetProgramiv(identifier, GL_LINK_STATUS, &success);
 		if (!success) {
 			glGetProgramInfoLog(identifier, 1024, NULL, info);
 			std::cout << "ERROR::PROGRAM_LINKING_ERROR: " << "\n" << info << "\n -- --------------------------------------------------- --" << std::endl;
+			failed = true;
 		}
 	}else{
 		glGetShaderiv(identifier, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(identifier, 1024, NULL, info);
 			std::cout << "ERROR::SHADER_COMPILATION_ERROR in " << type << " shader: " << "\n" << info << "\n -- --------------------------------------------------- --" << std::endl;
+			failed = true;
 		}
 	}
+
+	error = info;
 }
 
 //The const at the end makes not possible to the function to change the data of the class

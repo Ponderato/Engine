@@ -21,6 +21,8 @@ private:
 
 	int programNum = 0;
 
+	std::string error = " ";
+
 	std::string filePath;
 	std::string fileName = "No File Opened";
 	TextEditor editor;

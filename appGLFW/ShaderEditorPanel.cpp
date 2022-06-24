@@ -19,7 +19,15 @@ void ShaderEditorPanel::OnImGuiRender() {
 
 	DrawFileName(fileName, ImVec4(1, 1, 0, 1));
 
-	editor.Render("Editor", ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 110));
+	editor.Render("Editor", ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 150));
+
+	if (error != " ") {
+		ImGui::Spacing();
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+		ImGui::Text(error.c_str());
+		ImGui::PopStyleColor();
+	}
+
 
 	ImGui::Spacing();
 	FileBtns();
@@ -73,11 +81,17 @@ void ShaderEditorPanel::SelectFile() {
 			std::string content = editor.GetText();
 			SaveFileContent(filePath, content);
 
+			error = " ";
+
 			if (filePath == context->programs.at(programNum).vsPath) {
 				context->programs.at(programNum) = Program(filePath.c_str(), context->programs.at(programNum).fsPath.c_str());
+				if (context->programs.at(programNum).failed)
+					error = context->programs.at(programNum).error;
 			}
 			else {
 				context->programs.at(programNum) = Program(context->programs.at(programNum).vsPath.c_str(), filePath.c_str());
+				if (context->programs.at(programNum).failed)
+					error = context->programs.at(programNum).error;
 			}
 		}
 	}
