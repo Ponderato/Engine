@@ -16,15 +16,13 @@ void ShaderEditorPanel::OnImGuiRender() {
 	ImGui::Begin("Shader Editor");
 	
 	SelectFile();
-	ImGui::SameLine();
-	SaveFileBtn();
+
 	DrawFileName(fileName, ImVec4(1, 1, 0, 1));
 
-	editor.Render("Editor");
+	editor.Render("Editor", ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 110));
 
-	//std::string aux = editor.GetText();
-	//
-	//std::cout << aux << std::endl;
+	ImGui::Spacing();
+	FileBtns();
 
 	ImGui::End();
 }
@@ -38,16 +36,50 @@ void ShaderEditorPanel::ConfigureEditor() {
 
 void ShaderEditorPanel::SelectFile() {
 
-	if (ImGui::Button("Select File", ImVec2(90, 20))) {
+	if (ImGui::CollapsingHeader("Select File")) {
 
-		filePath = OpenFile("Shaders (*.glsl)\0*.glsl\0");
-		fileName = GetFileName(filePath);
+		int count = 0;
 
-		std::string content = GetFileContent(filePath);
-		editor.SetText(content);
+		for (Program program : context->programs) {
 
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetWindowSize().x / 2 - program.vsName.length() * 8);
+
+			if (ImGui::Button(program.vsName.c_str(), ImVec2(program.vsName.length() * 8, 20))) {
+				filePath = program.vsPath;
+				fileName = program.vsName;
+				programNum = count;
+			}
+
+			//ImGui::Separator();
+			ImGui::SameLine();
+
+			if (ImGui::Button(program.fsName.c_str(), ImVec2(program.fsName.length() * 8, 20))) {
+				filePath = program.fsPath;
+				fileName = program.fsName;
+				programNum = count;
+			}
+
+			std::string content = GetFileContent(filePath);
+			editor.SetText(content);
+
+			count++;
+		}
 	}
 
+	if (ImGui::Button("Save", ImVec2(50, 20))) {
+		
+		std::string content = editor.GetText();
+		SaveFileContent(filePath, content);
+
+		if (filePath == context->programs.at(programNum).vsPath) {
+			context->programs.at(programNum) = Program(filePath.c_str(), context->programs.at(programNum).fsPath.c_str());
+		}
+		else {
+			context->programs.at(programNum) = Program(context->programs.at(programNum).vsPath.c_str(), filePath.c_str());
+		}
+
+		
+	}
 }
 
 void ShaderEditorPanel::DrawFileName(std::string name, ImVec4 color) {
@@ -60,20 +92,35 @@ void ShaderEditorPanel::DrawFileName(std::string name, ImVec4 color) {
 	ImGui::PopStyleColor();
 }
 
-void ShaderEditorPanel::SaveFileBtn() {
+void ShaderEditorPanel::FileBtns() {
 
-	if (ImGui::Button("Save File", ImVec2(90, 20))) {
+	if (ImGui::Button("Open", ImVec2(50, 20))) {
+
+		filePath = OpenFile("Shaders (*.glsl)\0*.glsl\0");
+		fileName = GetFileName(filePath);
+
+		std::string content = GetFileContent(filePath);
+		editor.SetText(content);
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Save As", ImVec2(60, 20))) {
 
 		filePath = SaveFile("Shaders (*.glsl)\0*.glsl\0");
 		//fileName = GetFileName(filePath);
-		
+
 		std::string content = editor.GetText();
 		SaveFileContent(filePath, content);
+
+		//context->InitShaders("lightingPass_vs.glsl", filePath.c_str());            //programs[0]
+		//context->pipeline->lStep->SetProgram(context->programs.at(context->programs.size() - 1));
 	}
 }
 
 void ShaderEditorPanel::TextCentered(std::string text) {
-	float win_width = ImGui::GetWindowSize().x + 180; //+ 180 from the buttons
+
+	float win_width = ImGui::GetWindowSize().x + 50; //+ 50 from the buttons
 	float text_width = ImGui::CalcTextSize(text.c_str()).x;
 
 	// calculate the indentation that centers the text on one line, relative

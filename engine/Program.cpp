@@ -7,6 +7,10 @@ Program::Program(const char* vertexShaderPath, const char* fragmentShaderPath) {
 	GLuint fragmentShader = CreateShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
 
 	ID = glCreateProgram();
+	this->vsName = GetName(vertexShaderPath);
+	this->vsPath = vertexShaderPath;
+	this->fsName = GetName(fragmentShaderPath);
+	this->fsPath = fragmentShaderPath;
 
 	glAttachShader(ID, vertexShader);
 	glAttachShader(ID, fragmentShader);
@@ -17,6 +21,21 @@ Program::Program(const char* vertexShaderPath, const char* fragmentShaderPath) {
 	//Delete the shaders as they're now linked into the program and no longer necessary
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+}
+
+std::string Program::GetName(std::string path) {
+
+	std::string name;
+	std::stringstream s_stream(path);
+
+	while (s_stream.good()) {
+		std::string substr;
+		std::getline(s_stream, substr, '\\');
+		name = substr;
+	}
+
+	return name;
+
 }
 
 GLuint Program::CreateShader(const char* fileName, GLenum shaderType) {

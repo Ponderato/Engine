@@ -19,12 +19,14 @@ public:
 
 private:
 
+	int programNum = 0;
+
 	std::string filePath;
 	std::string fileName = "No File Opened";
 	TextEditor editor;
 
 	void SelectFile();
-	void SaveFileBtn();
+	void FileBtns();
 	void DrawFileName(std::string name, ImVec4 color);
 	void TextCentered(std::string text);
 

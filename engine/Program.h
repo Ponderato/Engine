@@ -17,6 +17,12 @@ class Program
 public:
 	unsigned int ID;
 
+	std::string vsName;
+	std::string fsName;
+
+	std::string vsPath;
+	std::string fsPath;
+
 	Program(const char* vertexShaderPath, const char* fragmentShaderPath);
 
 	inline void Use() { glUseProgram(ID); }
@@ -34,6 +40,8 @@ private:
 	void CheckCompilling(unsigned int shaderID, std::string type);
 	void ReadFile(const char* fileName);
 	unsigned int CreateShader(const char* fileName, GLenum shaderType);
+
+	std::string GetName(std::string path);
 
 };
 

@@ -64,6 +64,10 @@ void InspectorPanel::DrawComponents(Node node) {
 		float intensity = light->intensity;
 		DrawFloat("Intensity", &intensity, ImVec4(1.0f, 0.0f, 1.0f, 1.0f), 1.0f, 80.0f);
 		light->SetIntensity(intensity);
+
+		glm::vec3 color = light->color;
+		DrawVec3RGB("Color", &color, 1.0f, 80.0f);
+		light->SetColor(color);
 	}
 
 	//--------------------------CAMERA STUFF--------------------------------
@@ -122,24 +126,44 @@ void InspectorPanel::DrawComponents(Node node) {
 	if (!camera) {
 		if (ImGui::CollapsingHeader("Local Matrix")) {
 
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+			ImGui::Text("       [0]     [1]     [2]     [3]  ");
+			ImGui::PopStyleColor();
+
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+			ImGui::Text("[x]");
+			ImGui::PopStyleColor();
+			ImGui::SameLine();
 			glm::vec4 row = glm::vec4(NODE->transform.localModel[0].x, NODE->transform.localModel[1].x, NODE->transform.localModel[2].x, NODE->transform.localModel[3].x);
 			if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
 				NODE->Move(glm::vec3(row.w, NODE->transform.localModel[3].y, NODE->transform.localModel[3].z));
 				NODE->Scale(glm::vec3(row.x, NODE->transform.localModel[1].y, NODE->transform.localModel[2].z));
 			}
 
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+			ImGui::Text("[y]");
+			ImGui::PopStyleColor();
+			ImGui::SameLine();
 			row = glm::vec4(NODE->transform.localModel[0].y, NODE->transform.localModel[1].y, NODE->transform.localModel[2].y, NODE->transform.localModel[3].y);
 			if (ImGui::DragFloat4("  ", glm::value_ptr(row), 0.1f)) {
 				NODE->Move(glm::vec3(NODE->transform.localModel[3].x, row.w, NODE->transform.localModel[3].z));
 				NODE->Scale(glm::vec3(NODE->transform.localModel[0].x, row.y, NODE->transform.localModel[2].z));
 			}
 
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+			ImGui::Text("[z]");
+			ImGui::PopStyleColor();
+			ImGui::SameLine();
 			row = glm::vec4(NODE->transform.localModel[0].z, NODE->transform.localModel[1].z, NODE->transform.localModel[2].z, NODE->transform.localModel[3].z);
 			if (ImGui::DragFloat4("   ", glm::value_ptr(row), 0.1f)) {
 				NODE->Move(glm::vec3(NODE->transform.localModel[3].x, NODE->transform.localModel[3].y, row.w));
 				NODE->Scale(glm::vec3(NODE->transform.localModel[0].x, NODE->transform.localModel[1].y, row.z));
 			}
 
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+			ImGui::Text("[w]");
+			ImGui::PopStyleColor();
+			ImGui::SameLine();
 			row = glm::vec4(NODE->transform.localModel[0].w, NODE->transform.localModel[1].w, NODE->transform.localModel[2].w, NODE->transform.localModel[3].w);
 			if (ImGui::DragFloat4("    ", glm::value_ptr(row), 0.1f)) {
 			}

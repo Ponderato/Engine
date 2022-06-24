@@ -208,6 +208,10 @@ void Context::Update() {
 	UpdateModels();
 	CheckRenderable();
 
+	pipeline->gStep->SetProgram(programs[2]);
+	pipeline->lStep->SetProgram(programs[3]);
+	pipeline->fStep->SetProgram(programs[1]);
+
 	pipeline->Render();
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -12,6 +12,7 @@ public:
 	GeometryStep(Camera& camera, Program& program);
 
 	inline void SetModels(std::vector<Node*> models) { this->models = models; }
+	inline void SetProgram(Program& program) { this->program = program; }
 
 	void RenderStep() override;
 private:

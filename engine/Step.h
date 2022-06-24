@@ -23,6 +23,7 @@ public:
 
 	inline GLuint* GetOutputTexture(unsigned int id) { return dataTextures.at(id); };
 
+
 	virtual void RenderStep() = 0;
 protected:
 
