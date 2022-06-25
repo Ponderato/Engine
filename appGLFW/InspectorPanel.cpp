@@ -178,8 +178,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		glm::vec4 row = glm::vec4(matrix[0].x, matrix[1].x, matrix[2].x, matrix[3].x);
 		if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-				//camera->PMRow1(glm::vec2(row.x, row.z));
-				context->a = row.x;
+				camera->PMRow1(glm::vec2(row.x, row.z));
 				//camera->UpdatePM();
 			}
 			else {

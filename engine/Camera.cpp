@@ -18,9 +18,6 @@ Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensiti
 	this->tag = "Camera";
 
 	CalculateVectors();
-
-	projectionMatrixG = glm::perspective(glm::radians(fov), aspectRatio, near, far);
-	this->dirty = true;
 }
 
 void Camera::CalculateVectors() {
@@ -97,28 +94,24 @@ void Camera::SetFOV(float fov) {
 	
 	this->fov = fov;
 	projectionMatrixL = glm::perspective(glm::radians(fov), aspectRatio, near, far);
-	dirty = true;
 }
 
 void Camera::SetAspectRatio(float aspect) {
 
 	this->aspectRatio = aspect;
 	projectionMatrixL = glm::perspective(glm::radians(fov), aspect, near, far);
-	dirty = true;
 }
 
 void Camera::SetNear(float near) {
 
 	this->near = near;
 	projectionMatrixL = glm::perspective(glm::radians(fov), aspectRatio, near, far);
-	dirty = true;
 }
 
 void Camera::SetFar(float far) {
 
 	this->far = far;
 	projectionMatrixL = glm::perspective(glm::radians(fov), aspectRatio, near, far);
-	dirty = true;
 }
 
 void Camera::PMRow1(glm::vec2 row) {
@@ -127,7 +120,6 @@ void Camera::PMRow1(glm::vec2 row) {
 
 	projectionMatrixL[0].x = row.x;
 	projectionMatrixL[2].x = row.y;
-	dirty = true;
 }
 
 void Camera::UpdatePM() {
