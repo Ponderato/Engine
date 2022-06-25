@@ -58,7 +58,9 @@ public:
 	void UpdateYaw(float yaw);
 	void UpdatePitch(float pitch);
 
+	void PMRow0(glm::vec2 row);
 	void PMRow1(glm::vec2 row);
+	void PMRow2(glm::vec2 row);
 
 	void UpdatePM();
 private:

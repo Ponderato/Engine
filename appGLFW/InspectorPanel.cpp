@@ -178,7 +178,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		glm::vec4 row = glm::vec4(matrix[0].x, matrix[1].x, matrix[2].x, matrix[3].x);
 		if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-				camera->PMRow1(glm::vec2(row.x, row.z));
+				camera->PMRow0(glm::vec2(row.x, row.z));
 				//camera->UpdatePM();
 			}
 			else {
@@ -195,7 +195,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		row = glm::vec4(matrix[0].y, matrix[1].y, matrix[2].y, matrix[3].y);
 		if (ImGui::DragFloat4("  ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-
+				camera->PMRow1(glm::vec2(row.y, row.z));
 			}
 			else {
 				node->Move(glm::vec3(matrix[3].x, row.w, matrix[3].z));
@@ -210,7 +210,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		row = glm::vec4(matrix[0].z, matrix[1].z, matrix[2].z, matrix[3].z);
 		if (ImGui::DragFloat4("   ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-
+				camera->PMRow0(glm::vec2(row.z, row.w));
 			}
 			else {
 				node->Move(glm::vec3(matrix[3].x, matrix[3].y, row.w));
