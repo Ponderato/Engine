@@ -44,11 +44,12 @@ public:
 	Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensitivity, float fov, float yaw, float pitch, Node* parent);
 
 	inline glm::mat4 GetLookAtMatrix() { return glm::lookAt(transform.position, transform.position + front, up); }
-	inline glm::mat4 GetProjectionMatrix() { return glm::perspective(glm::radians(fov), aspectRatio, near, far); }
-	inline void SetFOV(float fov) { this->fov = fov; }
-	inline void SetAspectRatio(float aspect) { this->aspectRatio = aspect; }
-	inline void SetNear(float near) { this->near = near; }
-	inline void SetFar(float far) { this->far = far; }
+	inline glm::mat4 GetProjectionMatrix() { return this->projectionMatrix; }
+
+	void SetFOV(float fov);
+	void SetAspectRatio(float aspect);
+	void SetNear(float near);
+	void SetFar(float far);
 
 	//Input
 	void ProcessKeyboard(MovementDir direction, float deltaTime);
@@ -58,8 +59,8 @@ public:
 	void UpdateYaw(float yaw);
 	void UpdatePitch(float pitch);
 
+	void PMRow1(glm::vec2 row);
 
-	void Resize();
 private:
 
 	void CalculateVectors();

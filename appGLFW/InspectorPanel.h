@@ -27,6 +27,7 @@ private:
 	bool selected = false;
 
 	void DrawComponents(Node node);
+	void DrawMatrix(std::string label, Node* node);
 
 	glm::vec3 ChekRotation(glm::vec3 rotation);
 };

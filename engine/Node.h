@@ -52,6 +52,8 @@ public:
 	void Scale(const glm::vec3 scaleVector);
 	void Rotate(const glm::vec3 axis);
 
+	inline glm::mat4 GetLocalMatrix() { return this->transform.localModel; }
+
 	void Update();
 
 	operator uint32_t() const { return (uint32_t)this; }

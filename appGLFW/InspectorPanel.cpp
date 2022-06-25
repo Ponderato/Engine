@@ -86,12 +86,13 @@ void InspectorPanel::DrawComponents(Node node) {
 		DrawFloat("PITCH (X)", &pitch, ImVec4(0.4f, 0.2f, 0.05f, 1.0f), 0.0f, 80.0f);
 		camera->UpdatePitch(pitch);
 
-		//if (ImGui::Button("Mouse", ImVec2(50, 20))) {
-		//	if(!camera->moveMouse)
-		//		camera->moveMouse = true;
-		//	else
-		//		camera->moveMouse = false;
-		//}
+		float near = camera->near;
+		DrawFloat("NEAR", &near, ImVec4(0.9f, 0.1f, 0.1f, 1.0f), 0.1f, 80.0f);
+		camera->SetNear(near);
+
+		float far = camera->far;
+		DrawFloat("FAR", &far, ImVec4(0.7f, 0.05f, 0.05f, 1.0f), 100.0f, 80.0f);
+		camera->SetFar(far);
 
 	}
 
@@ -123,52 +124,10 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//--------------------------MATRIX--------------------------------
 	#pragma region MATRIX
-	if (!camera) {
-		if (ImGui::CollapsingHeader("Local Matrix")) {
-
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
-			ImGui::Text("       [0]     [1]     [2]     [3]  ");
-			ImGui::PopStyleColor();
-
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
-			ImGui::Text("[x]");
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-			glm::vec4 row = glm::vec4(NODE->transform.localModel[0].x, NODE->transform.localModel[1].x, NODE->transform.localModel[2].x, NODE->transform.localModel[3].x);
-			if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
-				NODE->Move(glm::vec3(row.w, NODE->transform.localModel[3].y, NODE->transform.localModel[3].z));
-				NODE->Scale(glm::vec3(row.x, NODE->transform.localModel[1].y, NODE->transform.localModel[2].z));
-			}
-
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
-			ImGui::Text("[y]");
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-			row = glm::vec4(NODE->transform.localModel[0].y, NODE->transform.localModel[1].y, NODE->transform.localModel[2].y, NODE->transform.localModel[3].y);
-			if (ImGui::DragFloat4("  ", glm::value_ptr(row), 0.1f)) {
-				NODE->Move(glm::vec3(NODE->transform.localModel[3].x, row.w, NODE->transform.localModel[3].z));
-				NODE->Scale(glm::vec3(NODE->transform.localModel[0].x, row.y, NODE->transform.localModel[2].z));
-			}
-
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
-			ImGui::Text("[z]");
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-			row = glm::vec4(NODE->transform.localModel[0].z, NODE->transform.localModel[1].z, NODE->transform.localModel[2].z, NODE->transform.localModel[3].z);
-			if (ImGui::DragFloat4("   ", glm::value_ptr(row), 0.1f)) {
-				NODE->Move(glm::vec3(NODE->transform.localModel[3].x, NODE->transform.localModel[3].y, row.w));
-				NODE->Scale(glm::vec3(NODE->transform.localModel[0].x, NODE->transform.localModel[1].y, row.z));
-			}
-
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
-			ImGui::Text("[w]");
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-			row = glm::vec4(NODE->transform.localModel[0].w, NODE->transform.localModel[1].w, NODE->transform.localModel[2].w, NODE->transform.localModel[3].w);
-			if (ImGui::DragFloat4("    ", glm::value_ptr(row), 0.1f)) {
-			}
-		}
-	}
+	if (!camera)
+		DrawMatrix("Local Matrix", NODE);
+	else
+		DrawMatrix("Projection Matrix", NODE);
 
 	#pragma endregion
 }
@@ -194,4 +153,76 @@ glm::vec3 InspectorPanel::ChekRotation(glm::vec3 rotation) {
 		rotation.z = 360.0f;
 
 	return rotation;
+}
+
+void InspectorPanel::DrawMatrix(std::string label, Node* node) {
+
+	Camera* camera = dynamic_cast<Camera*>(node);
+	glm::mat4 matrix;
+
+	if (camera)
+		matrix = camera->projectionMatrix;
+	else
+		matrix = node->GetLocalMatrix();
+
+	if (ImGui::CollapsingHeader(label.c_str())) {
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+		ImGui::Text("       [0]     [1]     [2]     [3]  ");
+		ImGui::PopStyleColor();
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+		ImGui::Text("[x]");
+		ImGui::PopStyleColor();
+		ImGui::SameLine();
+		glm::vec4 row = glm::vec4(matrix[0].x, matrix[1].x, matrix[2].x, matrix[3].x);
+		if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
+			if (camera) {
+				camera->PMRow1(glm::vec2(row.x, row.z));
+			}
+			else {
+				node->Move(glm::vec3(row.w, matrix[3].y, matrix[3].z));
+				node->Scale(glm::vec3(row.x, matrix[1].y, matrix[2].z));
+			}
+
+		}
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+		ImGui::Text("[y]");
+		ImGui::PopStyleColor();
+		ImGui::SameLine();
+		row = glm::vec4(matrix[0].y, matrix[1].y, matrix[2].y, matrix[3].y);
+		if (ImGui::DragFloat4("  ", glm::value_ptr(row), 0.1f)) {
+			if (camera) {
+
+			}
+			else {
+				node->Move(glm::vec3(matrix[3].x, row.w, matrix[3].z));
+				node->Scale(glm::vec3(matrix[0].x, row.y, matrix[2].z));
+			}
+		}
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+		ImGui::Text("[z]");
+		ImGui::PopStyleColor();
+		ImGui::SameLine();
+		row = glm::vec4(matrix[0].z, matrix[1].z, matrix[2].z, matrix[3].z);
+		if (ImGui::DragFloat4("   ", glm::value_ptr(row), 0.1f)) {
+			if (camera) {
+
+			}
+			else {
+				node->Move(glm::vec3(matrix[3].x, matrix[3].y, row.w));
+				node->Scale(glm::vec3(matrix[0].x, matrix[1].y, row.z));
+			}
+		}
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+		ImGui::Text("[w]");
+		ImGui::PopStyleColor();
+		ImGui::SameLine();
+		row = glm::vec4(matrix[0].w, matrix[1].w, matrix[2].w, matrix[3].w);
+		if (ImGui::DragFloat4("    ", glm::value_ptr(row), 0.1f)) {
+		}
+	}
 }

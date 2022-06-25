@@ -166,7 +166,7 @@ GLFWwindow* InitContext() {
 	//We want the image not to resize inside the imgui window, so we dont need the resize callback
 	//glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
 	glfwSetWindowSizeCallback(window, Window_size_callback);
-	glfwSetCursorPosCallback(window, Mouse_callback);
+	//glfwSetCursorPosCallback(window, Mouse_callback);
 	//glfwSetScrollCallback(window, Scroll_callback);
 	glfwSetKeyCallback(window, Key_callback);
 

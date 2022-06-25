@@ -28,7 +28,6 @@ void ShaderEditorPanel::OnImGuiRender() {
 		ImGui::PopStyleColor();
 	}
 
-
 	ImGui::Spacing();
 	FileBtns();
 
@@ -74,7 +73,7 @@ void ShaderEditorPanel::SelectFile() {
 		}
 	}
 
-	if (ImGui::Button("Save", ImVec2(50, 20))) {
+	if (ImGui::Button("Compile", ImVec2(60, 20))) {
 
 		if (fileName != "No File Opened") {
 
