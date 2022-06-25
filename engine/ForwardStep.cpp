@@ -1,6 +1,6 @@
 #include "ForwardStep.h"
 
-ForwardStep::ForwardStep(Camera& camera, Program& program) 
+ForwardStep::ForwardStep(Camera* camera, Program& program) 
 	: camera(camera), program(program){
 
 }
@@ -10,8 +10,8 @@ void ForwardStep::RenderStep() {
 	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
 
 	program.Use();
-	program.SetMat4("projM", camera.GetProjectionMatrix());
-	program.SetMat4("viewM", camera.GetLookAtMatrix());
+	program.SetMat4("projM", camera->GetProjectionMatrix());
+	program.SetMat4("viewM", camera->GetLookAtMatrix());
 
 	for (unsigned int i = 0; i < dataTextures.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i);

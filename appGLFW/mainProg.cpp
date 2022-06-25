@@ -103,7 +103,7 @@ int main(){
 	#pragma endregion
 
 	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 2.5f, 0.1f, 45.0f, -90.0f, 0.0f, context.parentNode);
-	context.camera.SetAspectRatio(WIDTH / HEIGHT);
+	context.camera->SetAspectRatio(WIDTH / HEIGHT);
 	
 	context.SetWIdth(WIDTH);
 	context.SetHeight(HEIGHT);
@@ -291,28 +291,26 @@ void Window_size_callback(GLFWwindow* window, int width, int height) {
 
 void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
 
-	if (context.camera.moveMouse) {
-		float xPos = static_cast<float>(xPosIn);
-		float yPos = static_cast<float>(yPosIn);
+	float xPos = static_cast<float>(xPosIn);
+	float yPos = static_cast<float>(yPosIn);
 
-		if (firstMouse) {
-			lastX = xPos;
-			lastY = yPos;
-			firstMouse = false;
-		}
-
-		float xOffset = (xPos - lastX);
-		float yOffset = (lastY - yPos); //Reversed since y-coords range from bottom to top
-
+	if (firstMouse) {
 		lastX = xPos;
 		lastY = yPos;
-
-		context.camera.ProcessMouseMovement(xOffset, yOffset);
+		firstMouse = false;
 	}
+
+	float xOffset = (xPos - lastX);
+	float yOffset = (lastY - yPos); //Reversed since y-coords range from bottom to top
+
+	lastX = xPos;
+	lastY = yPos;
+
+	context.camera->ProcessMouseMovement(xOffset, yOffset);
 }
 
 void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
-	context.camera.ProcessMouseScroll(static_cast<float>(yOffset));
+	context.camera->ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
 //Key pressed only once
@@ -330,18 +328,18 @@ void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void ProcessInput(GLFWwindow* window){
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		context.camera.ProcessKeyboard(FORWARD, deltaTime);
+		context.camera->ProcessKeyboard(FORWARD, deltaTime);
 	}
 	
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		context.camera.ProcessKeyboard(BACKWARD, deltaTime);
+		context.camera->ProcessKeyboard(BACKWARD, deltaTime);
 	}
 	
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-		context.camera.ProcessKeyboard(LEFT, deltaTime);
+		context.camera->ProcessKeyboard(LEFT, deltaTime);
 	}
 	
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		context.camera.ProcessKeyboard(RIGHT, deltaTime);
+		context.camera->ProcessKeyboard(RIGHT, deltaTime);
 	}
 }

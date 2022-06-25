@@ -9,7 +9,7 @@ class LightingStep : public Step
 {
 public:
 
-	LightingStep(Camera& camera, Program& program);
+	LightingStep(Camera* camera, Program& program);
 
 	inline void SetModels(std::vector<Node*> models) { this->models = models; }
 	inline void SetProgram(Program& program) { this->program = program; }
@@ -17,7 +17,7 @@ public:
 	void RenderStep() override;
 private:
 
-	Camera& camera;
+	Camera* camera;
 	Program& program;
 
 	//QUAD data

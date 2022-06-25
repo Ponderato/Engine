@@ -27,13 +27,15 @@ public:
 
 	float deltaTime;
 
-	Camera camera;
+	Camera* camera;
 	Pipeline* pipeline;
 	Node* parentNode = new Node();
 	std::vector<Program> programs;
 
 	unsigned int WIDTH;
 	unsigned int HEIGHT;
+
+	float a;
 
 	std::vector<Node*> nodes;//Models and cubes all combined so we can show them
 
@@ -61,6 +63,8 @@ public:
 	void DeleteChildNodes(Node* node);
 
 	inline unsigned int GetRenderTexture() { return this->renderTexture; };
+
+	inline void SetPM() { camera->projectionMatrixL[0].x = a; }
 
 	void Update();
 private:

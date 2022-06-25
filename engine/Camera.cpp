@@ -19,7 +19,8 @@ Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensiti
 
 	CalculateVectors();
 
-	projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	projectionMatrixG = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	this->dirty = true;
 }
 
 void Camera::CalculateVectors() {
@@ -95,28 +96,41 @@ void Camera::ProcessMouseScroll(float yOffset){
 void Camera::SetFOV(float fov) {
 	
 	this->fov = fov;
-	projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	projectionMatrixL = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	dirty = true;
 }
 
 void Camera::SetAspectRatio(float aspect) {
 
 	this->aspectRatio = aspect;
-	projectionMatrix = glm::perspective(glm::radians(fov), aspect, near, far);
+	projectionMatrixL = glm::perspective(glm::radians(fov), aspect, near, far);
+	dirty = true;
 }
 
 void Camera::SetNear(float near) {
 
 	this->near = near;
-	projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	projectionMatrixL = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	dirty = true;
 }
 
 void Camera::SetFar(float far) {
+
 	this->far = far;
-	projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	projectionMatrixL = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+	dirty = true;
 }
 
 void Camera::PMRow1(glm::vec2 row) {
 
-	projectionMatrix[0].x = row.x;
-	projectionMatrix[2].x = row.y;
+	//projectionMatrixL = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+
+	projectionMatrixL[0].x = row.x;
+	projectionMatrixL[2].x = row.y;
+	dirty = true;
+}
+
+void Camera::UpdatePM() {
+
+	projectionMatrixG = projectionMatrixL;
 }

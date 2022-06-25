@@ -1,6 +1,6 @@
 #include "LightingStep.h"
 
-LightingStep::LightingStep(Camera& camera, Program& program)
+LightingStep::LightingStep(Camera* camera, Program& program)
 	: camera(camera), program(program) {
 
 	//Setup the plane VAO
@@ -23,7 +23,7 @@ void LightingStep::RenderStep(){
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	program.Use();
-	program.SetVec3("viewerPos", camera.position);
+	program.SetVec3("viewerPos", camera->position);
 	SetLightUniforms();
 
 	for (unsigned int i = 0; i < dataTextures.size(); i++) {

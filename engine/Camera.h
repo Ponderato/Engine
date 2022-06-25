@@ -36,15 +36,14 @@ public:
 	float far;
 	float aspectRatio;
 
-	bool moveMouse = false;
-
-	glm::mat4 projectionMatrix;
+	glm::mat4 projectionMatrixL;
+	glm::mat4 projectionMatrixG;
 
 	Camera() = default;
 	Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensitivity, float fov, float yaw, float pitch, Node* parent);
 
 	inline glm::mat4 GetLookAtMatrix() { return glm::lookAt(transform.position, transform.position + front, up); }
-	inline glm::mat4 GetProjectionMatrix() { return this->projectionMatrix; }
+	inline glm::mat4 GetProjectionMatrix() { return this->projectionMatrixG; }
 
 	void SetFOV(float fov);
 	void SetAspectRatio(float aspect);
@@ -61,6 +60,7 @@ public:
 
 	void PMRow1(glm::vec2 row);
 
+	void UpdatePM();
 private:
 
 	void CalculateVectors();

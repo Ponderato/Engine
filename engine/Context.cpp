@@ -99,8 +99,9 @@ void Context::SetPipeline() {
 }
 
 void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
-	camera = Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch, parent);
-	nodes.push_back(&camera);
+	camera = new Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch, parent);
+	nodes.push_back(camera);
+	//a = camera->projectionMatrixG[0].x;
 }
 
 void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* parent) {
@@ -208,10 +209,11 @@ void Context::Update() {
 	UpdateModels();
 	CheckRenderable();
 
+	//camera->projectionMatrixL[0].x = 1.0f;
+	//SetPM();
+	camera->UpdatePM();
+
 	SetDSUniforms();
-	//pipeline->gStep->SetProgram(programs[2]);
-	//pipeline->lStep->SetProgram(programs[3]);
-	//pipeline->fStep->SetProgram(programs[1]);
 
 	pipeline->Render();
 	
