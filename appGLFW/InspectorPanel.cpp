@@ -122,7 +122,7 @@ void InspectorPanel::DrawComponents(Node node) {
 		camera->SetFar(far);
 
 		glm::vec3 frusColor = camera->GetFrustumColor();
-		DrawVec3RGB("Frustum Color", &frusColor, 0.1f, 100.0f);
+		DrawVec3RGB("Frustum Color", &frusColor, 1.0f, 100.0f);
 		camera->SetFrustumColor(frusColor);
 
 	}
