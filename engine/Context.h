@@ -66,7 +66,7 @@ public:
 
 	void UpdateCamera();
 
-	void SetActiveCamera();
+	void SetActiveCamera(Camera* camera);
 
 	void Update();
 private:

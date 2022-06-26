@@ -206,21 +206,15 @@ void Context::UpdateCamera() {
 	camera->UpdatePM();
 }
 
-void Context::SetActiveCamera() {
+void Context::SetActiveCamera(Camera* camera) {
 
-	for (Node* node : nodes) {
-		Camera* cam = dynamic_cast<Camera*>(node);
-		if (cam) {
-			if (cam->IsActive()) {
-				camera = cam;
-			}
-		}
-	}
+	this->camera = camera;
 
-	pipeline->gStep->SetCamera(camera);
-	pipeline->lStep->SetCamera(camera);
-	pipeline->fStep->SetCamera(camera);
+	pipeline->gStep->SetCamera(this->camera);
+	pipeline->lStep->SetCamera(this->camera);
+	pipeline->fStep->SetCamera(this->camera);
 }
+
 
 void Context::GetFrameBufferID(unsigned int *framebuffer)
 {
@@ -234,11 +228,9 @@ void Context::GetFrameBufferID(unsigned int *framebuffer)
 //Render
 void Context::Update() {
 
-	std::cout << camera->ID << " , " << camera->IsActive() << std::endl;
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	SetActiveCamera();
+	//SetActiveCamera();
 
 	UpdateModels();
 	CheckRenderable();
