@@ -28,12 +28,23 @@ void InspectorPanel::DrawComponents(Node node) {
 	LightCube* light = dynamic_cast<LightCube*>(NODE);
 
 	//--------------------------DELETE BUTTON--------------------------------
-	if (!camera) {
-		if (ImGui::Button("Remove", ImVec2(50, 20))) {
-			context->DeleteNode(NODE);
-			this->selected = false;
-		}
+	if (ImGui::Button("Remove", ImVec2(50, 20))) {
+		context->DeleteNode(NODE);
+		this->selected = false;
 
+		if (camera) {
+			for (Node* node : context->nodes) {
+				Camera* cam = dynamic_cast<Camera*>(node);
+				if (cam) {
+					context->SetActiveCamera(cam);
+					break;
+				}
+
+			}
+		}
+	}
+
+	if (!camera) {
 	//--------------------------PARENTING BUTTON--------------------------------
 		ImGui::SameLine();
 		if (ImGui::Button("Parent", ImVec2(50, 20))) {

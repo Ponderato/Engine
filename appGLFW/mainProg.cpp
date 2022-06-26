@@ -102,8 +102,8 @@ int main(){
 	}
 	#pragma endregion
 
-	context.InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), (WIDTH / HEIGHT),  2.5f, 0.1f, 45.0f, -90.0f, 0.0f, true, context.parentNode);
-	context.InitCamera(glm::vec3(15.0f, 0.0f, -4.0f), glm::vec3(0.0f, 1.0f, 0.0f), (WIDTH / HEIGHT), 2.5f, 0.1f, 45.0f, -180.0f, 0.0f, false, context.parentNode);
+	context.InitCameraSet(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), (WIDTH / HEIGHT),  2.5f, 0.1f, 45.0f, -90.0f, 0.0f, context.parentNode);
+	context.InitCamera(glm::vec3(15.0f, 0.0f, -4.0f), glm::vec3(0.0f, 1.0f, 0.0f), (WIDTH / HEIGHT), 2.5f, 0.1f, 45.0f, -180.0f, 0.0f, context.parentNode);
 	
 	context.SetWIdth(WIDTH);
 	context.SetHeight(HEIGHT);

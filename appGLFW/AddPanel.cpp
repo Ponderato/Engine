@@ -17,11 +17,38 @@ void AddPanel::OnImGuiRender() {
         {
             AddCube();
             AddLight();
+            AddCamera();
             AddModel();
 
             ImGui::End();
         }
     }
+}
+
+void AddPanel::AddCamera() {
+
+    //speed , fov, yaw, pitch
+    ImGui::Columns(5);
+    ImGui::SetColumnWidth(0, 300);
+
+    ImGui::InputFloat("Speed", &speed, 0.1f);
+    ImGui::NextColumn();
+
+    ImGui::InputFloat("Fov", &fov, 1.0f);
+    ImGui::NextColumn();
+
+    ImGui::InputFloat("Yaw", &yaw, 1.0f);
+    ImGui::NextColumn();
+
+    ImGui::InputFloat("Pitch", &pitch, 1.0f);
+    ImGui::NextColumn();
+
+    if (ImGui::Button("Add Camera", ImVec2(80, 20))) {
+        this->context->InitCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), (this->context->WIDTH / this->context->HEIGHT), speed, 0.1f, fov, yaw, pitch, this->context->parentNode);
+    }
+
+    ImGui::Columns(1);
+
 
 }
 

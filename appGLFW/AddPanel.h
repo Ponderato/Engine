@@ -30,6 +30,12 @@ private:
 
 	char modelPath[256];
 	void AddModel();
+
+	float speed = 1.0f;
+	float fov = 45.0f;
+	float yaw = -90.0;
+	float pitch = 0.0f;
+	void AddCamera();
 };
 
 #endif
