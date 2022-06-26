@@ -76,8 +76,6 @@ void InspectorPanel::DrawComponents(Node node) {
 		DrawFloat("FOV", &fov, ImVec4(0.8f, 0.8f, 0.0f, 1.0f), 45.0f, 80.0f);
 		camera->SetFOV(fov);
 
-		//ImGui::NextLine();
-
 		float yaw = camera->yaw;
 		DrawFloat("YAW (Y)", &yaw, ImVec4(1.0f, 0.5f, 0.0f, 1.0f), -90.0f, 80.0f);
 		camera->UpdateYaw(yaw);
@@ -161,7 +159,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 	glm::mat4 matrix;
 
 	if (camera)
-		matrix = camera->projectionMatrixG;
+		matrix = camera->projectionMatrixL;
 	else
 		matrix = node->GetLocalMatrix();
 
@@ -179,7 +177,6 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
 				camera->PMRow0(glm::vec2(row.x, row.z));
-				//camera->UpdatePM();
 			}
 			else {
 				node->Move(glm::vec3(row.w, matrix[3].y, matrix[3].z));
@@ -210,7 +207,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		row = glm::vec4(matrix[0].z, matrix[1].z, matrix[2].z, matrix[3].z);
 		if (ImGui::DragFloat4("   ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-				camera->PMRow0(glm::vec2(row.z, row.w));
+				camera->PMRow2(glm::vec2(row.z, row.w));
 			}
 			else {
 				node->Move(glm::vec3(matrix[3].x, matrix[3].y, row.w));

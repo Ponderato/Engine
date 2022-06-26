@@ -64,7 +64,7 @@ public:
 
 	inline unsigned int GetRenderTexture() { return this->renderTexture; };
 
-	inline void SetPM() { camera->projectionMatrixL[0].x = a; }
+	void UpdateCamera();
 
 	void Update();
 private:

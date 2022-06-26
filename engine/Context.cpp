@@ -101,7 +101,6 @@ void Context::SetPipeline() {
 void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
 	camera = new Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch, parent);
 	nodes.push_back(camera);
-	//a = camera->projectionMatrixG[0].x;
 }
 
 void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* parent) {
@@ -192,6 +191,16 @@ void Context::UpdateModels() {
 	}
 }
 
+void Context::UpdateCamera() {
+	//for (Node* node : nodes) {
+	//	Camera* camera = dynamic_cast<Camera*>(node);
+	//	if (camera)
+	//		camera->UpdateL();
+	//		camera->UpdatePM();
+	//}
+	camera->UpdatePM();
+}
+
 void Context::GetFrameBufferID(unsigned int *framebuffer)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, *framebuffer);
@@ -209,9 +218,7 @@ void Context::Update() {
 	UpdateModels();
 	CheckRenderable();
 
-	//camera->projectionMatrixL[0].x = 1.0f;
-	//SetPM();
-	camera->UpdatePM();
+	UpdateCamera();
 
 	SetDSUniforms();
 

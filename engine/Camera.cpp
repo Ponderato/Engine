@@ -116,20 +116,33 @@ void Camera::SetFar(float far) {
 
 void Camera::PMRow0(glm::vec2 row) {
 
-	projectionMatrixL[0].x = row.x;
-	projectionMatrixL[2].x = row.y;
+	projectionMatrixAux[0].x = row.x;
+	projectionMatrixAux[2].x = row.y;
 }
 
 void Camera::PMRow1(glm::vec2 row) {
 
-	projectionMatrixL[1].y = row.x;
-	projectionMatrixL[2].y = row.y;
+	projectionMatrixAux[1].y = row.x;
+	projectionMatrixAux[2].y = row.y;
 }
 
 void Camera::PMRow2(glm::vec2 row) {
 
-	projectionMatrixL[2].z = row.x;
-	projectionMatrixL[3].z = row.y;
+	projectionMatrixAux[2].z = row.x;
+	projectionMatrixAux[3].z = row.y;
+}
+
+void Camera::UpdateL() {
+
+	//projectionMatrixL[0].x = 1.0f / tan(glm::radians(30.0f));
+	//projectionMatrixL[1].y = aspectRatio / tan(glm::radians(30.0f));
+	//projectionMatrixL[2].z = -(far + near) / (far - near);
+	//projectionMatrixL[3].z = -2.0f * far * near / (far - near);
+	//projectionMatrixL[2].w = -1.0f;
+
+	//SetFOV(2 * atan(glm::radians(1 / projectionMatrixAux[1].y)));
+
+	//SetAspectRatio(projectionMatrixL[0].x / projectionMatrixL[1].y);
 }
 
 void Camera::UpdatePM() {

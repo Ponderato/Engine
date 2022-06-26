@@ -36,6 +36,10 @@ public:
 	float far;
 	float aspectRatio;
 
+	glm::mat4 projectionMatrixAux = glm::mat4 { 1.0f, 0.0f, 1.0f, 0.0f,
+												0.0f, 1.0f, 1.0f, 0.0f, 
+												0.0f, 0.0f, 1.0f, 1.0f, 
+												0.0f, 0.0f, -1.0f, 0.0f };
 	glm::mat4 projectionMatrixL;
 	glm::mat4 projectionMatrixG;
 
@@ -63,6 +67,7 @@ public:
 	void PMRow2(glm::vec2 row);
 
 	void UpdatePM();
+	void UpdateL();
 private:
 
 	void CalculateVectors();

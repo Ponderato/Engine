@@ -14,7 +14,7 @@
 #include "ShaderEditorPanel.h"
 
 //Data
-const unsigned int OGL_WIDTH = 1000;
+const unsigned int OGL_WIDTH = 1500;
 const unsigned int OGL_HEIGHT = 600;
 
 const float WIDTH = 800.0f;
