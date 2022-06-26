@@ -67,8 +67,6 @@ public:
 
 	inline unsigned int GetRenderTexture() { return this->renderTexture; };
 
-	void UpdateCamera();
-
 	void SetActiveCamera(Camera* camera);
 
 	void Update();
@@ -90,6 +88,8 @@ private:
 
 	void CheckRenderable();
 	void UpdateModels();
+
+	void UpdateCameras();
 
 	void GetFrameBufferID(unsigned int *framebuffer);
 };

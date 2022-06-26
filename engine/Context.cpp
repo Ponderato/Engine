@@ -203,14 +203,13 @@ void Context::UpdateModels() {
 	}
 }
 
-void Context::UpdateCamera() {
-	//for (Node* node : nodes) {
-	//	Camera* camera = dynamic_cast<Camera*>(node);
-	//	if (camera)
-	//		camera->UpdateL();
-	//		camera->UpdatePM();
-	//}
-	camera->UpdatePM();
+void Context::UpdateCameras() {
+	for (Node* node : nodes) {
+		Camera* cam = dynamic_cast<Camera*>(node);
+		if (cam) {
+			cam->UpdatePM();
+		}
+	}
 }
 
 void Context::SetActiveCamera(Camera* camera) {
@@ -250,7 +249,7 @@ void Context::Update() {
 	UpdateModels();
 	CheckRenderable();
 
-	UpdateCamera();
+	UpdateCameras();
 
 	SetDSUniforms();
 
