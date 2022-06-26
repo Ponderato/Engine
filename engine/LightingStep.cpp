@@ -23,7 +23,7 @@ void LightingStep::RenderStep(){
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	program.Use();
-	program.SetVec3("viewerPos", camera->position);
+	program.SetVec3("viewerPos", camera->GetPosition());
 	SetLightUniforms();
 
 	for (unsigned int i = 0; i < dataTextures.size(); i++) {

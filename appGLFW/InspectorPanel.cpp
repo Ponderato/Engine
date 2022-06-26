@@ -72,23 +72,23 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//--------------------------CAMERA STUFF--------------------------------
 	if (camera) {
-		float fov = camera->fov;
+		float fov = camera->GetFOV();
 		DrawFloat("FOV", &fov, ImVec4(0.8f, 0.8f, 0.0f, 1.0f), 45.0f, 80.0f);
 		camera->SetFOV(fov);
 
-		float yaw = camera->yaw;
+		float yaw = camera->GetYaw();
 		DrawFloat("YAW (Y)", &yaw, ImVec4(1.0f, 0.5f, 0.0f, 1.0f), -90.0f, 80.0f);
 		camera->UpdateYaw(yaw);
 
-		float pitch = camera->pitch;
+		float pitch = camera->GetPitch();
 		DrawFloat("PITCH (X)", &pitch, ImVec4(0.4f, 0.2f, 0.05f, 1.0f), 0.0f, 80.0f);
 		camera->UpdatePitch(pitch);
 
-		float near = camera->near;
+		float near = camera->GetNear();
 		DrawFloat("NEAR", &near, ImVec4(0.9f, 0.1f, 0.1f, 1.0f), 0.1f, 80.0f);
 		camera->SetNear(near);
 
-		float far = camera->far;
+		float far = camera->GetFar();
 		DrawFloat("FAR", &far, ImVec4(0.7f, 0.05f, 0.05f, 1.0f), 100.0f, 80.0f);
 		camera->SetFar(far);
 
@@ -159,7 +159,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 	glm::mat4 matrix;
 
 	if (camera)
-		matrix = camera->projectionMatrixL;
+		matrix = camera->GetProjectionMatrix();
 	else
 		matrix = node->GetLocalMatrix();
 
