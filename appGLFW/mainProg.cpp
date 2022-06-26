@@ -85,6 +85,7 @@ int main(){
 	context.InitShaders("lightBox_vs.glsl", "lightBox_fs.glsl");		  //programs[1]
 	context.InitShaders("geometryPass_vs.glsl", "geometryPass_fs.glsl");  //programs[2]
 	context.InitShaders("lightingPass_vs.glsl", "lightingPass_fs.glsl");  //programs[3]
+	context.InitShaders("frustum_vs.glsl", "frustum_fs.glsl");			  //programs[4]
 
 	#pragma region INITGEO
 	//../ refers to the parent folder, so we need two of them to get to the textures folder

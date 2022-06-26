@@ -19,6 +19,9 @@
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\FrustumStep.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -72,6 +75,9 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\FrustumStep.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -110,10 +116,16 @@
     <CustomBuild Include="D:\Fake Escritorio\GitHub\Engine\engine\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_fs.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\forward_fs.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_vs.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\forward_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\frustum_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\frustum_vs.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\geometryPass_fs.glsl">

@@ -33,8 +33,10 @@ public:
 	inline float GetAR() { return this->aspectRatio; }
 	inline glm::vec3 GetPosition() { return this->position; }
 	inline bool GetDrawFrustum() { return this->drawFrustum; }
+	inline glm::vec3 GetFrustumColor() { return this->frustumColor; }
 
 	inline void SetDrawFrustum(bool draw) { this->drawFrustum = draw; }
+	inline void SetFrustumColor(glm::vec3 color) { this->frustumColor = color; }
 
 	void SetFOV(float fov);
 	void SetAspectRatio(float aspect);
@@ -75,6 +77,7 @@ private:
 	float aspectRatio;
 
 	bool drawFrustum = true;
+	glm::vec3 frustumColor = glm::vec3(0.607f, 0.137f, 0.713f);
 
 	glm::mat4 projectionMatrixAux = glm::mat4{ 1.0f, 0.0f, 1.0f, 0.0f,
 											0.0f, 1.0f, 1.0f, 0.0f,

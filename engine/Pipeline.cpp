@@ -15,6 +15,9 @@ void Pipeline::SetStep(Step* step) {
 	else if (CopyStep* stepAux = dynamic_cast<CopyStep*>(step)) {
 		this->cStep = stepAux;
 	}
+	else if (FrustumStep* stepAux = dynamic_cast<FrustumStep*>(step)) {
+		this->frusStep = stepAux;
+	}
 }
 
 void Pipeline::Render() {
@@ -30,6 +33,9 @@ void Pipeline::Render() {
 
 	if (fStep != nullptr)
 		fStep->RenderStep();
+
+	if (frusStep != nullptr)
+		frusStep->RenderStep();
 
 }
 

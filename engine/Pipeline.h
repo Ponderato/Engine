@@ -9,6 +9,7 @@
 #include "LightingStep.h"
 #include "CopyStep.h"
 #include "ForwardStep.h"
+#include "FrustumStep.h"
 
 class Pipeline 
 {
@@ -18,6 +19,7 @@ public:
 	LightingStep* lStep;
 	ForwardStep* fStep;
 	CopyStep* cStep;
+	FrustumStep* frusStep;
 
 	void SetStep(Step* step);
 	void Render();

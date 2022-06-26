@@ -76,6 +76,7 @@ void Context::SetPipeline() {
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
 	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &middleBuffer, WIDTH, HEIGHT, 0, 0));
 	pipeline->SetStep(new ForwardStep(camera, programs[1]));
+	pipeline->SetStep(new FrustumStep(camera, programs[4]));
 
 	pipeline->gStep->SetFBO(&gBuffer);
 	pipeline->gStep->SetInputTexture(0, &gPos);
@@ -93,7 +94,8 @@ void Context::SetPipeline() {
 	pipeline->cStep->SetFBO(&gBuffer);
 
 	pipeline->fStep->SetFBO(&middleBuffer);
-	pipeline->fStep->SetInactiveCameras(this->inactiveCameras);
+
+	pipeline->frusStep->SetInactiveCameras(this->inactiveCameras);
 
 	//Finally set the uniforms
 	SetDSUniforms();
@@ -226,7 +228,8 @@ void Context::SetActiveCamera(Camera* camera) {
 	pipeline->gStep->SetCamera(this->camera);
 	pipeline->lStep->SetCamera(this->camera);
 	pipeline->fStep->SetCamera(this->camera);
-	pipeline->fStep->SetInactiveCameras(this->inactiveCameras);
+	pipeline->frusStep->SetCamera(this->camera);
+	pipeline->frusStep->SetInactiveCameras(this->inactiveCameras);
 }
 
 

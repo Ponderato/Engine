@@ -271,6 +271,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\CopyStep.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.cpp" />
+    <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\FrustumStep.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\LightCube.cpp" />
     <ClCompile Include="D:\Fake Escritorio\GitHub\Engine\engine\LightingStep.cpp" />
@@ -288,6 +289,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\CopyStep.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.h" />
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\FrustumStep.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\GeometryStep.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\LightCube.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\LightingStep.h" />
@@ -299,9 +301,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Step.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Texture.h" />
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h" />
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_fs.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\forward_fs.glsl">
     </None>
-    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\default_vs.glsl">
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\forward_vs.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\frustum_fs.glsl">
+    </None>
+    <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\frustum_vs.glsl">
     </None>
     <None Include="D:\Fake Escritorio\GitHub\Engine\engine\Shaders\geometryPass_fs.glsl">
     </None>

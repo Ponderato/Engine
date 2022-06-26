@@ -19,6 +19,7 @@
 #include "LightingStep.h"
 #include "CopyStep.h"
 #include "ForwardStep.h"
+#include "FrustumStep.h"
 #include "Pipeline.h"
 
 class Context
