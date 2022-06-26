@@ -30,7 +30,11 @@ public:
 	inline float GetPitch() { return this->pitch; }
 	inline float GetNear() { return this->near; }
 	inline float GetFar() { return this->far; }
+	inline float GetAR() { return this->aspectRatio; }
 	inline glm::vec3 GetPosition() { return this->position; }
+	inline bool GetDrawFrustum() { return this->drawFrustum; }
+
+	inline void SetDrawFrustum(bool draw) { this->drawFrustum = draw; }
 
 	void SetFOV(float fov);
 	void SetAspectRatio(float aspect);
@@ -69,6 +73,8 @@ private:
 	float near;
 	float far;
 	float aspectRatio;
+
+	bool drawFrustum = true;
 
 	glm::mat4 projectionMatrixAux = glm::mat4{ 1.0f, 0.0f, 1.0f, 0.0f,
 											0.0f, 1.0f, 1.0f, 0.0f,

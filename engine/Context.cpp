@@ -93,6 +93,7 @@ void Context::SetPipeline() {
 	pipeline->cStep->SetFBO(&gBuffer);
 
 	pipeline->fStep->SetFBO(&middleBuffer);
+	pipeline->fStep->SetInactiveCameras(this->inactiveCameras);
 
 	//Finally set the uniforms
 	SetDSUniforms();
@@ -100,7 +101,10 @@ void Context::SetPipeline() {
 
 void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float aspect, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
 	
-	nodes.push_back(new Camera(pos, worldUp, aspect, speed, sensitivity, fov, yaw, pitch, parent));
+	Camera* cam = new Camera(pos, worldUp, aspect, speed, sensitivity, fov, yaw, pitch, parent);
+	nodes.push_back(cam);
+	inactiveCameras.push_back(cam);
+	
 }
 
 void Context::InitCameraSet(const glm::vec3 pos, const glm::vec3 worldUp, const float aspect, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
@@ -211,9 +215,18 @@ void Context::SetActiveCamera(Camera* camera) {
 
 	this->camera = camera;
 
+	inactiveCameras.clear();
+	for (Node* node : nodes) {
+		Camera* cam = dynamic_cast<Camera*>(node);
+		if (cam && cam->ID != camera->ID) {
+			inactiveCameras.push_back(cam);
+		}
+	}
+
 	pipeline->gStep->SetCamera(this->camera);
 	pipeline->lStep->SetCamera(this->camera);
 	pipeline->fStep->SetCamera(this->camera);
+	pipeline->fStep->SetInactiveCameras(this->inactiveCameras);
 }
 
 
@@ -230,8 +243,6 @@ void Context::GetFrameBufferID(unsigned int *framebuffer)
 void Context::Update() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//SetActiveCamera();
 
 	UpdateModels();
 	CheckRenderable();

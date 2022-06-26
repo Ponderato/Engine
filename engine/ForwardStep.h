@@ -15,13 +15,19 @@ public:
 	inline void SetProgram(Program& program) { this->program = program; }
 	inline void SetCamera(Camera* camera) { this->camera = camera; }
 
+	inline void SetInactiveCameras(std::vector<Camera*> inactiveCameras) { this->inactiveCameras = inactiveCameras; }
+
 	void RenderStep() override;
 private:
 
 	Camera* camera;
 	Program& program;
 
+	std::vector<Camera*> inactiveCameras;
+
 	std::vector<Node*> models;
+
+	void DrawCamerasFrustum();
 };
 
 #endif

@@ -28,6 +28,7 @@ public:
 	float deltaTime;
 
 	Camera* camera; //Active camera
+	std::vector<Camera*> inactiveCameras;
 	Pipeline* pipeline;
 	Node* parentNode = new Node();
 	std::vector<Program> programs;

@@ -39,7 +39,6 @@ void InspectorPanel::DrawComponents(Node node) {
 					context->SetActiveCamera(cam);
 					break;
 				}
-
 			}
 		}
 	}
@@ -64,9 +63,19 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//--------------------------SET ACTIVE--------------------------------
 	if (camera) {
+		ImGui::SameLine();
 		if (ImGui::Button("Set Active")) {
 
 			context->SetActiveCamera(camera);
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Draw Frustum")) {
+
+			if (camera->GetDrawFrustum())
+				camera->SetDrawFrustum(false);
+			else
+				camera->SetDrawFrustum(true);
 		}
 	}
 
