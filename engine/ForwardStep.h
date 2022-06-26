@@ -13,6 +13,7 @@ public:
 
 	inline void SetModels(std::vector<Node*> models) { this->models = models; }
 	inline void SetProgram(Program& program) { this->program = program; }
+	inline void SetCamera(Camera* camera) { this->camera = camera; }
 
 	void RenderStep() override;
 private:

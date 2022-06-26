@@ -72,6 +72,24 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//--------------------------CAMERA STUFF--------------------------------
 	if (camera) {
+
+		if (ImGui::Button("Set Active")) {
+			if (!camera->IsActive()) {
+				camera->SetActive(true);
+
+				//Set the other cameras to inactive
+				for (Node* node : context->nodes) {
+					Camera* cam = dynamic_cast<Camera*>(node);
+					if (cam) {
+						if (cam->ID != camera->ID) {
+							cam->SetActive(false);
+						}
+					}
+				}
+			}
+
+		}
+
 		float fov = camera->GetFOV();
 		DrawFloat("FOV", &fov, ImVec4(0.8f, 0.8f, 0.0f, 1.0f), 45.0f, 80.0f);
 		camera->SetFOV(fov);

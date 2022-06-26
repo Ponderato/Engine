@@ -98,9 +98,14 @@ void Context::SetPipeline() {
 	SetDSUniforms();
 }
 
-void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
-	camera = new Camera(pos, worldUp, speed, sensitivity, fov, yaw, pitch, parent);
-	nodes.push_back(camera);
+void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float aspect, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, bool active, Node* parent) {
+	
+	nodes.push_back(new Camera(pos, worldUp, aspect, speed, sensitivity, fov, yaw, pitch, active, parent));
+
+	if (active) {
+		Camera* cam = dynamic_cast<Camera*>(nodes.at(nodes.size() - 1));
+		camera = cam;
+	}
 }
 
 void Context::InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* parent) {
@@ -201,6 +206,22 @@ void Context::UpdateCamera() {
 	camera->UpdatePM();
 }
 
+void Context::SetActiveCamera() {
+
+	for (Node* node : nodes) {
+		Camera* cam = dynamic_cast<Camera*>(node);
+		if (cam) {
+			if (cam->IsActive()) {
+				camera = cam;
+			}
+		}
+	}
+
+	pipeline->gStep->SetCamera(camera);
+	pipeline->lStep->SetCamera(camera);
+	pipeline->fStep->SetCamera(camera);
+}
+
 void Context::GetFrameBufferID(unsigned int *framebuffer)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, *framebuffer);
@@ -213,7 +234,11 @@ void Context::GetFrameBufferID(unsigned int *framebuffer)
 //Render
 void Context::Update() {
 
+	std::cout << camera->ID << " , " << camera->IsActive() << std::endl;
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	SetActiveCamera();
 
 	UpdateModels();
 	CheckRenderable();

@@ -21,7 +21,7 @@ class Camera : public Node
 public:
 
 	Camera() = default;
-	Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensitivity, float fov, float yaw, float pitch, Node* parent);
+	Camera(glm::vec3 position, glm::vec3 worldUp, float aspect, float speed, float sensitivity, float fov, float yaw, float pitch, bool active, Node* parent);
 
 	inline glm::mat4 GetLookAtMatrix() { return glm::lookAt(transform.position, transform.position + front, up); }
 	inline glm::mat4 GetProjectionMatrix() { return this->projectionMatrixG; }
@@ -31,6 +31,9 @@ public:
 	inline float GetNear() { return this->near; }
 	inline float GetFar() { return this->far; }
 	inline glm::vec3 GetPosition() { return this->position; }
+	inline bool IsActive() { return this->active; }
+
+	inline void SetActive(bool active) { this->active = true; }
 
 	void SetFOV(float fov);
 	void SetAspectRatio(float aspect);
@@ -69,6 +72,8 @@ private:
 	float near;
 	float far;
 	float aspectRatio;
+
+	bool active;
 
 	glm::mat4 projectionMatrixAux = glm::mat4{ 1.0f, 0.0f, 1.0f, 0.0f,
 											0.0f, 1.0f, 1.0f, 0.0f,

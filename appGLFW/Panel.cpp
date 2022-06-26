@@ -181,3 +181,9 @@ void Panel::DrawTag(char buffer[]) {
 
 	ImGui::Columns(1);
 }
+
+void Panel::DrawCheckBox(const std::string& label, bool* value) {
+
+	ImGui::Checkbox(label.c_str(), value);
+
+}

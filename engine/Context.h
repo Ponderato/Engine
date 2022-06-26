@@ -55,7 +55,7 @@ public:
 	void InitModel(const std::string& path, glm::vec3 position, Node* node);
 
 	void InitShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
-	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent);
+	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float aspect, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, bool active, Node* parent);
 
 	void SetPipeline();
 
@@ -65,6 +65,8 @@ public:
 	inline unsigned int GetRenderTexture() { return this->renderTexture; };
 
 	void UpdateCamera();
+
+	void SetActiveCamera();
 
 	void Update();
 private:

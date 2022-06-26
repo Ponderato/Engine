@@ -1,9 +1,11 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensitivity, float fov, float yaw, float pitch, Node* parent) {
+Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float aspect, float speed, float sensitivity, float fov, float yaw, float pitch, bool active,  Node* parent) {
 	
 	this->transform.position = position;
 	this->worldUp = worldUp;
+
+	this->aspectRatio = aspect;
 
 	this->speed = speed;
 	this->sensitivity = sensitivity;
@@ -16,6 +18,8 @@ Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float speed, float sensiti
 
 	Parent(parent);
 	this->tag = "Camera";
+
+	this->active = active;
 
 	CalculateVectors();
 }
