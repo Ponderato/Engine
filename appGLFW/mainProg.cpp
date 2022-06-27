@@ -113,7 +113,8 @@ int main(){
 	
 	context.SetWIdth(WIDTH);
 	context.SetHeight(HEIGHT);
-	context.SetPipeline();
+	context.SetDeferredPipeline();
+	context.SetForwardPipeline();
 	
 	glViewport(0, 0, WIDTH, HEIGHT);
 
@@ -123,16 +124,15 @@ int main(){
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		counter++;
-		if (deltaTime >= 1.0 / 30.0) {
+		if (deltaTime >= 1.0 / 10.0) {
 			fps = (1.0 / deltaTime) * counter;
 			ms = (double)(deltaTime / counter) * 1000;
 			lastFrame = currentFrame;
 			counter = 0;
-
-			//Input
-			//We put this here so the responsiveness of the input remains the same and does not vary with the FPS.
-			ProcessInput(window);
 		}
+
+		//Input
+		ProcessInput(window);
 
 		//Imgui
 		InitImGuiFrame();
@@ -268,7 +268,10 @@ void SetImGuiWindows() {
 
 	//Render window
 	r_panel.SetContext(&context);
-	r_panel.SetRenderImage(context.GetRenderTexture());
+	if(context.activePipe->Name == "Deferred")
+		r_panel.SetRenderImage(context.GetRenderTextureD());
+	else
+		r_panel.SetRenderImage(context.GetRenderTextureF());
 	
 	//Hierarchy panel
 	h_panel.SetContext(&context);

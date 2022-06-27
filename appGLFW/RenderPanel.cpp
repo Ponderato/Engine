@@ -32,11 +32,18 @@ void RenderPanel::DrawData() {
 	//Active pipeline
 	ImGui::SetCursorPosX(30);
 
-	ImGui::Button("Pipeline", ImVec2(70, 20));
+	if (ImGui::Button("Pipeline", ImVec2(70, 20))) {
+		if (context->activePipe->Name == "Deferred") {
+			context->SetActivePipeline(context->pipelines.at(1));
+		}
+		else {
+			context->SetActivePipeline(context->pipelines.at(0));
+		}
+	}
 	ImGui::SameLine();
 	ImGui::Text(":");
 	ImGui::SameLine();
-	ImGui::Text(context->pipeline->Name.c_str());
+	ImGui::Text(context->activePipe->Name.c_str());
 
 	ImGui::SameLine();
 

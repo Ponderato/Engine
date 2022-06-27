@@ -1,6 +1,6 @@
 #version 330 core
 
-layout (location = 3) out vec4 fColor;
+layout (location = 3) out vec4 fColor; //renderTex
 
 in vec2 texCoords;
 

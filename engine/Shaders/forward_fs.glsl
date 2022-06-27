@@ -4,9 +4,7 @@ in vec3 normal;
 in vec3 fragPos;
 in vec2 texCoords;
 
-uniform vec3 viewerPos;
-
-out vec4 fColor;
+layout (location = 0) out vec4 fColor;
 
 //------------UNIFORMS------------------
 //Material properties
@@ -26,9 +24,14 @@ uniform sampler2D aux1;
 uniform sampler2D aux2;
 uniform sampler2D aux3;
 
-//Light properties
-uniform vec3 lightColor[10];
-uniform vec3 lightPosition[10];
+//viewer position
+uniform vec3 viewerPos;
+
+//Light properties (WE CAN HAVE 100 LIGHTS)
+uniform int nLights;
+uniform float intensity[100];
+uniform vec3 lightColor[100]; 
+uniform vec3 lightPosition[100];
 
 uniform vec3 spotlightPos;               //Spot Light
 uniform vec3 spotlightDir;               //Spot Light
@@ -75,10 +78,11 @@ vec3 directionalLShade(vec3 color, sampler2D matDiffuse, sampler2D matSpecular, 
     return (ambient + diffuse + specular) * color;
 }
 
-vec3 pointLShade(vec3 color, vec3 lightPos, sampler2D matDiffuse, sampler2D matSpecular, sampler2D matEmissive){
+vec3 pointLShade(vec3 color, vec3 lightPos, sampler2D matDiffuse, sampler2D matSpecular, sampler2D matEmissive, float intensity){
     //Attenuation
     float dist = length(lightPos - fragPos);
     float attenuation = 1.0 / (kConst + kLinear*dist + kQuad*dist*dist);
+    attenuation *= intensity;
 
     //Ambient lighting.
     vec3 ambient = lightAmbient * texture(matDiffuse, texCoords).rgb;
@@ -88,7 +92,7 @@ vec3 pointLShade(vec3 color, vec3 lightPos, sampler2D matDiffuse, sampler2D matS
     vec3 norm = normalize(normal);
     vec3 lightDir = normalize(lightPos - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = lightDiffuse * diff * texture(matDiffuse, texCoords).rgb;
+    vec3 diffuse = color * lightDiffuse * diff * texture(matDiffuse, texCoords).rgb;
     diffuse *= attenuation;
 
     //Specular lighting
@@ -96,13 +100,13 @@ vec3 pointLShade(vec3 color, vec3 lightPos, sampler2D matDiffuse, sampler2D matS
     vec3 reflectDir = reflect(-lightDir, norm);//-lightDir because it expects a vector that points from the light to the frag pos and the way we calculate the 
     //substraction, it is going the oposite direction
     float spec = pow(max(dot(viewerDir, reflectDir), 0.0), matShininess);//last value refers to the shininess
-    vec3 specular = lightSpecular * spec * texture(matSpecular, texCoords).rgb;
+    vec3 specular = color * lightSpecular * spec * texture(matSpecular, texCoords).rgb;
     specular *= attenuation;
 
     //Emissive lighting
     //vec3 emissive = texture(matEmissive, texCoords).rgb;
 
-    return (ambient + diffuse + specular) * color;
+    return (ambient + diffuse + specular);
 }
 
 vec3 spotLShade(vec3 color, sampler2D matDiffuse, sampler2D matSpecular, sampler2D matEmissive){
@@ -142,9 +146,11 @@ vec3 spotLShade(vec3 color, sampler2D matDiffuse, sampler2D matSpecular, sampler
 
 void main(){
     
-    vec3 result = pointLShade(lightColor[0], lightPosition[0], matDiffuse1, matSpecular1, matEmissive1);
-    result += pointLShade(lightColor[1], lightPosition[1], matDiffuse1, matSpecular1, matEmissive1);
-    result += pointLShade(lightColor[2], lightPosition[2], matDiffuse1, matSpecular1, matEmissive1);
+    //Now light calculations as usual
+    vec3 result;
+    for (int i = 0; i < nLights; i++){
+        result += pointLShade(lightColor[i], lightPosition[i], matDiffuse1, matSpecular1, matEmissive1, intensity[i]);
+    }
 
-    fColor = vec4(result, 1.0);
+    fColor = vec4(result, 1.0f);
 }

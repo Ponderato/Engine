@@ -17,11 +17,11 @@ public:
 
 	std::string Name;
 
-	GeometryStep* gStep;
-	LightingStep* lStep;
-	ForwardStep* fStep;
-	CopyStep* cStep;
-	FrustumStep* frusStep;
+	GeometryStep* gStep = nullptr;
+	LightingStep* lStep = nullptr;
+	ForwardStep* fStep = nullptr;
+	CopyStep* cStep = nullptr;
+	FrustumStep* frusStep = nullptr;
 
 	Pipeline(std::string Name);
 

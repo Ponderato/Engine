@@ -30,7 +30,8 @@ public:
 
 	Camera* camera; //Active camera
 	std::vector<Camera*> inactiveCameras;
-	Pipeline* pipeline;
+	std::vector<Pipeline*> pipelines;
+	Pipeline* activePipe;
 	Node* parentNode = new Node();
 	std::vector<Program> programs;
 
@@ -60,26 +61,35 @@ public:
 	void InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float aspect, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent);
 	void InitCameraSet(const glm::vec3 pos, const glm::vec3 worldUp, const float aspect, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent);
 
-	void SetPipeline();
+	void SetDeferredPipeline();
+	void SetForwardPipeline();
 
 	void DeleteNode(Node* node);
 	void DeleteChildNodes(Node* node);
 
-	inline unsigned int GetRenderTexture() { return this->renderTexture; };
+	inline unsigned int GetRenderTextureD() { return this->renderTextureD; };
+	inline unsigned int GetRenderTextureF() { return this->renderTextureF; };
 
 	void SetActiveCamera(Camera* camera);
+	void SetActivePipeline(Pipeline* pipe);
 
 	void Update();
 private:
 
-	//Framebuffers
+	//Framebuffers deferred
 	unsigned int defaultBuffer;
 	unsigned int gBuffer;
 	unsigned int middleBuffer;
 
 	//Gbuffer data (Texture Id's)
 	unsigned int gPos, gNorm, gColorSpec;
-	unsigned int renderTexture;
+	unsigned int renderTextureD;
+
+	//Forward
+	unsigned int fbuffer;
+	unsigned int renderTextureF;
+
+
 
 	std::vector<Node*> renderableModels;
 	std::vector<Node*> renderableForwardModels;

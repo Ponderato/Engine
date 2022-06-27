@@ -35,7 +35,7 @@ void Context::SetDSUniforms() {
 	programs[3].SetInt("gColorSpec", 2);
 }
 
-void Context::SetPipeline() {
+void Context::SetDeferredPipeline() {
 
 	//First we create the buffers and get they'r Id's
 	glGenFramebuffers(1, &gBuffer);
@@ -64,41 +64,70 @@ void Context::SetPipeline() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glGenTextures(1, &renderTexture);
-	glBindTexture(GL_TEXTURE_2D, renderTexture);
+	glGenTextures(1, &renderTextureD);
+	glBindTexture(GL_TEXTURE_2D, renderTextureD);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	//Pipeline configuration
-	pipeline = new Pipeline("Deferred");
-	pipeline->SetStep(new GeometryStep(camera, programs[2]));
-	pipeline->SetStep(new LightingStep(camera, programs[3]));
-	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &middleBuffer, WIDTH, HEIGHT, 0, 0));
-	pipeline->SetStep(new ForwardStep(camera, programs[1]));
-	pipeline->SetStep(new FrustumStep(camera, programs[4]));
+	pipelines.push_back(new Pipeline("Deferred"));
+	pipelines.at(pipelines.size() - 1)->SetStep(new GeometryStep(camera, programs[2]));
+	pipelines.at(pipelines.size() - 1)->SetStep(new LightingStep(camera, programs[3]));
+	pipelines.at(pipelines.size() - 1)->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &middleBuffer, WIDTH, HEIGHT, 0, 0));
+	pipelines.at(pipelines.size() - 1)->SetStep(new ForwardStep(camera, programs[1], "Deferred"));
+	pipelines.at(pipelines.size() - 1)->SetStep(new FrustumStep(camera, programs[4]));
 
-	pipeline->gStep->SetFBO(&gBuffer);
-	pipeline->gStep->SetInputTexture(0, &gPos);
-	pipeline->gStep->SetInputTexture(1, &gNorm);
-	pipeline->gStep->SetInputTexture(2, &gColorSpec);
-	pipeline->gStep->SetUp_Buffer(WIDTH, HEIGHT);
+	pipelines.at(pipelines.size() - 1)->gStep->SetFBO(&gBuffer);
+	pipelines.at(pipelines.size() - 1)->gStep->SetInputTexture(0, &gPos);
+	pipelines.at(pipelines.size() - 1)->gStep->SetInputTexture(1, &gNorm);
+	pipelines.at(pipelines.size() - 1)->gStep->SetInputTexture(2, &gColorSpec);
+	pipelines.at(pipelines.size() - 1)->gStep->SetUp_Buffer(WIDTH, HEIGHT);
 
-	pipeline->lStep->SetFBO(&middleBuffer);
-	pipeline->lStep->SetInputTexture(0, pipeline->gStep->GetOutputTexture(0));
-	pipeline->lStep->SetInputTexture(1, pipeline->gStep->GetOutputTexture(1));
-	pipeline->lStep->SetInputTexture(2, pipeline->gStep->GetOutputTexture(2));
-	pipeline->lStep->SetInputTexture(3, &renderTexture);
-	pipeline->lStep->SetUp_Buffer(WIDTH, HEIGHT);
+	pipelines.at(pipelines.size() - 1)->lStep->SetFBO(&middleBuffer);
+	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(0, pipelines.at(pipelines.size() - 1)->gStep->GetOutputTexture(0));
+	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(1, pipelines.at(pipelines.size() - 1)->gStep->GetOutputTexture(1));
+	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(2, pipelines.at(pipelines.size() - 1)->gStep->GetOutputTexture(2));
+	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(3, &renderTextureD);
+	pipelines.at(pipelines.size() - 1)->lStep->SetUp_Buffer(WIDTH, HEIGHT);
 
-	pipeline->cStep->SetFBO(&gBuffer);
+	pipelines.at(pipelines.size() - 1)->cStep->SetFBO(&gBuffer);
 
-	pipeline->fStep->SetFBO(&middleBuffer);
+	pipelines.at(pipelines.size() - 1)->fStep->SetFBO(&middleBuffer);
+	pipelines.at(pipelines.size() - 1)->fStep->SetInputTexture(0, &renderTextureD);
+	//pipelines.at(pipelines.size() - 1)->fStep->SetUp_Buffer(WIDTH, HEIGHT);
 
-	pipeline->frusStep->SetInactiveCameras(this->inactiveCameras);
+	pipelines.at(pipelines.size() - 1)->frusStep->SetInactiveCameras(this->inactiveCameras);
 
 	//Finally set the uniforms
 	SetDSUniforms();
+
+	SetActivePipeline(pipelines.at(pipelines.size() - 1));
+}
+
+void Context::SetForwardPipeline() {
+
+	glGenFramebuffers(1, &fbuffer);
+
+	GetFrameBufferID(&fbuffer);
+
+	glGenTextures(1, &renderTextureF);
+	glBindTexture(GL_TEXTURE_2D, renderTextureF);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	pipelines.push_back(new Pipeline("Forward"));
+	pipelines.at(pipelines.size() - 1)->SetStep(new ForwardStep(camera, programs[0], "Forward"));
+	pipelines.at(pipelines.size() - 1)->SetStep(new FrustumStep(camera, programs[4]));
+
+	pipelines.at(pipelines.size() - 1)->fStep->SetFBO(&fbuffer);
+	pipelines.at(pipelines.size() - 1)->fStep->SetInputTexture(0, &renderTextureF);
+	pipelines.at(pipelines.size() - 1)->fStep->SetUp_Buffer(WIDTH, HEIGHT);
+
+	pipelines.at(pipelines.size() - 1)->frusStep->SetInactiveCameras(this->inactiveCameras);
+
+	SetActivePipeline(pipelines.at(pipelines.size() - 1));
 }
 
 void Context::InitCamera(const glm::vec3 pos, const glm::vec3 worldUp, const float aspect, const float speed, const float sensitivity, const float fov, const float yaw, const float pitch, Node* parent) {
@@ -181,20 +210,30 @@ void Context::CheckRenderable() {
 	renderableModels.clear();
 	renderableForwardModels.clear();
 
-	for (Node* model : nodes) {
-		if (model->renderable) {
-			if (model->forward) {
-				renderableForwardModels.push_back(model);
-			}
-			else {
-				renderableModels.push_back(model);
+	if (activePipe->Name == "Deferred") {
+		for (Node* model : nodes) {
+			if (model->renderable) {
+				if (model->forward) {
+					renderableForwardModels.push_back(model);
+				}
+				else {
+					renderableModels.push_back(model);
+				}
 			}
 		}
-	}
 
-	pipeline->gStep->SetModels(renderableModels);
-	pipeline->fStep->SetModels(renderableForwardModels);
-	pipeline->lStep->SetModels(nodes);
+		activePipe->gStep->SetModels(renderableModels);
+		activePipe->fStep->SetModels(renderableForwardModels);
+		activePipe->lStep->SetModels(nodes);
+	}
+	else {
+		for (Node* model : nodes) {
+			if (model->renderable) {
+				renderableForwardModels.push_back(model);
+			}
+		}
+		activePipe->fStep->SetModels(renderableForwardModels);
+	}
 }
 
 void Context::UpdateModels() {
@@ -224,11 +263,18 @@ void Context::SetActiveCamera(Camera* camera) {
 		}
 	}
 
-	pipeline->gStep->SetCamera(this->camera);
-	pipeline->lStep->SetCamera(this->camera);
-	pipeline->fStep->SetCamera(this->camera);
-	pipeline->frusStep->SetCamera(this->camera);
-	pipeline->frusStep->SetInactiveCameras(this->inactiveCameras);
+	if (activePipe->Name == "Deferred") {
+		activePipe->gStep->SetCamera(this->camera);
+		activePipe->lStep->SetCamera(this->camera);
+	}
+	activePipe->fStep->SetCamera(this->camera);
+	activePipe->frusStep->SetCamera(this->camera);
+	activePipe->frusStep->SetInactiveCameras(this->inactiveCameras);
+}
+
+void Context::SetActivePipeline(Pipeline* pipe) {
+	
+	this->activePipe = pipe;
 }
 
 void Context::GetFrameBufferID(unsigned int *framebuffer)
@@ -250,9 +296,10 @@ void Context::Update() {
 
 	UpdateCameras();
 
-	SetDSUniforms();
+	if (activePipe->Name == "Deferred")
+		SetDSUniforms();
 
-	pipeline->Render();
+	activePipe->Render();
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

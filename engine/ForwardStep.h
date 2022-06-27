@@ -9,7 +9,7 @@ class ForwardStep : public Step
 {
 public:
 
-	ForwardStep(Camera* camera, Program& program);
+	ForwardStep(Camera* camera, Program& program, std::string activePipe);
 
 	inline void SetModels(std::vector<Node*> models) { this->models = models; }
 	inline void SetProgram(Program& program) { this->program = program; }
@@ -18,10 +18,13 @@ public:
 	void RenderStep() override;
 private:
 
+	std::string activePipe;
+
 	Camera* camera;
 	Program& program;
 
 	std::vector<Node*> models;
+	void SetLightUniforms();
 };
 
 #endif

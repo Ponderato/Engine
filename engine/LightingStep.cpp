@@ -20,7 +20,6 @@ LightingStep::LightingStep(Camera* camera, Program& program)
 void LightingStep::RenderStep(){
 
 	glBindFramebuffer(GL_FRAMEBUFFER, *FBO);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	program.Use();
 	program.SetVec3("viewerPos", camera->GetPosition());
