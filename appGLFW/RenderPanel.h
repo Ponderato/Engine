@@ -16,9 +16,12 @@ public:
 
 	inline void SetRenderImage(const unsigned int renderImg) { this->renderImg = renderImg; };
 	inline void SetFPS(int fps) { this->fps = fps; };
+	inline void SetMS(double ms) { this->ms = ms; };
+
 private:
 
 	int fps = 0;
+	double ms = 0.0;
 	unsigned int renderImg;
 
 	void DrawData();

@@ -41,11 +41,15 @@ void RenderPanel::DrawData() {
 	ImGui::SameLine();
 
 	//FPS
-	ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 80);
+	ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 200);
 
 	ImGui::Text(std::to_string(fps).c_str());
 	ImGui::SameLine();
-	ImGui::Text("FPS");
+	ImGui::Text("FPS / ");
+	ImGui::SameLine();
+	ImGui::Text(std::to_string(ms).c_str());
+	ImGui::SameLine();
+	ImGui::Text("Ms");
 
 	ImGui::PopStyleColor(3);
 }
