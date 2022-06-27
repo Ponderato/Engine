@@ -129,10 +129,10 @@ int main(){
 			ms = (double)(deltaTime / counter) * 1000;
 			lastFrame = currentFrame;
 			counter = 0;
-		}
 
-		//Input
-		ProcessInput(window);
+			//Input
+			ProcessInput(window);
+		}
 
 		//Imgui
 		InitImGuiFrame();

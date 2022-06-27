@@ -46,7 +46,7 @@ vec3 pointLShade(vec3 color, vec3 lightPos, float intensity){
     attenuation *= intensity;
 
     //Ambient lighting.
-    vec3 ambientL = color * diffuse * 0.05f; //We take here the diffuse vec3 since
+    //vec3 ambientL = color * diffuse * 0.05f; //We take here the diffuse vec3 since
     //it is obtained from the rgb components of colorSpec, which is the Albedo.
     //ambient *= attenuation;
 
@@ -66,7 +66,7 @@ vec3 pointLShade(vec3 color, vec3 lightPos, float intensity){
     //Emissive lighting
     //vec3 emissive = texture(matEmissive, texCoords).rgb;
 
-    return  ambientL + diffuseL + specularL;
+    return  diffuseL + specularL;
     //return result * intensity;
 }
 

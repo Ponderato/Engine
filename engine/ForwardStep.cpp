@@ -18,8 +18,10 @@ void ForwardStep::RenderStep() {
 
 	program.SetVec3("viewerPos", camera->GetPosition());
 
-	if (activePipe == "Forward")
+	if (activePipe == "Forward") {
 		SetLightUniforms();
+		program.SetInt("isLight", 0);
+	}
 
 	for (unsigned int i = 0; i < dataTextures.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i);
@@ -33,9 +35,21 @@ void ForwardStep::RenderStep() {
 
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);
 
-		if (aux != nullptr) {
+		if (activePipe == "Forward") {
+			if (!models.at(i)->hasTex) {
+				program.SetInt("hasTex", 0);
+			}
+			else {
+				program.SetInt("hasTex", 1);
+			}
+		}
+
+		if (aux) {
 			program.SetVec3("color", aux->color);
+			if (activePipe == "Forward")
+				program.SetInt("isLight", 1);
 		}else {
+
 			program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));
 		}
 
