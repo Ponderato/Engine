@@ -71,7 +71,7 @@ void Context::SetPipeline() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	//Pipeline configuration
-	pipeline = new Pipeline();
+	pipeline = new Pipeline("Deferred");
 	pipeline->SetStep(new GeometryStep(camera, programs[2]));
 	pipeline->SetStep(new LightingStep(camera, programs[3]));
 	pipeline->SetStep(new CopyStep(GL_DEPTH_BUFFER_BIT, &middleBuffer, WIDTH, HEIGHT, 0, 0));
@@ -230,7 +230,6 @@ void Context::SetActiveCamera(Camera* camera) {
 	pipeline->frusStep->SetCamera(this->camera);
 	pipeline->frusStep->SetInactiveCameras(this->inactiveCameras);
 }
-
 
 void Context::GetFrameBufferID(unsigned int *framebuffer)
 {

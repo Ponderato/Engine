@@ -21,7 +21,7 @@ private:
 	int fps = 0;
 	unsigned int renderImg;
 
-	void DrawFPS();
+	void DrawData();
 };
 
 #endif

@@ -130,7 +130,7 @@ int main(){
 		//Imgui
 		InitImGuiFrame();
 		
-		//FPS & vel
+		///FPS
 		current_ticks = clock(); 
 		context.deltaTime = deltaTime;
 		

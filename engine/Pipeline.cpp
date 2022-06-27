@@ -1,5 +1,7 @@
 #include "Pipeline.h"
 
+Pipeline::Pipeline(std::string Name) : Name(Name){}
+
 //Makes the given step the active one
 void Pipeline::SetStep(Step* step) {
 

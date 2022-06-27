@@ -15,14 +15,20 @@ class Pipeline
 {
 public:
 
+	std::string Name;
+
 	GeometryStep* gStep;
 	LightingStep* lStep;
 	ForwardStep* fStep;
 	CopyStep* cStep;
 	FrustumStep* frusStep;
 
+	Pipeline(std::string Name);
+
 	void SetStep(Step* step);
 	void Render();
+
+
 };
 
 #endif

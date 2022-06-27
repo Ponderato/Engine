@@ -2,6 +2,7 @@
 
 GeometryStep::GeometryStep(Camera* camera, Program& program)
 	: camera(camera), program(program) {
+	
 }
 
 
