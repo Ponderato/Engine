@@ -28,8 +28,13 @@ float lastY = OGL_HEIGHT / 2;
 
 const unsigned int N_LIGHTS = 3;
 
+//For movememnt velocity
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
+
+//For fps counter
+clock_t current_ticks, delta_ticks;
+clock_t fps = 0;
 
 //Light & cube data
 glm::vec3 lightPos[N_LIGHTS] = {
@@ -125,9 +130,17 @@ int main(){
 		//Imgui
 		InitImGuiFrame();
 		
-		//Rendering commands
+		//FPS & vel
+		current_ticks = clock(); 
 		context.deltaTime = deltaTime;
+		
+		//Rendering commands
 		context.Update();
+
+		//FPS
+		delta_ticks = clock() - current_ticks; //the time, in ms, that took to render the scene
+		if (delta_ticks > 0)
+			fps = CLOCKS_PER_SEC / delta_ticks;
 
 		//ImGui
 		RenderImGui();
@@ -224,6 +237,7 @@ void RenderImGui() {
 
 	//Window renders
 	r_panel.OnImGuiRender();
+	r_panel.SetFPS((int)fps);
 
 	h_panel.OnImGuiRender();
 

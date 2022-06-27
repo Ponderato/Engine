@@ -15,9 +15,13 @@ public:
 	void OnImGuiRender() override;
 
 	inline void SetRenderImage(const unsigned int renderImg) { this->renderImg = renderImg; };
+	inline void SetFPS(int fps) { this->fps = fps; };
 private:
 
+	int fps = 0;
 	unsigned int renderImg;
+
+	void DrawFPS();
 };
 
 #endif
