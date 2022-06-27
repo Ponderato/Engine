@@ -35,21 +35,19 @@ void ForwardStep::RenderStep() {
 
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);
 
-		if (activePipe == "Forward") {
-			if (!models.at(i)->hasTex) {
-				program.SetInt("hasTex", 0);
-			}
-			else {
-				program.SetInt("hasTex", 1);
-			}
-		}
-
-		if (aux) {
+		if (aux != nullptr) {
 			program.SetVec3("color", aux->color);
 			if (activePipe == "Forward")
 				program.SetInt("isLight", 1);
 		}else {
-
+			if (activePipe == "Forward") {
+				if (!models.at(i)->hasTex) {
+					program.SetInt("noTex", 1);
+				}
+				else {
+					program.SetInt("noTex", 0);
+				}
+			}
 			program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));
 		}
 

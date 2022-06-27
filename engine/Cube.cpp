@@ -128,7 +128,7 @@ Cube::Cube(glm::vec3 position, Node* parent) : Model() {
 	}
 
 	this->transform.position = position;
-
+	this->hasTex = false;
 	this->renderable = true;
 
 	Parent(parent);
