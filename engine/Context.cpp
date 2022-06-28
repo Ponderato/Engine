@@ -33,6 +33,7 @@ void Context::SetDSUniforms() {
 	programs[3].SetInt("gPos", 0);
 	programs[3].SetInt("gNorm", 1);
 	programs[3].SetInt("gColorSpec", 2);
+	programs[3].SetInt("gEmissive", 3);
 }
 
 void Context::SetDeferredPipeline() {
@@ -64,6 +65,12 @@ void Context::SetDeferredPipeline() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+	glGenTextures(1, &gEmissive);
+	glBindTexture(GL_TEXTURE_2D, gEmissive);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	glGenTextures(1, &renderTextureD);
 	glBindTexture(GL_TEXTURE_2D, renderTextureD);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -82,13 +89,15 @@ void Context::SetDeferredPipeline() {
 	pipelines.at(pipelines.size() - 1)->gStep->SetInputTexture(0, &gPos);
 	pipelines.at(pipelines.size() - 1)->gStep->SetInputTexture(1, &gNorm);
 	pipelines.at(pipelines.size() - 1)->gStep->SetInputTexture(2, &gColorSpec);
+	pipelines.at(pipelines.size() - 1)->gStep->SetInputTexture(3, &gEmissive);
 	pipelines.at(pipelines.size() - 1)->gStep->SetUp_Buffer(WIDTH, HEIGHT);
 
 	pipelines.at(pipelines.size() - 1)->lStep->SetFBO(&middleBuffer);
 	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(0, pipelines.at(pipelines.size() - 1)->gStep->GetOutputTexture(0));
 	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(1, pipelines.at(pipelines.size() - 1)->gStep->GetOutputTexture(1));
 	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(2, pipelines.at(pipelines.size() - 1)->gStep->GetOutputTexture(2));
-	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(3, &renderTextureD);
+	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(3, pipelines.at(pipelines.size() - 1)->gStep->GetOutputTexture(3));
+	pipelines.at(pipelines.size() - 1)->lStep->SetInputTexture(4, &renderTextureD);
 	pipelines.at(pipelines.size() - 1)->lStep->SetUp_Buffer(WIDTH, HEIGHT);
 
 	pipelines.at(pipelines.size() - 1)->cStep->SetFBO(&gBuffer);

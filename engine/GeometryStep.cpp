@@ -24,6 +24,13 @@ void GeometryStep::RenderStep() {
 			program.SetInt("hasTex", 1);
 		}
 
+		if (!models.at(i)->hasEmissive) {
+			program.SetInt("hasEmissive", 0);
+		}
+		else {
+			program.SetInt("hasEmissive", 1);
+		}
+
 		Model* auxModel = dynamic_cast<Model*>(models.at(i));
 
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);

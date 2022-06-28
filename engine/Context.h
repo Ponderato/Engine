@@ -82,7 +82,7 @@ private:
 	unsigned int middleBuffer;
 
 	//Gbuffer data (Texture Id's)
-	unsigned int gPos, gNorm, gColorSpec;
+	unsigned int gPos, gNorm, gColorSpec, gEmissive;
 	unsigned int renderTextureD;
 
 	//Forward

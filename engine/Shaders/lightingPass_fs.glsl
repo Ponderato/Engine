@@ -1,6 +1,6 @@
 #version 330 core
 
-layout (location = 3) out vec4 fColor; //renderTex
+layout (location = 4) out vec4 fColor; //renderTex
 
 in vec2 texCoords;
 
@@ -31,6 +31,7 @@ vec3 fragPos;
 vec3 normal;
 vec3 diffuse; //Albedo
 float specular;
+vec3 emissive;
 
 //Material properties
 float matShininess = 64.0f;
@@ -64,9 +65,9 @@ vec3 pointLShade(vec3 color, vec3 lightPos, float intensity){
     specularL *= attenuation;
 
     //Emissive lighting
-    //vec3 emissive = texture(matEmissive, texCoords).rgb;
+    vec3 emissiveL = emissive;
 
-    return  diffuseL + specularL;
+    return  diffuseL + specularL + emissiveL;
     //return result * intensity;
 }
 
@@ -77,6 +78,7 @@ void main()
 	normal = texture(gNorm, texCoords).rgb;
 	diffuse = texture(gColorSpec, texCoords).rgb;
 	specular = texture(gColorSpec, texCoords).a;
+    emissive = texture(gEmissive, texCoords).rgb;
 
 	//Now light calculations as usual
     vec3 result;

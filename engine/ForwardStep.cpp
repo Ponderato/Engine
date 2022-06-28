@@ -40,14 +40,22 @@ void ForwardStep::RenderStep() {
 			if (activePipe == "Forward")
 				program.SetInt("isLight", 1);
 		}else {
+
 			if (activePipe == "Forward") {
 				if (!models.at(i)->hasTex) {
-					program.SetInt("noTex", 1);
+					program.SetInt("hasTex", 0);
 				}
 				else {
-					program.SetInt("noTex", 0);
+					program.SetInt("hasTex", 1);
+				}
+				if (!models.at(i)->hasEmissive) {
+					program.SetInt("hasEmissive", 0);
+				}
+				else {
+					program.SetInt("hasEmissive", 1);
 				}
 			}
+
 			program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));
 		}
 

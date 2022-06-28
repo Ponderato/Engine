@@ -24,7 +24,8 @@ uniform sampler2D aux1;
 uniform sampler2D aux2;
 uniform sampler2D aux3;
 
-uniform int noTex;
+uniform int hasTex;
+uniform int hasEmissive;
 
 //viewer position
 uniform vec3 viewerPos;
@@ -58,7 +59,7 @@ vec3 pointLShade(vec3 Lcolor, vec3 lightPos, sampler2D matDiffuse, sampler2D mat
 
     //Ambient lighting.
     vec3 ambient;
-    if (noTex == 1){
+    if (hasTex == 0){
         ambient = lightAmbient * vec3(1);
     }else{
         ambient = lightAmbient * texture(matDiffuse, texCoords).rgb;
@@ -68,7 +69,7 @@ vec3 pointLShade(vec3 Lcolor, vec3 lightPos, sampler2D matDiffuse, sampler2D mat
     vec3 lightDir = normalize(lightPos - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse;
-    if (noTex == 1){
+    if (hasTex == 0){
         diffuse = Lcolor * diff * vec3(1);
     }else{
         diffuse = Lcolor * diff * texture(matDiffuse, texCoords).rgb;
@@ -80,7 +81,7 @@ vec3 pointLShade(vec3 Lcolor, vec3 lightPos, sampler2D matDiffuse, sampler2D mat
     vec3 reflectDir = reflect(lightDir, norm);
     float spec = pow(max(dot(viewerDir, reflectDir), 0.0), matShininess);
     vec3 specular;
-    if (noTex == 1){
+    if (hasTex == 0){
         specular = Lcolor * spec * vec3(1);
     }else{
         specular = Lcolor * spec * texture(matSpecular, texCoords).rgb;
@@ -88,9 +89,13 @@ vec3 pointLShade(vec3 Lcolor, vec3 lightPos, sampler2D matDiffuse, sampler2D mat
     specular *= attenuation;
 
     //Emissive lighting
-    //vec3 emissive = texture(matEmissive, texCoords).rgb;
+    vec3 emissive;
+    if(hasEmissive == 0)
+        emissive = vec3(0, 0, 0);
+    else
+       emissive = texture(matEmissive, texCoords).rgb;
 
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular + emissive);
 }
 
 void main(){

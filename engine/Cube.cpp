@@ -38,6 +38,7 @@ Cube::Cube(std::string diffuse, std::string specular, std::string emissive, glm:
 	//We want to render the cubes
 	this->renderable = true;
 	this->hasTex = true;
+	this->hasEmissive = true;
 
 	Parent(parent);
 	this->tag = "Cube";

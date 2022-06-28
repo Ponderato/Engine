@@ -34,6 +34,7 @@ public:
 	int ID = 0;
 
 	bool hasTex = false;
+	bool hasEmissive = false;
 	bool renderable = false;
 	bool forward = false;
 	bool dirty = false;	
