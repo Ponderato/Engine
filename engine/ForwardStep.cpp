@@ -42,6 +42,8 @@ void ForwardStep::RenderStep() {
 		}else {
 
 			if (activePipe == "Forward") {
+				program.SetInt("isLight", 0);
+
 				if (!models.at(i)->hasTex) {
 					program.SetInt("hasTex", 0);
 				}
