@@ -35,6 +35,7 @@ public:
 
 	bool hasTex = false;
 	bool hasEmissive = false;
+	bool hasSpecular = false;
 	bool renderable = false;
 	bool forward = false;
 	bool dirty = false;	

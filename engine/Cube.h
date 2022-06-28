@@ -15,6 +15,7 @@ public:
 	//Constructors 
 	Cube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* parent);
 	Cube(std::string diffuse, std::string specular, glm::vec3 position, Node* parent);
+	Cube(std::string diffuse, glm::vec3 position, Node* parent);
 	Cube(glm::vec3 position, Node* parent);
 
 	void Draw(Program &program) override;

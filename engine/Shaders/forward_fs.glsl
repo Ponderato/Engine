@@ -26,6 +26,7 @@ uniform sampler2D aux3;
 
 uniform int hasTex;
 uniform int hasEmissive;
+uniform int hasSpecular;
 
 //viewer position
 uniform vec3 viewerPos;
@@ -84,7 +85,10 @@ vec3 pointLShade(vec3 Lcolor, vec3 lightPos, sampler2D matDiffuse, sampler2D mat
     if (hasTex == 0){
         specular = Lcolor * spec * vec3(1);
     }else{
-        specular = Lcolor * spec * texture(matSpecular, texCoords).rgb;
+        if (hasSpecular == 1)
+            specular = Lcolor * spec * texture(matSpecular, texCoords).rgb;
+        else
+            specular = vec3(0);
     }
     specular *= attenuation;
 

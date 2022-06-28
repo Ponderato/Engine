@@ -161,6 +161,10 @@ void Context::InitCube(std::string diffuse, std::string specular, glm::vec3 posi
 	nodes.push_back(new Cube(diffuse, specular, position, parent));
 }
 
+void Context::InitCube(std::string diffuse, glm::vec3 position, Node* parent) {
+	nodes.push_back(new Cube(diffuse, position, parent));
+}
+
 void Context::InitCube(glm::vec3 position, Node* parent) {
 	nodes.push_back(new Cube(position,  parent));
 }

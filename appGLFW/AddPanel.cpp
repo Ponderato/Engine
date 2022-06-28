@@ -71,6 +71,9 @@ void AddPanel::AddCube() {
         if (std::string(diffusePath) == "") {
             this->context->InitCube(glm::vec3(0.0f), this->context->parentNode);
         }
+        else if (std::string(specPath) == "") {
+            this->context->InitCube(std::string(diffusePath), glm::vec3(0.0f), this->context->parentNode);
+        }
         else if (std::string(emissivePath) == "") {
             this->context->InitCube(std::string(diffusePath), std::string(specPath), glm::vec3(0.0f), this->context->parentNode);
         }

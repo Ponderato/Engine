@@ -54,6 +54,12 @@ void ForwardStep::RenderStep() {
 				else {
 					program.SetInt("hasEmissive", 1);
 				}
+				if (!models.at(i)->hasSpecular) {
+					program.SetInt("hasSpecular", 0);
+				}
+				else {
+					program.SetInt("hasSpecular", 1);
+				}
 			}
 
 			program.SetMat4("normalM", glm::transpose(glm::inverse(models.at(i)->transform.globalModel)));

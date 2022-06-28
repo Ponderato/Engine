@@ -31,6 +31,13 @@ void GeometryStep::RenderStep() {
 			program.SetInt("hasEmissive", 1);
 		}
 
+		if (!models.at(i)->hasSpecular) {
+			program.SetInt("hasSpecular", 0);
+		}
+		else {
+			program.SetInt("hasSpecular", 1);
+		}
+
 		Model* auxModel = dynamic_cast<Model*>(models.at(i));
 
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);
