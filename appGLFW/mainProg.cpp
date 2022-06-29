@@ -28,13 +28,17 @@ float lastY = OGL_HEIGHT / 2;
 
 const unsigned int N_LIGHTS = 3;
 
-//For movememnt velocity & FPS
+//ForFPS
 float deltaTime = 0.0f;//Time between current frame and last frame
 float lastFrame = 0.0f;//Time of last frame
 unsigned int counter = 0;
 double fps = 0;
 double ms = 0;
 
+//For Movement
+float deltaTime1 = 0.0f;	// Time between current frame and last frame
+float lastFrame1 = 0.0f; // Time of last frame
+bool moveCamera = false;
 
 //Light & cube data
 glm::vec3 lightPos[N_LIGHTS] = {
@@ -73,7 +77,6 @@ void SetImGuiWindows();
 
 void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void Window_size_callback(GLFWwindow* window, int width, int height);
-void Framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn);
 void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 void ProcessInput(GLFWwindow* window);
@@ -94,7 +97,7 @@ int main(){
 
 	#pragma region INITGEO
 	//../ refers to the parent folder, so we need two of them to get to the textures folder
-	context.InitCube("C:/Users/JONÁS/Desktop/Nueva carpeta/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], context.parentNode);
+	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", "../../textures/container2_emissive.jpg", cubePositions[0], context.parentNode);
 	context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[1], context.nodes[0]);
 	for (int i = 2; i < 7; i++) {
 		context.InitCube("../../textures/container2.jpg", "../../textures/container2_specular.jpg", cubePositions[i], context.parentNode);
@@ -130,9 +133,15 @@ int main(){
 			lastFrame = currentFrame;
 			counter = 0;
 
-			//Input
-			ProcessInput(window);
 		}
+
+		//For input
+		currentFrame = glfwGetTime();
+		deltaTime1 = currentFrame - lastFrame1;
+		lastFrame1 = currentFrame;
+
+		//Input
+		ProcessInput(window);
 
 		//Imgui
 		InitImGuiFrame();
@@ -175,11 +184,9 @@ GLFWwindow* InitContext() {
 	//OpenGL nedds to be initialized by this point. Here that is done in glfwMakeContextCurrent.
 	context.InitGLEW();
 
-	//We want the image not to resize inside the imgui window, so we dont need the resize callback
-	//glfwSetFramebufferSizeCallback(window, Framebuffer_size_callback);
 	glfwSetWindowSizeCallback(window, Window_size_callback);
-	//glfwSetCursorPosCallback(window, Mouse_callback);
-	//glfwSetScrollCallback(window, Scroll_callback);
+	glfwSetCursorPosCallback(window, Mouse_callback);
+	glfwSetScrollCallback(window, Scroll_callback);
 	glfwSetKeyCallback(window, Key_callback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -284,17 +291,6 @@ void SetImGuiWindows() {
 
 }
 
-void Framebuffer_size_callback(GLFWwindow* window, int width, int height){
-
-	if (width < 1000)
-		width = 1000;
-
-	if (height < 600)
-		height = 600;
-
-	glViewport(0, 0, width, height);
-}
-
 void Window_size_callback(GLFWwindow* window, int width, int height) {
 
 	if (width < 1000)
@@ -308,55 +304,61 @@ void Window_size_callback(GLFWwindow* window, int width, int height) {
 
 void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
 
-	float xPos = static_cast<float>(xPosIn);
-	float yPos = static_cast<float>(yPosIn);
+	if (r_panel.IsFocused() && moveMouse) {
 
-	if (firstMouse) {
+		float xPos = static_cast<float>(xPosIn);
+		float yPos = static_cast<float>(yPosIn);
+
+
+		float xOffset = (xPos - lastX);
+		float yOffset = (lastY - yPos); //Reversed since y-coords range from bottom to top
+
 		lastX = xPos;
 		lastY = yPos;
-		firstMouse = false;
+
+		context.camera->ProcessMouseMovement(xOffset, yOffset);
 	}
-
-	float xOffset = (xPos - lastX);
-	float yOffset = (lastY - yPos); //Reversed since y-coords range from bottom to top
-
-	lastX = xPos;
-	lastY = yPos;
-
-	context.camera->ProcessMouseMovement(xOffset, yOffset);
 }
 
 void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
-	context.camera->ProcessMouseScroll(static_cast<float>(yOffset));
+	if (r_panel.IsFocused() && moveMouse)
+		context.camera->ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
 //Key pressed only once
 void Key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	//f (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-	//	if (!moveMouse) {
-	//		moveMouse = true;
-	//	}
-	//	else {
-	//		moveMouse = false;
-	//	}
-	//
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+		if (!moveMouse) {
+			moveMouse = true;
+		}
+		else {
+			moveMouse = false;
+			double xpos, ypos;
+			glfwGetCursorPos(window, &xpos, &ypos);
+			lastX = (float)xpos;
+			lastY = (float)ypos;
+		}
+	}
 }
 
 void ProcessInput(GLFWwindow* window){
 
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		context.camera->ProcessKeyboard(FORWARD, deltaTime);
-	}
-	
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		context.camera->ProcessKeyboard(BACKWARD, deltaTime);
-	}
-	
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-		context.camera->ProcessKeyboard(LEFT, deltaTime);
-	}
-	
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		context.camera->ProcessKeyboard(RIGHT, deltaTime);
+	if (r_panel.IsFocused()) {
+
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			context.camera->ProcessKeyboard(FORWARD, deltaTime1);
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+			context.camera->ProcessKeyboard(BACKWARD, deltaTime1);
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			context.camera->ProcessKeyboard(LEFT, deltaTime1);
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+			context.camera->ProcessKeyboard(RIGHT, deltaTime1);
+		}
 	}
 }

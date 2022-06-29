@@ -25,7 +25,6 @@ public:
 	void DrawVec3RGB(const std::string& label, glm::vec3* values, float reset = 0.0f, float columnWidth = 70.0f);
 	void DrawFloat(const std::string& label, float* values, ImVec4 color, float reset = 0.0f, float columnWidth = 70.0f);
 	void DrawTag(char buffer[]);
-	void DrawCheckBox(const std::string& label, bool* value);
 
 	virtual void OnImGuiRender() = 0;
 protected:

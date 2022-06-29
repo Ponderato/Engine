@@ -38,8 +38,6 @@ public:
 	unsigned int WIDTH;
 	unsigned int HEIGHT;
 
-	float a;
-
 	std::vector<Node*> nodes;//Models and cubes all combined so we can show them
 
 	Context() = default;
@@ -89,8 +87,6 @@ private:
 	//Forward
 	unsigned int fbuffer;
 	unsigned int renderTextureF;
-
-
 
 	std::vector<Node*> renderableModels;
 	std::vector<Node*> renderableForwardModels;
