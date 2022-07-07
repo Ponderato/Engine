@@ -36,7 +36,7 @@ void ForwardStep::RenderStep() {
 		program.SetMat4("modelM", models.at(i)->transform.globalModel);
 
 		if (aux != nullptr) {
-			program.SetVec3("color", aux->color);
+			program.SetVec3("color", aux->GetColor());
 			if (activePipe == "Forward")
 				program.SetInt("isLight", 1);
 		}else {
@@ -80,9 +80,9 @@ void ForwardStep::SetLightUniforms() {
 		LightCube* light = dynamic_cast<LightCube*>(node);
 
 		if (light) {
-			program.SetFloat("intensity[" + std::to_string(count) + "]", light->intensity);
+			program.SetFloat("intensity[" + std::to_string(count) + "]", light->GetIntensity());
 			program.SetVec3("lightPosition[" + std::to_string(count) + "]", glm::vec3(light->transform.globalModel[3].x, light->transform.globalModel[3].y, light->transform.globalModel[3].z));
-			program.SetVec3("lightColor[" + std::to_string(count) + "]", light->color);
+			program.SetVec3("lightColor[" + std::to_string(count) + "]", light->GetColor());
 			count += 1;
 		}
 	}

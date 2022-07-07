@@ -16,7 +16,7 @@ void RenderPanel::OnImGuiRender() {
 	ImVec2 size = ImGui::GetContentRegionAvail();
 
 	//Maintain Aspect Ratio 
-	context->camera->SetAspectRatio((float)size.x / size.y);
+	context->GetActiveCamera()->SetAspectRatio((float)size.x / size.y);
 	//context->camera->SetAspectRatio(context->camera->aspectRatio);
 
 	//Final two vec2 to invert the image. This is needed because OpenGL and ImGui screen coordinates are the opposite.
@@ -40,7 +40,7 @@ void RenderPanel::DrawData() {
 	ImGui::SetCursorPosX(30);
 
 	if (ImGui::Button("Pipeline", ImVec2(70, 20))) {
-		if (context->activePipe->Name == "Deferred") {
+		if (context->GetActivePipe()->Name == "Deferred") {
 			context->SetActivePipeline(context->pipelines.at(1));
 		}
 		else {
@@ -50,7 +50,7 @@ void RenderPanel::DrawData() {
 	ImGui::SameLine();
 	ImGui::Text(":");
 	ImGui::SameLine();
-	ImGui::Text(context->activePipe->Name.c_str());
+	ImGui::Text(context->GetActivePipe()->Name.c_str());
 
 	ImGui::SameLine();
 

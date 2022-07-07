@@ -29,17 +29,23 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//--------------------------DELETE BUTTON--------------------------------
 	if (ImGui::Button("Remove", ImVec2(50, 20))) {
-		context->DeleteNode(NODE);
-		this->selected = false;
-
 		if (camera) {
-			for (Node* node : context->nodes) {
-				Camera* cam = dynamic_cast<Camera*>(node);
-				if (cam) {
-					context->SetActiveCamera(cam);
-					break;
+			if (context->GetInactiveCameras().size() >= 1) {
+				context->DeleteNode(NODE);
+				this->selected = false;
+
+				for (Node* node : context->nodes) {
+					Camera* cam = dynamic_cast<Camera*>(node);
+					if (cam) {
+						context->SetActiveCamera(cam);
+						break;
+					}
 				}
 			}
+		}
+		else {
+			context->DeleteNode(NODE);
+			this->selected = false;
 		}
 	}
 
@@ -89,11 +95,11 @@ void InspectorPanel::DrawComponents(Node node) {
 
 	//--------------------------INTENSITY--------------------------------
 	if (light) {
-		float intensity = light->intensity;
+		float intensity = light->GetIntensity();
 		DrawFloat("Intensity", &intensity, ImVec4(1.0f, 0.0f, 1.0f, 1.0f), 1.0f, 80.0f);
 		light->SetIntensity(intensity);
 
-		glm::vec3 color = light->color;
+		glm::vec3 color = light->GetColor();
 		DrawVec3RGB("Color", &color, 1.0f, 80.0f);
 		light->SetColor(color);
 	}
@@ -209,7 +215,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		glm::vec4 row = glm::vec4(matrix[0].x, matrix[1].x, matrix[2].x, matrix[3].x);
 		if (ImGui::DragFloat4(" ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-				camera->PMRow0(glm::vec2(row.x, row.z));
+				//camera->PMRow0(glm::vec2(row.x, row.z));
 			}
 			else {
 				node->Move(glm::vec3(row.w, matrix[3].y, matrix[3].z));
@@ -225,7 +231,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		row = glm::vec4(matrix[0].y, matrix[1].y, matrix[2].y, matrix[3].y);
 		if (ImGui::DragFloat4("  ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-				camera->PMRow1(glm::vec2(row.y, row.z));
+				//camera->PMRow1(glm::vec2(row.y, row.z));
 			}
 			else {
 				node->Move(glm::vec3(matrix[3].x, row.w, matrix[3].z));
@@ -240,7 +246,7 @@ void InspectorPanel::DrawMatrix(std::string label, Node* node) {
 		row = glm::vec4(matrix[0].z, matrix[1].z, matrix[2].z, matrix[3].z);
 		if (ImGui::DragFloat4("   ", glm::value_ptr(row), 0.1f)) {
 			if (camera) {
-				camera->PMRow2(glm::vec2(row.z, row.w));
+				//camera->PMRow2(glm::vec2(row.z, row.w));
 			}
 			else {
 				node->Move(glm::vec3(matrix[3].x, matrix[3].y, row.w));

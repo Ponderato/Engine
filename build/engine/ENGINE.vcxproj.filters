@@ -72,9 +72,6 @@
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\Cube.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\FrustumStep.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -109,6 +106,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\stb_image.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Fake Escritorio\GitHub\Engine\engine\ForwardStep.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

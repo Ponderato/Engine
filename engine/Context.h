@@ -26,30 +26,17 @@ class Context
 {
 public:
 
-	float deltaTime;
-
-	Camera* camera; //Active camera
-	std::vector<Camera*> inactiveCameras;
-	std::vector<Pipeline*> pipelines;
-	Pipeline* activePipe;
 	Node* parentNode = new Node();
 	std::vector<Program> programs;
-
-	unsigned int WIDTH;
-	unsigned int HEIGHT;
-
+	std::vector<Pipeline*> pipelines;
 	std::vector<Node*> nodes;//Models and cubes all combined so we can show them
 
 	Context() = default;
-
-	inline void SetWIdth(const unsigned int WIDTH) { this->WIDTH = WIDTH; }
-	inline void SetHeight(const unsigned int HEIGHT) { this->HEIGHT = HEIGHT; }
 
 	void InitGLEW();
 	void InitOGL();
 
 	void InitCube(std::string diffuse, std::string specular, std::string emissive, glm::vec3 position, Node* node);
-	void InitCube(std::string diffuse, std::string specular, std::string emissive, Node* node);
 	void InitCube(std::string diffuse, std::string specular, glm::vec3 position, Node* node);
 	void InitCube(std::string diffuse, glm::vec3 position, Node* node);
 	void InitCube(glm::vec3 position, Node* node);
@@ -66,14 +53,27 @@ public:
 	void DeleteNode(Node* node);
 	void DeleteChildNodes(Node* node);
 
+	void SetActiveCamera(Camera* camera);
+
+	inline Camera* GetActiveCamera() { return this->camera; };
 	inline unsigned int GetRenderTextureD() { return this->renderTextureD; };
 	inline unsigned int GetRenderTextureF() { return this->renderTextureF; };
+	inline Pipeline* GetActivePipe() { return this->activePipe; };
+	inline unsigned int GetWidth() { return this->WIDTH; };
+	inline unsigned int GetHeight() { return this->HEIGHT; };
+	inline std::vector<Camera*> GetInactiveCameras() { return this->inactiveCameras; }
 
-	void SetActiveCamera(Camera* camera);
-	void SetActivePipeline(Pipeline* pipe);
+	inline void SetActivePipeline(Pipeline* pipe) { this->activePipe = pipe; };
+	inline void SetWIdth(const unsigned int WIDTH) { this->WIDTH = WIDTH; }
+	inline void SetHeight(const unsigned int HEIGHT) { this->HEIGHT = HEIGHT; }
 
 	void Update();
 private:
+
+	float deltaTime;
+
+	unsigned int WIDTH;
+	unsigned int HEIGHT;
 
 	//Framebuffers deferred
 	unsigned int defaultBuffer;
@@ -90,6 +90,11 @@ private:
 
 	std::vector<Node*> renderableModels;
 	std::vector<Node*> renderableForwardModels;
+
+	Pipeline* activePipe;
+
+	Camera* camera; //Active camera
+	std::vector<Camera*> inactiveCameras;
 
 	void SetDSUniforms();
 

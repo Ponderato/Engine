@@ -285,11 +285,6 @@ void Context::SetActiveCamera(Camera* camera) {
 	activePipe->frusStep->SetInactiveCameras(this->inactiveCameras);
 }
 
-void Context::SetActivePipeline(Pipeline* pipe) {
-	
-	this->activePipe = pipe;
-}
-
 void Context::GetFrameBufferID(unsigned int *framebuffer)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, *framebuffer);

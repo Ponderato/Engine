@@ -275,7 +275,7 @@ void SetImGuiWindows() {
 
 	//Render window
 	r_panel.SetContext(&context);
-	if(context.activePipe->Name == "Deferred")
+	if(context.GetActivePipe()->Name == "Deferred")
 		r_panel.SetRenderImage(context.GetRenderTextureD());
 	else
 		r_panel.SetRenderImage(context.GetRenderTextureF());
@@ -316,13 +316,13 @@ void Mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn){
 		lastX = xPos;
 		lastY = yPos;
 
-		context.camera->ProcessMouseMovement(xOffset, yOffset);
+		context.GetActiveCamera()->ProcessMouseMovement(xOffset, yOffset);
 	}
 }
 
 void Scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
 	if (r_panel.IsFocused() && moveMouse)
-		context.camera->ProcessMouseScroll(static_cast<float>(yOffset));
+		context.GetActiveCamera()->ProcessMouseScroll(static_cast<float>(yOffset));
 }
 
 //Key pressed only once
@@ -346,19 +346,19 @@ void ProcessInput(GLFWwindow* window){
 	if (r_panel.IsFocused()) {
 
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			context.camera->ProcessKeyboard(FORWARD, deltaTime1);
+			context.GetActiveCamera()->ProcessKeyboard(FORWARD, deltaTime1);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-			context.camera->ProcessKeyboard(BACKWARD, deltaTime1);
+			context.GetActiveCamera()->ProcessKeyboard(BACKWARD, deltaTime1);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-			context.camera->ProcessKeyboard(LEFT, deltaTime1);
+			context.GetActiveCamera()->ProcessKeyboard(LEFT, deltaTime1);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-			context.camera->ProcessKeyboard(RIGHT, deltaTime1);
+			context.GetActiveCamera()->ProcessKeyboard(RIGHT, deltaTime1);
 		}
 	}
 }

@@ -23,6 +23,8 @@ public:
 	void Aux() override;
 private:
 
+	Mesh* mesh;
+
 	float cubeVertices[72] = {
 	-0.5f, -0.5f, -0.5f, //0
 	 0.5f, -0.5f, -0.5f, //1
@@ -137,8 +139,6 @@ private:
 	};
 
 	bool TexOK(std::vector<Texture> textures);
-
-	Mesh* mesh;
 };
 
 #endif 

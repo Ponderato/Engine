@@ -20,6 +20,7 @@ private:
 
 	Camera* camera;
 	Program& program;
+	std::vector<Node*> models;
 
 	//QUAD data
 	unsigned int quadVAO;
@@ -35,7 +36,7 @@ private:
 	//Methods
 	void RenderQuad();
 
-	std::vector<Node*> models;
+
 	void SetLightUniforms();
 };
 
